@@ -29,15 +29,6 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/about/index.html</loc>
-    
-    <lastmod>2026-09-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ywxk2016.github.io/community/index.html</loc>
     
     <lastmod>2026-09-19</lastmod>
@@ -48,6 +39,15 @@
   
   <url>
     <loc>https://ywxk2016.github.io/docs/index.html</loc>
+    
+    <lastmod>2026-09-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/about/index.html</loc>
     
     <lastmod>2026-09-19</lastmod>
     
