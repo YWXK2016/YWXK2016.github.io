@@ -1,0 +1,132 @@
+.project-intro {
+  margin: 0 0 1.25rem;
+  color: var(--sec-text-color);
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.project-card {
+  display: flex;
+  min-width: 0;
+  overflow: hidden;
+  flex-direction: column;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  background: var(--board-color);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--link-hover-color);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.project-card__cover {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--body-bg-color);
+}
+
+.project-card__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.project-card:hover .project-card__cover img {
+  transform: scale(1.03);
+}
+
+.project-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.project-card__body h2 {
+  margin: 0 0 0.55rem;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.project-card__body h2 a {
+  color: var(--post-heading-color);
+}
+
+.project-card__body h2 a:hover {
+  color: var(--link-hover-color);
+}
+
+.project-card__body p {
+  margin: 0 0 0.85rem;
+  color: var(--sec-text-color);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.project-tags span {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--line-color);
+  border-radius: 999px;
+  color: var(--sec-text-color);
+  background: var(--body-bg-color);
+  font-size: 0.75rem;
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line-color);
+}
+
+.project-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--post-link-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.project-links a:hover {
+  color: var(--link-hover-color);
+}
+
+.project-links i {
+  font-size: 1rem;
+}
+
+@media (max-width: 575px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media print {
+  .project-card {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}
