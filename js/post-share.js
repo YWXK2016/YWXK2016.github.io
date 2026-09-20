@@ -3,9 +3,15 @@
 
   function copyText(text) {
     if (navigator.clipboard && window.isSecureContext) {
-      return navigator.clipboard.writeText(text);
+      return navigator.clipboard.writeText(text).catch(function () {
+        return legacyCopyText(text);
+      });
     }
 
+    return legacyCopyText(text);
+  }
+
+  function legacyCopyText(text) {
     return new Promise(function (resolve, reject) {
       var textarea = document.createElement('textarea');
       textarea.value = text;
@@ -60,6 +66,20 @@
     window.open(url, '_blank', 'noopener,noreferrer,width=720,height=620');
   }
 
+  function isWechatBrowser() {
+    return /micromessenger/i.test(navigator.userAgent);
+  }
+
+  function fallbackShare(message) {
+    copyText(window.location.href)
+      .then(function () {
+        showToast(message);
+      })
+      .catch(function () {
+        showToast('请点击浏览器右上角菜单进行分享');
+      });
+  }
+
   function initPostShare() {
     document.querySelectorAll('[data-post-share]').forEach(function (bar) {
       if (bar.dataset.initialized === 'true') {
@@ -84,24 +104,29 @@
           return;
         }
 
-        if (shareType === 'wechat') {
-          if (navigator.share) {
-            navigator.share({ title: pageTitle, text: pageTitle, url: pageUrl }).catch(function () {});
-          } else {
-            copyText(pageUrl).then(function () {
-              showToast('链接已复制，请到微信中粘贴分享');
-            });
-          }
-          return;
-        }
+        if (shareType === 'wechat' || shareType === 'moments') {
+          var isMoments = shareType === 'moments';
 
-        if (shareType === 'moments') {
+          if (isWechatBrowser()) {
+            fallbackShare(isMoments
+              ? '请点击右上角菜单分享到朋友圈，链接已复制'
+              : '请点击右上角菜单分享给朋友，链接已复制');
+            return;
+          }
+
           if (navigator.share) {
-            navigator.share({ title: pageTitle, text: pageTitle, url: pageUrl }).catch(function () {});
-          } else {
-            copyText(pageUrl).then(function () {
-              showToast('链接已复制，请到微信朋友圈粘贴分享');
+            navigator.share({ title: pageTitle, text: pageTitle, url: pageUrl }).catch(function (error) {
+              if (error && error.name === 'AbortError') {
+                return;
+              }
+              fallbackShare(isMoments
+                ? '链接已复制，请到微信朋友圈粘贴分享'
+                : '链接已复制，请到微信中粘贴分享');
             });
+          } else {
+            fallbackShare(isMoments
+              ? '链接已复制，请到微信朋友圈粘贴分享'
+              : '链接已复制，请到微信中粘贴分享');
           }
           return;
         }
