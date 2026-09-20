@@ -151,7 +151,7 @@
 }
 
 .education-card h3 a {
-  color: inherit;
+  color: var(--accent);
 }
 
 .education-card h3 a:hover {
