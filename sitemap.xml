@@ -20,15 +20,6 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/2026/09/18/first-blog/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ywxk2016.github.io/about/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
@@ -55,6 +46,15 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://ywxk2016.github.io/2026/09/18/first-blog/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   <url>
     <loc>https://ywxk2016.github.io/</loc>
@@ -63,13 +63,6 @@
     <priority>1.0</priority>
   </url>
 
-  
-  <url>
-    <loc>https://ywxk2016.github.io/tags/CUDA/</loc>
-    <lastmod>2026-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
   
   <url>
     <loc>https://ywxk2016.github.io/tags/OpenCV/</loc>
@@ -85,17 +78,24 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://ywxk2016.github.io/tags/CUDA/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
-    <loc>https://ywxk2016.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://ywxk2016.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/</loc>
+    <loc>https://ywxk2016.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
