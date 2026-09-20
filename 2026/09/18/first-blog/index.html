@@ -23,12 +23,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="first blog">
 <meta property="og:url" content="https://ywxk2016.github.io/2026/09/18/first-blog/index.html">
-<meta property="og:site_name" content="仰望星空——于探索中沉思">
+<meta property="og:site_name" content="仰望星空">
 <meta property="og:description" content="使用 LibTorch 和 OpenCV 实现特征点提取与图像匹配。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ywxk2016.github.io/img/covers/cover1.webp">
 <meta property="article:published_time" content="2026-09-18T13:02:35.000Z">
-<meta property="article:modified_time" content="2026-09-20T04:43:49.965Z">
+<meta property="article:modified_time" content="2026-09-20T04:55:58.036Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="LibTorch">
 <meta property="article:tag" content="OpenCV">
@@ -39,7 +39,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>first blog - 仰望星空——于探索中沉思</title>
+  <title>first blog - 仰望星空</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -231,7 +231,7 @@
     height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=mu9bzz2ljdd") center / cover no-repeat;
+    background: #fff url("/img/avatar.jpg?v=mu9cfkus1u") center / cover no-repeat;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -295,7 +295,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>仰望星空——于探索中沉思</strong>
+      <strong>仰望星空</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -1110,5 +1110,25 @@
   <noscript>
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
-</body>
+<!-- hexo injector body_end start -->
+<script>
+  (function () {
+    function movePostMeta() {
+      var markdownBody = document.querySelector('.post-content .markdown-body');
+      var postMetas = document.querySelector('.post-content .post-metas');
+
+      if (!markdownBody || !postMetas || markdownBody.contains(postMetas)) {
+        return;
+      }
+
+      markdownBody.insertBefore(postMetas, markdownBody.firstChild);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', movePostMeta);
+    } else {
+      movePostMeta();
+    }
+  })();
+</script><!-- hexo injector body_end end --></body>
 </html>
