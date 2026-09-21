@@ -21,26 +21,26 @@
   
     <meta name="description" content="从 Windows 环境安装 Hexo，到创建 GitHub 仓库、配置 GitHub Actions、部署个人主页以及发布文章的完整流程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的个人主页搭建详细流程">
-<meta property="og:url" content="https://ywxk2016.github.io/2026/09/20/%E6%88%91%E7%9A%84%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:title" content="零成本个人主页搭建详细流程">
+<meta property="og:url" content="https://ywxk2016.github.io/2026/09/20/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/index.html">
 <meta property="og:site_name" content="仰望星空">
 <meta property="og:description" content="从 Windows 环境安装 Hexo，到创建 GitHub 仓库、配置 GitHub Actions、部署个人主页以及发布文章的完整流程。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ywxk2016.github.io/img/covers/cover2.webp">
+<meta property="og:image" content="https://ywxk2016.github.io/img/covers/blog.webp">
 <meta property="article:published_time" content="2026-09-20T18:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-21T07:59:25.199Z">
+<meta property="article:modified_time" content="2026-09-21T17:12:01.886Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="GitHub Actions">
 <meta property="article:tag" content="GitHub Pages">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/cover2.webp">
+<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/blog.webp">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>我的个人主页搭建详细流程 - 仰望星空</title>
+  <title>零成本个人主页搭建详细流程 - 仰望星空</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -237,7 +237,7 @@
     height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=muayfcpb9k9") center / cover no-repeat;
+    background: #fff url("/img/avatar.jpg?v=mubi60kelw") center / cover no-repeat;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -584,7 +584,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">我的个人主页搭建详细流程</span>
+            <span id="subtitle">零成本个人主页搭建详细流程</span>
           
         </div>
 
@@ -607,7 +607,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.2k 字
+          5.3k 字
         
       </span>
     
@@ -618,7 +618,7 @@
         
         
         
-          44 分钟
+          45 分钟
         
       </span>
     
@@ -670,36 +670,38 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">我的个人主页搭建详细流程</h1>
+            <h1 id="seo-header">零成本个人主页搭建详细流程</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="我的个人主页搭建详细流程"><a href="#我的个人主页搭建详细流程" class="headerlink" title="我的个人主页搭建详细流程"></a>我的个人主页搭建详细流程</h1><p>这篇文章完整记录我在 Windows 电脑上使用 Hexo 搭建个人主页，并通过 GitHub Actions 自动部署到 GitHub Pages 的流程。内容包含环境安装、源码仓库、部署仓库、Fluid 主题、自动部署、文章发布和常见问题。</p>
+                <h1 id="零成本个人主页搭建详细流程"><a href="#零成本个人主页搭建详细流程" class="headerlink" title="零成本个人主页搭建详细流程"></a>零成本个人主页搭建详细流程</h1><p>这篇文章完整记录我在 Windows 电脑上使用 Hexo 搭建个人主页，并通过 GitHub Actions 自动部署到 GitHub Pages 的流程。当前浏览的这个就是我的个人主页了。内容包含环境安装、源码仓库、部署仓库、Fluid 主题、自动部署、文章发布和常见问题。(<strong>注：以下内容中<code>YWXK2016</code>为我个人的github账号，在搭建过程中需要替换为自己的github账号</strong>)</p>
 <h2 id="一、最终架构"><a href="#一、最终架构" class="headerlink" title="一、最终架构"></a>一、最终架构</h2><p>整个系统分为两个 GitHub 仓库：</p>
 <ol>
-<li><p><code>blog-source</code><br>保存 Hexo 源码、文章、主题配置和 GitHub Actions 工作流。</p>
+<li><p><code>blog-source</code><br>私有仓库，保存 Hexo 源码、文章、主题配置和 GitHub Actions 工作流。</p>
 </li>
-<li><p><code>YWXK2016.github.io</code><br>保存 Hexo 构建后的静态文件，由 GitHub Pages 对外提供访问。</p>
+<li><p><code>YWXK2016.github.io</code><br>公共仓库，保存 Hexo 构建后的静态文件，由 GitHub Pages 对外提供访问。</p>
 </li>
 </ol>
-<p>部署流程如下：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs text">本地编写文章<br>    ↓<br>git push 到 blog-source<br>    ↓<br>GitHub Actions 自动执行 hexo clean 和 hexo generate<br>    ↓<br>public 目录发布到 YWXK2016.github.io<br>    ↓<br>访问 https://ywxk2016.github.io/<br></code></pre></td></tr></table></figure>
+<p>博客文章发布流程如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs text">本地电脑使用Markdown编写文章(我用的Typora)<br>    ↓<br>git push 到 blog-source<br>    ↓<br>GitHub Actions 自动执行 hexo clean 和 hexo generate<br>    ↓<br>public 目录发布到 YWXK2016.github.io<br>    ↓<br>访问 https://ywxk2016.github.io/<br></code></pre></td></tr></table></figure>
 
 <p>这种方式不会把 Hexo 源码和网页构建结果混在一起，后续维护更加清晰。</p>
 <h2 id="二、Windows-环境准备"><a href="#二、Windows-环境准备" class="headerlink" title="二、Windows 环境准备"></a>二、Windows 环境准备</h2><h3 id="1-安装-Node-js"><a href="#1-安装-Node-js" class="headerlink" title="1. 安装 Node.js"></a>1. 安装 Node.js</h3><p>打开 Node.js 官网并安装 LTS 版本：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">https://nodejs.org/<br></code></pre></td></tr></table></figure>
 
-<p>安装完成后打开 PowerShell，检查版本：</p>
+<p>安装完成后打开 cmd，检查版本：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">node <span class="hljs-literal">-v</span><br>npm <span class="hljs-literal">-v</span><br></code></pre></td></tr></table></figure>
 
-<p>建议使用 Node.js 20 或更高版本。GitHub Actions 当前也使用 Node.js 20。</p>
+<p><img src="/img/post/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/1.png" srcset="/img/loading.gif" lazyload alt="image-20260922001708685"></p>
+<p>建议使用 Node.js 20 或更高版本。GitHub Actions 当前使用 Node.js 24。</p>
 <h3 id="2-安装-Git"><a href="#2-安装-Git" class="headerlink" title="2. 安装 Git"></a>2. 安装 Git</h3><p>安装 Git for Windows：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">https://git-scm.com/download/win<br></code></pre></td></tr></table></figure>
 
 <p>检查安装结果：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">git <span class="hljs-literal">--version</span><br></code></pre></td></tr></table></figure>
 
+<p><img src="/img/post/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/2.png" srcset="/img/loading.gif" lazyload alt="image-20260922001747032"></p>
 <p>配置 Git 用户名和邮箱：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">git config <span class="hljs-literal">--global</span> user.name <span class="hljs-string">&#x27;你的 GitHub 用户名&#x27;</span><br>git config <span class="hljs-literal">--global</span> user.email <span class="hljs-string">&#x27;你的邮箱&#x27;</span><br></code></pre></td></tr></table></figure>
 
@@ -708,6 +710,7 @@
 <p>检查版本：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">hexo version<br></code></pre></td></tr></table></figure>
 
+<p><img src="/img/post/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/3.png" srcset="/img/loading.gif" lazyload alt="image-20260922001904856"></p>
 <h3 id="2-初始化博客"><a href="#2-初始化博客" class="headerlink" title="2. 初始化博客"></a>2. 初始化博客</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">cd</span> C:\Users\ywxk<br>hexo init blog<br><span class="hljs-built_in">cd</span> blog<br>npm install<br></code></pre></td></tr></table></figure>
 
 <h3 id="3-本地启动"><a href="#3-本地启动" class="headerlink" title="3. 本地启动"></a>3. 本地启动</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">hexo server<br></code></pre></td></tr></table></figure>
@@ -715,6 +718,7 @@
 <p>浏览器访问：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">http://localhost:4000/<br></code></pre></td></tr></table></figure>
 
+<p><img src="/img/post/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/4.png" srcset="/img/loading.gif" lazyload alt="image-20260922001955216"></p>
 <p>如果端口被占用：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">hexo server <span class="hljs-literal">--port</span> <span class="hljs-number">4001</span><br></code></pre></td></tr></table></figure>
 
@@ -750,6 +754,7 @@
 <p>这个仓库用于保存 GitHub Pages 构建结果。在 <code>Settings -&gt; Pages</code> 中确认发布分支为：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">main<br></code></pre></td></tr></table></figure>
 
+<p><img src="/img/post/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/5.png" srcset="/img/loading.gif" lazyload alt="image-20260922002446642"></p>
 <h3 id="2-创建源码仓库"><a href="#2-创建源码仓库" class="headerlink" title="2. 创建源码仓库"></a>2. 创建源码仓库</h3><p>再创建一个仓库用于保存 Hexo 源码：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">blog-source<br></code></pre></td></tr></table></figure>
 
@@ -757,28 +762,31 @@
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs powershell">git init<br>git remote add origin git@github.com:YWXK2016/blog<span class="hljs-literal">-source</span>.git<br>git add .<br>git commit <span class="hljs-literal">-m</span> <span class="hljs-string">&#x27;init hexo blog&#x27;</span><br>git branch <span class="hljs-literal">-M</span> main<br>git push <span class="hljs-literal">-u</span> origin main<br></code></pre></td></tr></table></figure>
 
 <h2 id="六、配置部署密钥"><a href="#六、配置部署密钥" class="headerlink" title="六、配置部署密钥"></a>六、配置部署密钥</h2><p>GitHub Actions 需要把构建结果推送到 <code>YWXK2016.github.io</code>，因此需要一对 SSH 密钥。</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">ssh<span class="hljs-literal">-keygen</span> <span class="hljs-literal">-t</span> ed25519 <span class="hljs-literal">-C</span> <span class="hljs-string">&#x27;github-actions-deploy&#x27;</span> <span class="hljs-operator">-f</span> <span class="hljs-variable">$env:USERPROFILE</span>\.ssh\blog_deploy <span class="hljs-literal">-N</span> <span class="hljs-string">&#x27;&#x27;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">ssh<span class="hljs-literal">-keygen</span> <span class="hljs-literal">-t</span> ed25519 <span class="hljs-literal">-C</span> <span class="hljs-string">&#x27;github-actions-deploy&#x27;</span> <span class="hljs-operator">-f</span> C:\Users\ywxk\.ssh\blog<span class="hljs-literal">-deploy-key</span>\id_ed25519 <span class="hljs-literal">-N</span> <span class="hljs-string">&#x27;&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>生成：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">$env:USERPROFILE\.ssh\blog_deploy<br>$env:USERPROFILE\.ssh\blog_deploy.pub<br></code></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">C:\Users\ywxk\.ssh\blog-deploy-key\id_ed25519<br>C:\Users\ywxk\.ssh\blog-deploy-key\id_ed25519.pub<br></code></pre></td></tr></table></figure>
 
+<p><img src="/img/post/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/6.png" srcset="/img/loading.gif" lazyload alt="image-20260922002846985"></p>
 <h3 id="1-添加公钥"><a href="#1-添加公钥" class="headerlink" title="1. 添加公钥"></a>1. 添加公钥</h3><p>打开 <code>YWXK2016.github.io</code> 仓库：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">Settings -&gt; Deploy keys -&gt; Add deploy key<br></code></pre></td></tr></table></figure>
 
-<p>粘贴 <code>blog_deploy.pub</code> 的内容，并勾选：</p>
+<p>粘贴 <code>id_ed25519.pub</code> 的内容，并勾选：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">Allow write access<br></code></pre></td></tr></table></figure>
 
+<p><img src="/img/post/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/7.png" srcset="/img/loading.gif" lazyload alt="image-20260922003436034"></p>
 <h3 id="2-添加私钥-Secret"><a href="#2-添加私钥-Secret" class="headerlink" title="2. 添加私钥 Secret"></a>2. 添加私钥 Secret</h3><p>打开源码仓库 <code>blog-source</code>：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">Settings -&gt; Secrets and variables -&gt; Actions -&gt; New repository secret<br></code></pre></td></tr></table></figure>
 
 <p>创建：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">Name: DEPLOY_KEY<br>Value: blog_deploy 私钥文件的完整内容<br></code></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">Name: DEPLOY_KEY<br>Value: id_ed25519 私钥文件的完整内容<br></code></pre></td></tr></table></figure>
 
 <p>查看私钥：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">Get-Content</span> <span class="hljs-variable">$env:USERPROFILE</span>\.ssh\blog_deploy <span class="hljs-literal">-Raw</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">Get-Content</span> C:\Users\ywxk\.ssh\blog<span class="hljs-literal">-deploy-key</span>\id_ed25519 <span class="hljs-literal">-Raw</span><br></code></pre></td></tr></table></figure>
 
 <p>私钥只能放在 GitHub Secret 中，不能提交到仓库。</p>
-<h2 id="七、配置-GitHub-Actions-自动部署"><a href="#七、配置-GitHub-Actions-自动部署" class="headerlink" title="七、配置 GitHub Actions 自动部署"></a>七、配置 GitHub Actions 自动部署</h2><p>在源码仓库创建：</p>
+<p><img src="/img/post/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/8.png" srcset="/img/loading.gif" lazyload alt="image-20260922003629889"></p>
+<h2 id="七、配置-GitHub-Actions-自动部署"><a href="#七、配置-GitHub-Actions-自动部署" class="headerlink" title="七、配置 GitHub Actions 自动部署"></a>七、配置 GitHub Actions 自动部署</h2><p>在源码仓库创建，或者本地创建后通过git提交到仓库：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">.github/workflows/deploy.yml<br></code></pre></td></tr></table></figure>
 
 <p>完整配置：</p>
@@ -815,10 +823,10 @@
 <p>文章详情页顶部大图：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">banner_img:</span> <span class="hljs-string">/img/banners/post.webp</span><br><span class="hljs-attr">banner_img_height:</span> <span class="hljs-number">80</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="3-本地预览"><a href="#3-本地预览" class="headerlink" title="3. 本地预览"></a>3. 本地预览</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell">npm run clean<br>npm run build<br>npm run server <span class="hljs-literal">--</span> <span class="hljs-literal">--port</span> <span class="hljs-number">4001</span><br></code></pre></td></tr></table></figure>
+<h3 id="3-本地预览"><a href="#3-本地预览" class="headerlink" title="3. 本地预览"></a>3. 本地预览</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell">hexo clean<br>hexo generate<br>hexo server<br></code></pre></td></tr></table></figure>
 
 <p>访问：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">http://localhost:4001/<br></code></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">http://localhost:4000/<br></code></pre></td></tr></table></figure>
 
 <p>检查首页卡片、文章正文、分类、标签、阅读量、分享按钮、页脚统计和移动端布局。</p>
 <h3 id="4-提交并自动部署"><a href="#4-提交并自动部署" class="headerlink" title="4. 提交并自动部署"></a>4. 提交并自动部署</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell">git add .<br>git commit <span class="hljs-literal">-m</span> <span class="hljs-string">&#x27;post: 新增文章&#x27;</span><br>git push origin main<br></code></pre></td></tr></table></figure>
@@ -843,7 +851,7 @@
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell">git add .<br>git commit <span class="hljs-literal">-m</span> <span class="hljs-string">&#x27;post: 新增文章&#x27;</span><br>git push origin main<br></code></pre></td></tr></table></figure>
 
 <p>然后等待 GitHub Actions 部署完成。</p>
-<h2 id="十一、常见问题"><a href="#十一、常见问题" class="headerlink" title="十一、常见问题"></a>十一、常见问题</h2><h3 id="1-本地预览没有更新"><a href="#1-本地预览没有更新" class="headerlink" title="1. 本地预览没有更新"></a>1. 本地预览没有更新</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">npm run clean<br>npm run server <span class="hljs-literal">--</span> <span class="hljs-literal">--port</span> <span class="hljs-number">4001</span><br></code></pre></td></tr></table></figure>
+<h2 id="十一、常见问题"><a href="#十一、常见问题" class="headerlink" title="十一、常见问题"></a>十一、常见问题</h2><h3 id="1-本地预览没有更新"><a href="#1-本地预览没有更新" class="headerlink" title="1. 本地预览没有更新"></a>1. 本地预览没有更新</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">hexo clean<br>hexo server<br></code></pre></td></tr></table></figure>
 
 <p>修改 <code>_config.yml</code> 或 <code>_config.fluid.yml</code> 后通常需要重启服务。</p>
 <h3 id="2-部署成功但页面仍是旧内容"><a href="#2-部署成功但页面仍是旧内容" class="headerlink" title="2. 部署成功但页面仍是旧内容"></a>2. 部署成功但页面仍是旧内容</h3><p>浏览器可能使用了缓存。按 <code>Ctrl + F5</code> 强制刷新。</p>
@@ -913,8 +921,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>我的个人主页搭建详细流程</div>
-      <div>https://ywxk2016.github.io/2026/09/20/我的个人主页搭建详细流程/</div>
+      <div>零成本个人主页搭建详细流程</div>
+      <div>https://ywxk2016.github.io/2026/09/20/零成本个人主页搭建详细流程/</div>
     </div>
     <div class="license-meta">
       
@@ -958,21 +966,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/09/21/hello-world/" title="Hello World">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Hello World</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
-                    
-                      <a href="/2026/09/18/first-blog/" title="first blog">
-                        <span class="hidden-mobile">first blog</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
                     
                   </article>
                 </div>

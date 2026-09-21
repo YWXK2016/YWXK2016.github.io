@@ -11,25 +11,7 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/2026/09/18/first-blog/</loc>
-    
-    <lastmod>2026-09-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/2026/09/21/hello-world/</loc>
-    
-    <lastmod>2026-09-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/2026/09/20/%E6%88%91%E7%9A%84%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/</loc>
+    <loc>https://ywxk2016.github.io/2026/09/20/%E9%9B%B6%E6%88%90%E6%9C%AC%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/</loc>
     
     <lastmod>2026-09-21</lastmod>
     
@@ -74,27 +56,6 @@
 
   
   <url>
-    <loc>https://ywxk2016.github.io/tags/OpenCV/</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/tags/LibTorch/</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/tags/CUDA/</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ywxk2016.github.io/tags/Hexo/</loc>
     <lastmod>2026-09-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -116,20 +77,6 @@
   </url>
   
 
-  
-  <url>
-    <loc>https://ywxk2016.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
   
   <url>
     <loc>https://ywxk2016.github.io/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
