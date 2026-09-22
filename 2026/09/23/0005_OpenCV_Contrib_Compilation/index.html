@@ -17,30 +17,32 @@
   
   <meta name="theme-color" content="#2f4154">
   <meta name="author" content="仰望星空">
-  <meta name="keywords" content="三维重建,colmap,命令行">
+  <meta name="keywords" content="OpenCV,opencv contrib,CMake,Visual Studio,源码编译">
   
-    <meta name="description" content="介绍使用colmap命令进行三维重建的简要步骤">
+    <meta name="description" content="基于Windows平台使用CMake和Visual Studio 2017编译opencv contrib。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用colmap命令行进行三维重建">
-<meta property="og:url" content="https://ywxk2016.github.io/2026/09/22/Colmap_Command/index.html">
+<meta property="og:title" content="OpenCV扩展模块的安装与配置">
+<meta property="og:url" content="https://ywxk2016.github.io/2026/09/23/0005_OpenCV_Contrib_Compilation/index.html">
 <meta property="og:site_name" content="仰望星空">
-<meta property="og:description" content="介绍使用colmap命令进行三维重建的简要步骤">
+<meta property="og:description" content="基于Windows平台使用CMake和Visual Studio 2017编译opencv contrib。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ywxk2016.github.io/img/covers/colmap.webp">
-<meta property="article:published_time" content="2026-09-22T15:05:00.000Z">
-<meta property="article:modified_time" content="2026-09-22T11:57:59.707Z">
+<meta property="og:image" content="https://ywxk2016.github.io/img/covers/OpenCV.webp">
+<meta property="article:published_time" content="2026-09-23T00:45:00.000Z">
+<meta property="article:modified_time" content="2026-09-22T16:48:25.602Z">
 <meta property="article:author" content="仰望星空">
-<meta property="article:tag" content="colmap">
-<meta property="article:tag" content="三维重建">
-<meta property="article:tag" content="命令行">
+<meta property="article:tag" content="CMake">
+<meta property="article:tag" content="OpenCV">
+<meta property="article:tag" content="Visual Studio">
+<meta property="article:tag" content="opencv contrib">
+<meta property="article:tag" content="源码编译">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/colmap.webp">
+<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/OpenCV.webp">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>使用colmap命令行进行三维重建 - 仰望星空</title>
+  <title>OpenCV扩展模块的安装与配置 - 仰望星空</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -241,7 +243,7 @@
     height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=mucme0ik0i") center / cover no-repeat;
+    background: #fff url("/img/avatar.jpg?v=mucwrif76r") center / cover no-repeat;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -588,7 +590,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">使用colmap命令行进行三维重建</span>
+            <span id="subtitle">OpenCV扩展模块的安装与配置</span>
           
         </div>
 
@@ -599,8 +601,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-09-22 15:05" pubdate>
-          2026年9月22日 下午
+        <time datetime="2026-09-23 00:45" pubdate>
+          2026年9月23日 凌晨
         </time>
       </span>
     
@@ -611,7 +613,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.1k 字
+          8.8k 字
         
       </span>
     
@@ -622,7 +624,7 @@
         
         
         
-          35 分钟
+          74 分钟
         
       </span>
     
@@ -674,147 +676,61 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">使用colmap命令行进行三维重建</h1>
+            <h1 id="seo-header">OpenCV扩展模块的安装与配置</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="使用colmap命令行进行三维重建"><a href="#使用colmap命令行进行三维重建" class="headerlink" title="使用colmap命令行进行三维重建"></a>使用colmap命令行进行三维重建</h1><h2 id="一、数据准备"><a href="#一、数据准备" class="headerlink" title="一、数据准备"></a>一、数据准备</h2><ul>
-<li>在<code>D:/software/colmap</code>文件夹下新建文件<code>project1</code>;</li>
-<li>在<code>project1</code>文件夹下新建文件夹<code>images</code>；</li>
-<li>将待重建的图像放在<code>D:/software/colmap/project1/images</code>文件夹下。</li>
-</ul>
-<p><img src="/img/post/Colmap_Command/1.webp" srcset="/img/loading.gif" lazyload></p>
-<h2 id="二、命令行重建"><a href="#二、命令行重建" class="headerlink" title="二、命令行重建"></a>二、命令行重建</h2><blockquote>
-<p>找到VS运行得到的exe文件地址，打开cmd，将路径切换到该路径。<code>D:/software/colmap/colmap-dev/build/colmap/__build__/src/exe/Release/colmap.exe</code></p>
+                <h1 id="OpenCV扩展模块的安装与配置"><a href="#OpenCV扩展模块的安装与配置" class="headerlink" title="OpenCV扩展模块的安装与配置"></a>OpenCV扩展模块的安装与配置</h1><h2 id="一、opencv-contrib-下载"><a href="#一、opencv-contrib-下载" class="headerlink" title="一、opencv contrib 下载"></a>一、opencv contrib 下载</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/opencv/opencv_contrib/tags?after=3.4.15">下载地址</a></p>
+<p>下载opencv_contrib 4.5.1版本对应的zip压缩包到<code>D:\software\opencv451</code>并解压，然后使用CMake工具生成编译工程。</p>
 </blockquote>
-<h3 id="1-特征提取"><a href="#1-特征提取" class="headerlink" title="1. 特征提取"></a>1. 特征提取</h3><ul>
-<li><strong>输入命令</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe feature_extractor --database_path D:/software/colmap/project1/database.db --image_path D:/software/colmap/project1/images<br></code></pre></td></tr></table></figure>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/1.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="二、使用CMake生成基于Visual-Studio-2017的OpenCV源码编译工程"><a href="#二、使用CMake生成基于Visual-Studio-2017的OpenCV源码编译工程" class="headerlink" title="二、使用CMake生成基于Visual Studio 2017的OpenCV源码编译工程"></a>二、使用CMake生成基于Visual Studio 2017的OpenCV源码编译工程</h2><blockquote>
+<p>CMake版本3.12.3</p>
+<p>在<code>D:\software\opencv451</code>目录下新建文件夹<code>MyBuild</code>，打开CMake，选择源码路径和build目录。勾选<code>BUILD_opencv_world</code>和<code>OPENCV_ENABLE_NONFREE</code>，并将<code>OPENCV_EXTRA_MODULES_PATH</code>设置为<code>D:/software/opencv451/opencv_contrib-4.5.1/modules</code>。<br>注意：windows系统下拷贝出来的路径分隔符是”&quot;，需要改成”&#x2F;“。</p>
+</blockquote>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/2.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>然后依次点击Configure和Generate，Configure过程中可能会提示下载依赖文件失败的问题，解决办法比较简单，在第一条参考内容中有描述。解决所有问题后Configure和Generate时打印的信息如下：</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br></pre></td><td class="code"><pre><code class="hljs shell">Selecting Windows SDK version 10.0.17763.0 to target Windows 10.0.19045.<br>Detected processor: AMD64<br>Could NOT find PythonInterp: Found unsuitable version &quot;1.4&quot;, but required is at least &quot;3.2&quot; (found C:/Users/ywxk/AppData/Local/Microsoft/WindowsApps/python3.exe)<br>libjpeg-turbo: VERSION = 2.0.6, BUILD = opencv-4.5.1-libjpeg-turbo<br>Could NOT find OpenJPEG (minimal suitable version: 2.0, recommended version &gt;= 2.3.1). OpenJPEG will be built from sources<br>OpenJPEG: VERSION = 2.3.1, BUILD = opencv-4.5.1-openjp2-2.3.1<br>OpenJPEG libraries will be built from sources: libopenjp2 (version &quot;2.3.1&quot;)<br>found Intel IPP (ICV version): 2020.0.0 [2020.0.0 Gold]<br>at: D:/software/opencv451/MyBuild/3rdparty/ippicv/ippicv_win/icv<br>found Intel IPP Integration Wrappers sources: 2020.0.0<br>at: D:/software/opencv451/MyBuild/3rdparty/ippicv/ippicv_win/iw<br>Could not find OpenBLAS include. Turning OpenBLAS_FOUND off<br>Could not find OpenBLAS lib. Turning OpenBLAS_FOUND off<br>Could NOT find BLAS (missing: BLAS_LIBRARIES) <br>LAPACK requires BLAS<br>A library with LAPACK API not found. Please specify library location.<br>Could NOT find JNI (missing: JAVA_AWT_LIBRARY JAVA_JVM_LIBRARY JAVA_INCLUDE_PATH JAVA_INCLUDE_PATH2 JAVA_AWT_INCLUDE_PATH) <br>VTK is not found. Please set -DVTK_DIR in CMake to VTK build directory, or to VTK install subdirectory with VTKConfig.cmake file<br>OpenCV Python: during development append to PYTHONPATH: D:/software/opencv451/MyBuild/python_loader<br>Caffe:   NO<br>Protobuf:   NO<br>Glog:   YES<br>freetype2:   NO<br>harfbuzz:    NO<br>Julia not found. Not compiling Julia Bindings. <br>Module opencv_ovis disabled because OGRE3D was not found<br>CERES support is disabled. Ceres Solver for reconstruction API is required.<br>Tesseract:   NO<br>Processing WORLD modules...<br>    module opencv_core...<br>Allocator metrics storage type: &#x27;long long&#x27;<br>    module opencv_flann...<br>    module opencv_imgproc...<br>    module opencv_intensity_transform...<br>    module opencv_ml...<br>    module opencv_phase_unwrapping...<br>    module opencv_photo...<br>    module opencv_plot...<br>    module opencv_quality...<br>    module opencv_reg...<br>    module opencv_surface_matching...<br>    module opencv_xphoto...<br>    module opencv_alphamat...<br>    module opencv_dnn...<br>Registering hook &#x27;INIT_MODULE_SOURCES_opencv_dnn&#x27;: D:/software/opencv451/sources/modules/dnn/cmake/hooks/INIT_MODULE_SOURCES_opencv_dnn.cmake<br>opencv_dnn: filter out cuda4dnn source code<br>    module opencv_dnn_superres...<br>    module opencv_features2d...<br>    module opencv_fuzzy...<br>    module opencv_hfs...<br>    module opencv_imgcodecs...<br>    module opencv_line_descriptor...<br>    module opencv_saliency...<br>    module opencv_text...<br>    module opencv_videoio...<br>    module opencv_calib3d...<br>    module opencv_datasets...<br>    module opencv_highgui...<br>    module opencv_mcc...<br>    module opencv_objdetect...<br>    module opencv_rapid...<br>    module opencv_rgbd...<br>rgbd: CERES support is disabled. Ceres Solver is Required for Posegraph optimization<br>    module opencv_shape...<br>    module opencv_structured_light...<br>    module opencv_video...<br>    module opencv_videostab...<br>    module opencv_xfeatures2d...<br>    module opencv_ximgproc...<br>    module opencv_xobjdetect...<br>    module opencv_aruco...<br>    module opencv_bgsegm...<br>    module opencv_bioinspired...<br>    module opencv_ccalib...<br>    module opencv_dnn_objdetect...<br>    module opencv_dpm...<br>    module opencv_face...<br>    module opencv_gapi...<br>    module opencv_optflow...<br>    module opencv_stitching...<br>    module opencv_superres...<br>    module opencv_tracking...<br>    module opencv_stereo...<br>Processing WORLD modules... DONE<br>CERES support is disabled. Ceres Solver for reconstruction API is required.<br><br>General configuration for OpenCV 4.5.1 =====================================<br>  Version control:               unknown<br><br>  Extra modules:<br>    Location (extra):            D:/software/opencv451/opencv_contrib-4.5.1/modules<br>    Version control (extra):     unknown<br><br>  Platform:<br>    Timestamp:                   2026-07-16T16:36:16Z<br>    Host:                        Windows 10.0.19045 AMD64<br>    CMake:                       3.12.3<br>    CMake generator:             Visual Studio 15 2017 Win64<br>    CMake build tool:            D:/software/vs2017/MSBuild/15.0/Bin/MSBuild.exe<br>    MSVC:                        1916<br><br>  CPU/HW features:<br>    Baseline:                    SSE SSE2 SSE3<br>      requested:                 SSE3<br>    Dispatched code generation:  SSE4_1 SSE4_2 FP16 AVX AVX2 AVX512_SKX<br>      requested:                 SSE4_1 SSE4_2 AVX FP16 AVX2 AVX512_SKX<br>      SSE4_1 (17 files):         + SSSE3 SSE4_1<br>      SSE4_2 (2 files):          + SSSE3 SSE4_1 POPCNT SSE4_2<br>      FP16 (1 files):            + SSSE3 SSE4_1 POPCNT SSE4_2 FP16 AVX<br>      AVX (5 files):             + SSSE3 SSE4_1 POPCNT SSE4_2 AVX<br>      AVX2 (31 files):           + SSSE3 SSE4_1 POPCNT SSE4_2 FP16 FMA3 AVX AVX2<br>      AVX512_SKX (7 files):      + SSSE3 SSE4_1 POPCNT SSE4_2 FP16 FMA3 AVX AVX2 AVX_512F AVX512_COMMON AVX512_SKX<br><br>  C/C++:<br>    Built as dynamic libs?:      YES<br>    C++ standard:                11<br>    C++ Compiler:                D:/software/vs2017/VC/Tools/MSVC/14.16.27023/bin/Hostx86/x64/cl.exe  (ver 19.16.27045.0)<br>    C++ flags (Release):         /DWIN32 /D_WINDOWS /W4 /GR  /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D _SCL_SECURE_NO_WARNINGS /Gy /bigobj /Oi  /fp:precise     /EHa /wd4127 /wd4251 /wd4324 /wd4275 /wd4512 /wd4589 /MP  /MD /O2 /Ob2 /DNDEBUG <br>    C++ flags (Debug):           /DWIN32 /D_WINDOWS /W4 /GR  /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D _SCL_SECURE_NO_WARNINGS /Gy /bigobj /Oi  /fp:precise     /EHa /wd4127 /wd4251 /wd4324 /wd4275 /wd4512 /wd4589 /MP  /MDd /Zi /Ob0 /Od /RTC1 <br>    C Compiler:                  D:/software/vs2017/VC/Tools/MSVC/14.16.27023/bin/Hostx86/x64/cl.exe<br>    C flags (Release):           /DWIN32 /D_WINDOWS /W3  /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D _SCL_SECURE_NO_WARNINGS /Gy /bigobj /Oi  /fp:precise     /MP   /MD /O2 /Ob2 /DNDEBUG <br>    C flags (Debug):             /DWIN32 /D_WINDOWS /W3  /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D _SCL_SECURE_NO_WARNINGS /Gy /bigobj /Oi  /fp:precise     /MP /MDd /Zi /Ob0 /Od /RTC1 <br>    Linker flags (Release):      /machine:x64  /INCREMENTAL:NO <br>    Linker flags (Debug):        /machine:x64  /debug /INCREMENTAL <br>    ccache:                      NO<br>    Precompiled headers:         NO<br>    Extra dependencies:<br>    3rdparty dependencies:<br><br>  OpenCV modules:<br>    To be built:                 alphamat aruco bgsegm bioinspired calib3d ccalib core datasets dnn dnn_objdetect dnn_superres dpm face features2d flann fuzzy gapi hfs highgui img_hash imgcodecs imgproc intensity_transform line_descriptor mcc ml objdetect optflow phase_unwrapping photo plot quality rapid reg rgbd saliency sfm shape stereo stitching structured_light superres surface_matching text tracking ts video videoio videostab world xfeatures2d ximgproc xobjdetect xphoto<br>    Disabled:                    -<br>    Disabled by dependency:      -<br>    Unavailable:                 cnn_3dobj cudaarithm cudabgsegm cudacodec cudafeatures2d cudafilters cudaimgproc cudalegacy cudaobjdetect cudaoptflow cudastereo cudawarping cudev cvv freetype hdf java julia matlab ovis python2 python3 viz<br>    Applications:                tests perf_tests apps<br>    Documentation:               NO<br>    Non-free algorithms:         YES<br><br>  Windows RT support:            NO<br><br>  GUI: <br>    Win32 UI:                    YES<br>    VTK support:                 NO<br><br>  Media I/O: <br>    ZLib:                        build (ver 1.2.11)<br>    JPEG:                        build-libjpeg-turbo (ver 2.0.6-62)<br>    WEBP:                        build (ver encoder: 0x020f)<br>    PNG:                         build (ver 1.6.37)<br>    TIFF:                        build (ver 42 - 4.0.10)<br>    JPEG 2000:                   build (ver 2.3.1)<br>    OpenEXR:                     build (ver 2.3.0)<br>    HDR:                         YES<br>    SUNRASTER:                   YES<br>    PXM:                         YES<br>    PFM:                         YES<br><br>  Video I/O:<br>    DC1394:                      NO<br>    FFMPEG:                      YES (prebuilt binaries)<br>      avcodec:                   YES (58.91.100)<br>      avformat:                  YES (58.45.100)<br>      avutil:                    YES (56.51.100)<br>      swscale:                   YES (5.7.100)<br>      avresample:                YES (4.0.0)<br>    GStreamer:                   NO<br>    DirectShow:                  YES<br>    Media Foundation:            YES<br>      DXVA:                      YES<br><br>  Parallel framework:            Concurrency<br><br>  Trace:                         YES (with Intel ITT)<br><br>  Other third-party libraries:<br>    Intel IPP:                   2020.0.0 Gold [2020.0.0]<br>           at:                   D:/software/opencv451/MyBuild/3rdparty/ippicv/ippicv_win/icv<br>    Intel IPP IW:                sources (2020.0.0)<br>              at:                D:/software/opencv451/MyBuild/3rdparty/ippicv/ippicv_win/iw<br>    Lapack:                      NO<br>    Eigen:                       YES (ver 3.3.7)<br>    Custom HAL:                  NO<br>    Protobuf:                    build (3.5.1)<br><br>  OpenCL:                        YES (NVD3D11)<br>    Include path:                D:/software/opencv451/sources/3rdparty/include/opencl/1.2<br>    Link libraries:              Dynamic load<br><br>  Python (for build):            NO<br><br>  Java:                          <br>    ant:                         NO<br>    JNI:                         NO<br>    Java wrappers:               NO<br>    Java tests:                  NO<br><br>  Install to:                    D:/software/opencv451/MyBuild/install<br>-----------------------------------------------------------------<br><br>Configuring done<br>Generating done<br></code></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>命令参数含义</strong><ul>
-<li><strong><code>feature_extractor</code></strong>：colmap的子命令，表示执行”特征提取”操作。它会遍历图像，检测每张图中的关键点（如角点、边缘等），并为每个关键点计算一个特征描述子（默认使用 SIFT 算法，生成 128 维特征向量），用于后续在不同图像之间寻找同一物理点的对应关系。</li>
-<li><strong><code>--database_path</code></strong>：指定输出的数据库文件路径。colmap会将提取到的特征点坐标、描述子、相机参数等信息以 SQLite 格式写入这个 database.db 文件。如果该文件不存在，colmap会自动创建。</li>
-<li><strong><code>--image_path</code></strong>：指定输入的图像文件夹路径。colmap会读取该目录下所有图像，逐一进行特征提取。</li>
+<blockquote>
+<p>Generate完成之后会在<code>D:\software\opencv451\MyBuild</code>目录下生成Visual Studio 2017项目工程，双击<code>OpenCV.sln</code>即可在Visual Studio 2017中打开工程进行编译。</p>
+</blockquote>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/3.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="三、使用Visual-studio-2017编译OpenCV源码"><a href="#三、使用Visual-studio-2017编译OpenCV源码" class="headerlink" title="三、使用Visual studio 2017编译OpenCV源码"></a>三、使用Visual studio 2017编译OpenCV源码</h2><blockquote>
+<p>打开<code>OpenCV.sln</code>后，选择<code>生成/批生成</code>。</p>
+</blockquote>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/4.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>勾选如下四个选项，然后点击生成。等待编译即可。</p>
+</blockquote>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/5.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/6.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>期间可能会编译报错，原因是有些依赖库只有release版本没有debug版本，可以自行下载对应源码进行编译生成对应的debug版本的库文件。</p>
+</blockquote>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/7.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>这个问题的原因是编译debug版本的opencv_sfm时，没有对应的glog依赖库。CMake时检测到本地（D:\software\colmap\colmap-dev\build_<em>install</em>_\lib\glog.lib，之前编译Colmap时安装的）存在release版本的glog依赖库，因此编译release版本的opencv_sfm时没有问题。</p>
+<p><strong>解决办法</strong>：下载glog源码，重新编译生成debug版本的动态库，然后右键单击modules&#x2F;opencv_sfm择属性，在<code>通用属性/VC++目录/包含目录</code>中添加<code>D:\software\opencv451\glog-0.4.0\mybuild\glog</code>，在<code>通用属性/链接器/输入/附加依赖项</code>中添加<code>D:\software\opencv451\glog-0.4.0\mybuild\Debug\glogd.lib</code>然后再重新生成即可。</p>
+</blockquote>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/8.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>这个问题的原因是编译debug版本的opencv_sfm时使用的release版本的gflags库，同样需要将gflags源码重编生成debug版本的动态库，然后将这个附加依赖项改为<code>D:\software\colmap\colmap-dev\build\gflags\__build__\lib\Debug\gflags_nothreads_static_debug.lib</code></p>
+</blockquote>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/9.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>解决以上两个问题即可完成OpenCV的源码编译，release版本和debug版本均可使用。</p>
+</blockquote>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/10.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/11.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="四、参考内容"><a href="#四、参考内容" class="headerlink" title="四、参考内容"></a>四、参考内容</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/620264713">opencv4.5.1+Contrib+VS2019源码编译</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/GHL284271090/article/details/159169334">glog_v0.7编译及使用</a></li>
 </ul>
-</li>
-<li><strong>默认参数及含义</strong><ul>
-<li><strong><code>--ImageReader.camera_model OPENCV</code></strong>：指定相机模型（如 OPENCV 包含径向和切向畸变参数，适合普通相机&#x2F;手机拍摄的图像）。</li>
-<li><strong><code>--ImageReader.single_camera 1</code></strong>：强制所有图像使用同一组相机内参（适用于同一设备拍摄的场景）。</li>
-<li><strong><code>--SiftExtraction.use_gpu 1</code></strong>：启用 GPU 加速 SIFT 特征提取，速度可比 CPU 提升 10~100 倍（需 CUDA 支持）。</li>
-<li><strong><code>--SiftExtraction.max_num_features 8192</code></strong>：单张图像提取的最大特征点数量（默认 8192），可根据图像复杂度调整。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/img/post/Colmap_Command/2.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="2-特征匹配"><a href="#2-特征匹配" class="headerlink" title="2. 特征匹配"></a>2. 特征匹配</h3><ul>
-<li><strong>输入命令</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe exhaustive_matcher --database_path D:/software/colmap/project1/database.db<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>命令参数含义</strong><ul>
-<li><strong><code>exhaustive_matcher</code></strong>：colmap的子命令，表示执行”穷举匹配”操作。它会将数据库中的图像两两配对，逐一进行特征匹配（即暴力匹配，Brute-Force Matching），计算每对图像之间的匹配点对。<code>exhaustive_matcher</code>是最基础、最彻底的匹配策略，适用于图像数量较少（几十到几百张）的场景。它的计算复杂度为 O(N²)，当图像数量较多时会非常耗时。如果图像数量较多或场景有特殊结构，可以考虑其他匹配策略。<ul>
-<li><strong><code>sequential_matcher</code></strong>：按图像文件名顺序进行相邻匹配，适用于视频帧或连续拍摄的场景。</li>
-<li><strong><code>vocab_tree_matcher</code></strong>：基于词汇树进行快速检索匹配，适用于大规模图像数据集。</li>
-<li><strong><code>spatial_matcher</code></strong>：基于 GPS 位置信息进行匹配，适用于带有地理信息的航拍&#x2F;卫星图像。</li>
-</ul>
-</li>
-<li><strong><code>--database_path</code></strong>：指定输入的数据库文件路径。该文件必须已经通过 <code>feature_extractor</code> 命令生成并填充了特征点数据。匹配结果会直接追加写入同一个数据库文件。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/img/post/Colmap_Command/3.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="3-稀疏重建-SfM"><a href="#3-稀疏重建-SfM" class="headerlink" title="3. 稀疏重建(SfM)"></a>3. 稀疏重建(SfM)</h3><ul>
-<li><strong>新建sparse文件夹</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">md D:\software\colmap\project1\sparse<br></code></pre></td></tr></table></figure>
-
-<p><img src="/img/post/Colmap_Command/4.webp" srcset="/img/loading.gif" lazyload></p>
-<ul>
-<li><strong>输入命令</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe mapper --database_path D:/software/colmap/project1/database.db --image_path D:/software/colmap/project1/images --output_path D:/software/colmap/project1/sparse<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>命令参数含义</strong><ul>
-<li><strong><code>mapper</code></strong>：colmap的子命令，表示执行”增量式映射器”（Incremental Mapper），即增量式稀疏重建。它会从数据库中读取特征点和匹配信息，逐步注册相机、三角化三维点，并通过光束平差法（Bundle Adjustment）优化所有参数。</li>
-<li><strong><code>--database_path</code></strong>：指定输入的数据库文件路径。该文件必须已经通过 <code>feature_extractor</code> 和 <code>exhaustive_matcher</code> 两步填充了特征点数据和匹配关系。</li>
-<li><strong><code>--image_path</code></strong>：指定原始图像文件夹路径。mapper 需要读取图像文件本身（用于验证和可视化），同时会根据图像文件名与数据库中的记录进行关联。</li>
-<li><strong><code>--output_path</code></strong>：指定稀疏重建结果的输出目录。colmap会在该目录下自动创建子文件夹（如 <code>sparse/0/</code>、<code>sparse/1/</code> 等），每个子文件夹代表一个独立的重建模型，包含 cameras.bin（相机参数）、images.bin（相机位姿）、points3D.bin（稀疏点云）。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/img/post/Colmap_Command/5.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="4-图像去畸变"><a href="#4-图像去畸变" class="headerlink" title="4. 图像去畸变"></a>4. 图像去畸变</h3><ul>
-<li><strong>新建dense文件夹</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">md D:\software\colmap\project1\dense<br></code></pre></td></tr></table></figure>
-
-<p><img src="/img/post/Colmap_Command/6.webp" srcset="/img/loading.gif" lazyload></p>
-<ul>
-<li><strong>输入命令</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe image_undistorter --image_path D:/software/colmap/project1/images --input_path D:/software/colmap/project1/sparse/0 --output_path D:/software/colmap/project1/dense --output_type COLMAP --max_image_size 2000<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>命令参数含义</strong><ul>
-<li><strong><code>image_undistorter</code></strong>：colmap的子命令，这是<strong>稠密重建的预处理步骤</strong>。它根据稀疏重建得到的相机内参和畸变系数，对原始图像进行去畸变处理，将畸变图像校正为理想的针孔相机模型图像。</li>
-<li><strong><code>--input_path</code></strong>：读取稀疏重建的结果（相机参数和位姿）</li>
-<li><strong><code>--output_type</code></strong>：输出格式为 COLMAP 标准格式</li>
-<li><strong><code>--max_image_size</code></strong>：将图像长边限制为 2000 像素，降低后续计算量（设为 -1 则保持原尺寸）</li>
-</ul>
-</li>
-</ul>
-<p><img src="/img/post/Colmap_Command/7.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="5-稠密深度估计"><a href="#5-稠密深度估计" class="headerlink" title="5. 稠密深度估计"></a>5. 稠密深度估计</h3><ul>
-<li><strong>输入命令</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe patch_match_stereo --workspace_path D:/software/colmap/project1/dense --workspace_format COLMAP --PatchMatchStereo.geom_consistency true<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>命令参数含义</strong><ul>
-<li><strong><code>patch_match_stereo</code></strong>：colmap的子命令，这是稠密重建的核心步骤。它基于去畸变后的图像和已知相机位姿，对每张图像进行逐像素的立体匹配，生成每张图像对应的深度图（depth map，每个像素到相机的距离）和法线图（normal map，每个像素表面的法向量方向）。colmap采用的是 PatchMatch Stereo 算法，通过随机初始化 + 传播优化的策略在深度空间中高效搜索最优视差，比传统滑动窗口方法快得多。</li>
-<li><strong><code>--PatchMatchStereo.geom_consistency</code></strong>：启用<strong>几何一致性检查</strong>，通过多视角交叉验证剔除不一致的深度值，显著提升深度图质量。这一步计算量很大，如果有 CUDA 支持会自动使用 GPU 加速。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/img/post/Colmap_Command/8.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="6-点云融合"><a href="#6-点云融合" class="headerlink" title="6. 点云融合"></a>6. 点云融合</h3><ul>
-<li><strong>输入命令</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe stereo_fusion --workspace_path D:/software/colmap/project1/dense --workspace_format COLMAP --input_type geometric --output_path D:/software/colmap/project1/dense/fused.ply<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>命令参数含义</strong><ul>
-<li><strong><code>stereo_fusion</code></strong>：colmap的子命令，将上一步生成的多张深度图融合为一个统一的稠密三维点云。它会对所有图像的深度图进行几何一致性过滤，剔除异常点，最终输出一个完整的稠密点云文件 fused.ply。</li>
-<li><strong><code>--input_type</code></strong>：使用几何一致性过滤策略（另一种是 <code>photometric</code> 光度一致性）</li>
-</ul>
-</li>
-</ul>
-<p><img src="/img/post/Colmap_Command/9.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="7-泊松表面重建"><a href="#7-泊松表面重建" class="headerlink" title="7. 泊松表面重建"></a>7. 泊松表面重建</h3><ul>
-<li><strong>输入命令</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe poisson_mesher --input_path D:/software/colmap/project1/dense/fused.ply --output_path D:/software/colmap/project1/dense/meshed-poisson.ply<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><strong><code>poisson_mesher</code></strong>：这是网格生成的一种方式。它基于泊松方程，从稠密点云重建出一个连续、封闭的三角网格曲面。特点：倾向于生成光滑、完整的表面，能自动填补点云中的空洞，对噪声有一定鲁棒性，但可能会抹平细节，且大场景下网格面数较多。输出文件 <code>meshed-poisson.ply</code> 是一个带三角面片的 3D 网格模型。</li>
-</ul>
-<p><img src="/img/post/Colmap_Command/10.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="8-Delaunay-三角剖分"><a href="#8-Delaunay-三角剖分" class="headerlink" title="8. Delaunay 三角剖分"></a>8. Delaunay 三角剖分</h3><ul>
-<li><strong>输入命令</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap delaunay_mesher --input_path D:/software/colmap/project1/dense --output_path D:/software/colmap/project1/dense/meshed-delaunay.ply<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><strong><code>delaunay_mesher</code></strong>：这是网格生成的另一种方式。它基于Delaunay 三角剖分算法，直接从稠密重建的工作空间中提取三角网格。特点：更忠实于原始点云的几何结构，细节保留更好，不会像泊松重建那样”补洞”，表面可能不够封闭，通常需要编译时启用 CGAL 库支持。</li>
-</ul>
-<p><img src="/img/post/Colmap_Command/11.webp" srcset="/img/loading.gif" lazyload></p>
-<h2 id="三、重建结果"><a href="#三、重建结果" class="headerlink" title="三、重建结果"></a>三、重建结果</h2><p><img src="/img/post/Colmap_Command/12.webp" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/img/post/Colmap_Command/13.webp" srcset="/img/loading.gif" lazyload></p>
 
                 
               </div>
@@ -833,12 +749,12 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="category-chain-item">三维重建</a>
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" class="category-chain-item">计算机视觉</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/colmap/" class="category-chain-item">colmap</a>
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/OpenCV/" class="category-chain-item">OpenCV</a>
   
   
 
@@ -855,11 +771,15 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="print-no-link">#三维重建</a>
+        <a href="/tags/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" class="print-no-link">#源码编译</a>
       
-        <a href="/tags/colmap/" class="print-no-link">#colmap</a>
+        <a href="/tags/OpenCV/" class="print-no-link">#OpenCV</a>
       
-        <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" class="print-no-link">#命令行</a>
+        <a href="/tags/opencv-contrib/" class="print-no-link">#opencv contrib</a>
+      
+        <a href="/tags/CMake/" class="print-no-link">#CMake</a>
+      
+        <a href="/tags/Visual-Studio/" class="print-no-link">#Visual Studio</a>
       
     </div>
   
@@ -871,8 +791,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>使用colmap命令行进行三维重建</div>
-      <div>https://ywxk2016.github.io/2026/09/22/Colmap_Command/</div>
+      <div>OpenCV扩展模块的安装与配置</div>
+      <div>https://ywxk2016.github.io/2026/09/23/0005_OpenCV_Contrib_Compilation/</div>
     </div>
     <div class="license-meta">
       
@@ -884,7 +804,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年9月22日</div>
+          <div>2026年9月23日</div>
         </div>
       
       
@@ -916,18 +836,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/09/22/Camera_Coordinate_System/" title="相机模型中几个坐标系的关系">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">相机模型中几个坐标系的关系</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/09/22/Colmap_Source_Code_Compilation/" title="win10+vs2017编译colmap">
-                        <span class="hidden-mobile">win10+vs2017编译colmap</span>
+                      <a href="/2026/09/22/0004_Camera_Coordinate_System/" title="相机模型中几个坐标系的关系">
+                        <span class="hidden-mobile">相机模型中几个坐标系的关系</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

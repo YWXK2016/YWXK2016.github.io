@@ -22,13 +22,13 @@
     <meta name="description" content="从colmap依赖库的安装，到源码的下载编译以及如何使用GUI快速进行三维重建的完整流程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="win10+vs2017编译colmap">
-<meta property="og:url" content="https://ywxk2016.github.io/2026/09/22/Colmap_Source_Code_Compilation/index.html">
+<meta property="og:url" content="https://ywxk2016.github.io/2026/09/22/0002_Colmap_Source_Code_Compilation/index.html">
 <meta property="og:site_name" content="仰望星空">
 <meta property="og:description" content="从colmap依赖库的安装，到源码的下载编译以及如何使用GUI快速进行三维重建的完整流程。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ywxk2016.github.io/img/covers/colmap.webp">
 <meta property="article:published_time" content="2026-09-22T11:58:00.000Z">
-<meta property="article:modified_time" content="2026-09-22T11:57:59.707Z">
+<meta property="article:modified_time" content="2026-09-22T16:48:25.602Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="colmap">
 <meta property="article:tag" content="三维重建">
@@ -242,7 +242,7 @@
     height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=mucme0ik0i") center / cover no-repeat;
+    background: #fff url("/img/avatar.jpg?v=mucwrif76r") center / cover no-repeat;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -682,7 +682,7 @@
                 
                 <h2 id="win10-vs2017编译colmap"><a href="#win10-vs2017编译colmap" class="headerlink" title="win10+vs2017编译colmap"></a>win10+vs2017编译colmap</h2><h3 id="一、项目环境及版本信息"><a href="#一、项目环境及版本信息" class="headerlink" title="一、项目环境及版本信息"></a>一、项目环境及版本信息</h3><ul>
 <li><p><strong>操作系统</strong>：windows10(cpu 16G + gpu 6G)</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/1.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/1.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p><strong>VS版本</strong>：VS2017</p>
 </li>
@@ -703,7 +703,7 @@
 </ul>
 <h3 id="二、CMake安装"><a href="#二、CMake安装" class="headerlink" title="二、CMake安装"></a>二、CMake安装</h3><ul>
 <li><p>下载地址：<a target="_blank" rel="noopener" href="https://cmake.org/files/v3.12/">Index of &#x2F;files&#x2F;v3.12 (cmake.org)</a>，下载<code>cmake-3.12.3-win64-x64.zip</code>版本。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/2.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/2.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>安装</p>
 <ul>
@@ -713,14 +713,14 @@
 <li><p>添加环境变量</p>
 <ul>
 <li><p>将<code>D:\software\colmap\cmake3123\bin</code>添加到系统变量Path中。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/3.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/3.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 </ul>
 </li>
 </ul>
 <h3 id="三、Boost安装"><a href="#三、Boost安装" class="headerlink" title="三、Boost安装"></a>三、Boost安装</h3><ul>
 <li><p>下载地址：<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/boost/files/boost-binaries/">Boost C++ Libraries - Browse &#x2F;boost-binaries at SourceForge.net</a>，下载<code>[boost_1_66_0-msvc-14.1-64.exe]</code>版本。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/4.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/4.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>安装</p>
 <ul>
@@ -730,19 +730,19 @@
 <li><p>添加环境变量</p>
 <ul>
 <li><p>将<code>D:\software\colmap\boost1660\lib64-msvc-14.1</code>添加到系统变量Path中。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/5.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/5.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>系统变量新建变量名为<code>BOOST_INCLUDEDIR</code>，将变量值设置为<code>D:\software\colmap\boost1660</code>。</p>
 </li>
 <li><p>系统变量新建变量名为<code>BOOST_LIBRARYDIR</code>，将变量值设置为<code>D:\software\colmap\boost1660\lib64-msvc-14.1</code>。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/6.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/6.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 </ul>
 </li>
 </ul>
 <h3 id="四、QT5安装"><a href="#四、QT5安装" class="headerlink" title="四、QT5安装"></a>四、QT5安装</h3><ul>
 <li><p>下载地址：<a target="_blank" rel="noopener" href="https://download.qt.io/archive/qt/5.9/5.9.3/">Index of &#x2F;archive&#x2F;qt&#x2F;5.9&#x2F;5.9.3</a>，下载<code>qt-opensource-windows-x86-5.9.3.exe</code>版本。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/7.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/7.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>安装</p>
 <ul>
@@ -754,26 +754,26 @@
 <li><p>将<code>D:\software\colmap\Qt593\Tools\QtCreator\bin</code>添加到系统变量Path中。</p>
 </li>
 <li><p>将<code>D:\software\colmap\Qt593\5.9.3\msvc2017_64\bin</code>添加到系统变量Path中。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/8.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/8.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 </ul>
 </li>
 </ul>
 <h3 id="五、zlib安装"><a href="#五、zlib安装" class="headerlink" title="五、zlib安装"></a>五、zlib安装</h3><ul>
 <li><p>下载地址：<a target="_blank" rel="noopener" href="https://www.zlib.net/">zlib Home Site</a>，下载<code>US (zlib.net)</code>。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/9.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/9.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>安装</p>
 <ul>
 <li><p>将下载的zip文件解压到自己方便的地址。我放在<code>D:\software\colmap\zlib1211</code>目录下。在文件夹下新建文件夹<code>build</code>。</p>
 </li>
 <li><p>打开cmake，设置如下</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/10.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/10.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>然后点击configure，选择使用vs-15-2017-Win64编译。</p>
 </li>
 <li><p>第一次编译后，修改如下选项。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/11.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/11.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>如果有报错则逐个问题解决，没有问题后点击generate。</p>
 </li>
@@ -790,14 +790,14 @@
 </ul>
 <h3 id="六、CGAL安装"><a href="#六、CGAL安装" class="headerlink" title="六、CGAL安装"></a>六、CGAL安装</h3><ul>
 <li><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/CGAL/cgal/releases?after=v4.14.1">Releases · CGAL&#x2F;cgal (github.com)</a>，下载<code>CGAL-4.13.2-Setup.exe</code></p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/12.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/12.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>安装</p>
 <ul>
 <li><p>先双击启动安装，指定安装目录，我安装在<code>D:\software\colmap\CGAL4132</code>目录下。并在该目录下新建文件夹<code>build</code>。</p>
 </li>
 <li><p>打开CMake软件，设置如下</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/13.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/13.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>然后点击configure，选择使用vs-15-2017-Win64编译。</p>
 </li>
@@ -842,16 +842,16 @@
 </ul>
 </li>
 <li><p>再次单击<code>本地Windows调试器</code>，黑窗口一闪而过直接退出。按<code>Ctrl+F5</code>运行，可以看到窗口中有打印colmap的用法如下，此时右键colmap.exe，在调试&#x2F;命令参数中写入<code>gui</code>后保存。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/14.webp" srcset="/img/loading.gif" lazyload><br><img src="/img/post/Colmap_Source_Code_Compilation/15.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/14.webp" srcset="/img/loading.gif" lazyload><br><img src="/img/post/0002_Colmap_Source_Code_Compilation/15.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
-<li><p>再次按<code>本地Windows调试器</code>，即可弹出如下界面，colmap安装成功。<br><img src="/img/post/Colmap_Source_Code_Compilation/16.webp" srcset="/img/loading.gif" lazyload></p>
+<li><p>再次按<code>本地Windows调试器</code>，即可弹出如下界面，colmap安装成功。<br><img src="/img/post/0002_Colmap_Source_Code_Compilation/16.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 </ul>
 </li>
 </ul>
 <h3 id="八、使用colmap进行重建"><a href="#八、使用colmap进行重建" class="headerlink" title="八、使用colmap进行重建"></a>八、使用colmap进行重建</h3><ul>
 <li><p>准备一个文件夹，将其命名为project，然后在其下新建一个文件夹images，将需要重建的图像放入其中。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/17.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/17.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>在colmap界面中新建工程，file—&gt;new project—&gt;New 命名为test.db，放在project目录下。选择图像路径为images文件夹，save。</p>
 </li>
@@ -868,7 +868,7 @@
 <li><p>依次点击fuse，Poisson，Delaunay，在dense文件夹下会生成fused.ply，meshed-poisson.ply，meshed-delaunay.ply文件。</p>
 </li>
 <li><p>重建效果如下：</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/18.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/18.webp" srcset="/img/loading.gif" lazyload></p>
 </li>
 </ul>
 <h3 id="九、参考内容"><a href="#九、参考内容" class="headerlink" title="九、参考内容"></a>九、参考内容</h3><ul>
@@ -918,9 +918,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="print-no-link">#三维重建</a>
-      
         <a href="/tags/colmap/" class="print-no-link">#colmap</a>
+      
+        <a href="/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="print-no-link">#三维重建</a>
       
         <a href="/tags/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" class="print-no-link">#源码编译</a>
       
@@ -937,7 +937,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>win10+vs2017编译colmap</div>
-      <div>https://ywxk2016.github.io/2026/09/22/Colmap_Source_Code_Compilation/</div>
+      <div>https://ywxk2016.github.io/2026/09/22/0002_Colmap_Source_Code_Compilation/</div>
     </div>
     <div class="license-meta">
       
@@ -981,7 +981,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/09/22/Colmap_Command/" title="使用colmap命令行进行三维重建">
+                      <a href="/2026/09/22/0003_Colmap_Command/" title="使用colmap命令行进行三维重建">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">使用colmap命令行进行三维重建</span>
                         <span class="visible-mobile">上一篇</span>
@@ -991,7 +991,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/09/20/Personal_Homepage/" title="零成本个人主页搭建详细流程">
+                      <a href="/2026/09/20/0001_Personal_Homepage/" title="零成本个人主页搭建详细流程">
                         <span class="hidden-mobile">零成本个人主页搭建详细流程</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
