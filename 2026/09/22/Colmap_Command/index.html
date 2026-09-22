@@ -17,23 +17,22 @@
   
   <meta name="theme-color" content="#2f4154">
   <meta name="author" content="仰望星空">
-  <meta name="keywords" content="colmap,三维重建,源码编译,环境配置">
+  <meta name="keywords" content="三维重建,colmap,命令行">
   
-    <meta name="description" content="从colmap依赖库的安装，到源码的下载编译以及如何使用GUI快速进行三维重建的完整流程。">
+    <meta name="description" content="介绍使用colmap命令进行三维重建的简要步骤">
 <meta property="og:type" content="article">
-<meta property="og:title" content="win10+vs2017编译colmap">
-<meta property="og:url" content="https://ywxk2016.github.io/2026/09/22/Colmap_Source_Code_Compilation/index.html">
+<meta property="og:title" content="使用colmap命令行进行三维重建">
+<meta property="og:url" content="https://ywxk2016.github.io/2026/09/22/Colmap_Command/index.html">
 <meta property="og:site_name" content="仰望星空">
-<meta property="og:description" content="从colmap依赖库的安装，到源码的下载编译以及如何使用GUI快速进行三维重建的完整流程。">
+<meta property="og:description" content="介绍使用colmap命令进行三维重建的简要步骤">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ywxk2016.github.io/img/covers/colmap.webp">
-<meta property="article:published_time" content="2026-09-22T11:58:00.000Z">
+<meta property="article:published_time" content="2026-09-22T15:05:00.000Z">
 <meta property="article:modified_time" content="2026-09-22T08:51:10.722Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="colmap">
 <meta property="article:tag" content="三维重建">
-<meta property="article:tag" content="源码编译">
-<meta property="article:tag" content="环境配置">
+<meta property="article:tag" content="命令行">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/colmap.webp">
   
@@ -41,7 +40,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>win10+vs2017编译colmap - 仰望星空</title>
+  <title>使用colmap命令行进行三维重建 - 仰望星空</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -585,7 +584,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">win10+vs2017编译colmap</span>
+            <span id="subtitle">使用colmap命令行进行三维重建</span>
           
         </div>
 
@@ -596,8 +595,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-09-22 11:58" pubdate>
-          2026年9月22日 中午
+        <time datetime="2026-09-22 15:05" pubdate>
+          2026年9月22日 下午
         </time>
       </span>
     
@@ -608,7 +607,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4k 字
+          4.1k 字
         
       </span>
     
@@ -619,7 +618,7 @@
         
         
         
-          34 分钟
+          35 分钟
         
       </span>
     
@@ -671,209 +670,147 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">win10+vs2017编译colmap</h1>
+            <h1 id="seo-header">使用colmap命令行进行三维重建</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="win10-vs2017编译colmap"><a href="#win10-vs2017编译colmap" class="headerlink" title="win10+vs2017编译colmap"></a>win10+vs2017编译colmap</h2><h3 id="一、项目环境及版本信息"><a href="#一、项目环境及版本信息" class="headerlink" title="一、项目环境及版本信息"></a>一、项目环境及版本信息</h3><ul>
-<li><p><strong>操作系统</strong>：windows10(cpu 16G + gpu 6G)</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/1.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p><strong>VS版本</strong>：VS2017</p>
-</li>
-<li><p><strong>CMake版本</strong>：3.12.3</p>
-</li>
-<li><p><strong>Boost版本</strong>：1.66.0</p>
-</li>
-<li><p><strong>QT5版本</strong>：5.9.3</p>
-</li>
-<li><p><strong>CUDA版本</strong>：10.2.89（之前已安装）</p>
-</li>
-<li><p><strong>zlib版本</strong>：1.2.11</p>
-</li>
-<li><p><strong>CGAL版本</strong>：4.13.2</p>
-</li>
-<li><p><strong>colmap</strong>：colmap-dev(20210505)</p>
-</li>
+                <h1 id="使用colmap命令行进行三维重建"><a href="#使用colmap命令行进行三维重建" class="headerlink" title="使用colmap命令行进行三维重建"></a>使用colmap命令行进行三维重建</h1><h2 id="一、数据准备"><a href="#一、数据准备" class="headerlink" title="一、数据准备"></a>一、数据准备</h2><ul>
+<li>在<code>D:/software/colmap</code>文件夹下新建文件<code>project1</code>;</li>
+<li>在<code>project1</code>文件夹下新建文件夹<code>images</code>；</li>
+<li>将待重建的图像放在<code>D:/software/colmap/project1/images</code>文件夹下。</li>
 </ul>
-<h3 id="二、CMake安装"><a href="#二、CMake安装" class="headerlink" title="二、CMake安装"></a>二、CMake安装</h3><ul>
-<li><p>下载地址：<a target="_blank" rel="noopener" href="https://cmake.org/files/v3.12/">Index of &#x2F;files&#x2F;v3.12 (cmake.org)</a>，下载<code>cmake-3.12.3-win64-x64.zip</code>版本。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/2.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>安装</p>
+<p><img src="/img/post/Colmap_Command/1.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="二、命令行重建"><a href="#二、命令行重建" class="headerlink" title="二、命令行重建"></a>二、命令行重建</h2><blockquote>
+<p>找到VS运行得到的exe文件地址，打开cmd，将路径切换到该路径。<code>D:/software/colmap/colmap-dev/build/colmap/__build__/src/exe/Release/colmap.exe</code></p>
+</blockquote>
+<h3 id="1-特征提取"><a href="#1-特征提取" class="headerlink" title="1. 特征提取"></a>1. 特征提取</h3><ul>
+<li><strong>输入命令</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe feature_extractor --database_path D:/software/colmap/project1/database.db --image_path D:/software/colmap/project1/images<br></code></pre></td></tr></table></figure>
+
 <ul>
-<li>直接解压后放在自己方便的目录，我放在<code>D:\software\colmap\cmake3123</code></li>
+<li><strong>命令参数含义</strong><ul>
+<li><strong><code>feature_extractor</code></strong>：colmap的子命令，表示执行”特征提取”操作。它会遍历图像，检测每张图中的关键点（如角点、边缘等），并为每个关键点计算一个特征描述子（默认使用 SIFT 算法，生成 128 维特征向量），用于后续在不同图像之间寻找同一物理点的对应关系。</li>
+<li><strong><code>--database_path</code></strong>：指定输出的数据库文件路径。colmap会将提取到的特征点坐标、描述子、相机参数等信息以 SQLite 格式写入这个 database.db 文件。如果该文件不存在，colmap会自动创建。</li>
+<li><strong><code>--image_path</code></strong>：指定输入的图像文件夹路径。colmap会读取该目录下所有图像，逐一进行特征提取。</li>
 </ul>
 </li>
-<li><p>添加环境变量</p>
+<li><strong>默认参数及含义</strong><ul>
+<li><strong><code>--ImageReader.camera_model OPENCV</code></strong>：指定相机模型（如 OPENCV 包含径向和切向畸变参数，适合普通相机&#x2F;手机拍摄的图像）。</li>
+<li><strong><code>--ImageReader.single_camera 1</code></strong>：强制所有图像使用同一组相机内参（适用于同一设备拍摄的场景）。</li>
+<li><strong><code>--SiftExtraction.use_gpu 1</code></strong>：启用 GPU 加速 SIFT 特征提取，速度可比 CPU 提升 10~100 倍（需 CUDA 支持）。</li>
+<li><strong><code>--SiftExtraction.max_num_features 8192</code></strong>：单张图像提取的最大特征点数量（默认 8192），可根据图像复杂度调整。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/post/Colmap_Command/2.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-特征匹配"><a href="#2-特征匹配" class="headerlink" title="2. 特征匹配"></a>2. 特征匹配</h3><ul>
+<li><strong>输入命令</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe exhaustive_matcher --database_path D:/software/colmap/project1/database.db<br></code></pre></td></tr></table></figure>
+
 <ul>
-<li><p>将<code>D:\software\colmap\cmake3123\bin</code>添加到系统变量Path中。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/3.webp" srcset="/img/loading.gif" lazyload></p>
+<li><strong>命令参数含义</strong><ul>
+<li><strong><code>exhaustive_matcher</code></strong>：colmap的子命令，表示执行”穷举匹配”操作。它会将数据库中的图像两两配对，逐一进行特征匹配（即暴力匹配，Brute-Force Matching），计算每对图像之间的匹配点对。<code>exhaustive_matcher</code>是最基础、最彻底的匹配策略，适用于图像数量较少（几十到几百张）的场景。它的计算复杂度为 O(N²)，当图像数量较多时会非常耗时。如果图像数量较多或场景有特殊结构，可以考虑其他匹配策略。<ul>
+<li><strong><code>sequential_matcher</code></strong>：按图像文件名顺序进行相邻匹配，适用于视频帧或连续拍摄的场景。</li>
+<li><strong><code>vocab_tree_matcher</code></strong>：基于词汇树进行快速检索匹配，适用于大规模图像数据集。</li>
+<li><strong><code>spatial_matcher</code></strong>：基于 GPS 位置信息进行匹配，适用于带有地理信息的航拍&#x2F;卫星图像。</li>
+</ul>
 </li>
+<li><strong><code>--database_path</code></strong>：指定输入的数据库文件路径。该文件必须已经通过 <code>feature_extractor</code> 命令生成并填充了特征点数据。匹配结果会直接追加写入同一个数据库文件。</li>
 </ul>
 </li>
 </ul>
-<h3 id="三、Boost安装"><a href="#三、Boost安装" class="headerlink" title="三、Boost安装"></a>三、Boost安装</h3><ul>
-<li><p>下载地址：<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/boost/files/boost-binaries/">Boost C++ Libraries - Browse &#x2F;boost-binaries at SourceForge.net</a>，下载<code>[boost_1_66_0-msvc-14.1-64.exe]</code>版本。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/4.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>安装</p>
+<p><img src="/img/post/Colmap_Command/3.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3-稀疏重建-SfM"><a href="#3-稀疏重建-SfM" class="headerlink" title="3. 稀疏重建(SfM)"></a>3. 稀疏重建(SfM)</h3><ul>
+<li><strong>新建sparse文件夹</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">md D:\software\colmap\project1\sparse<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/post/Colmap_Command/4.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
-<li>双击启动安装，然后指定安装路径一步步安装就行。我安装在<code>D:\software\colmap\boost1660</code>目录下。</li>
+<li><strong>输入命令</strong></li>
 </ul>
-</li>
-<li><p>添加环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe mapper --database_path D:/software/colmap/project1/database.db --image_path D:/software/colmap/project1/images --output_path D:/software/colmap/project1/sparse<br></code></pre></td></tr></table></figure>
+
 <ul>
-<li><p>将<code>D:\software\colmap\boost1660\lib64-msvc-14.1</code>添加到系统变量Path中。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/5.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>系统变量新建变量名为<code>BOOST_INCLUDEDIR</code>，将变量值设置为<code>D:\software\colmap\boost1660</code>。</p>
-</li>
-<li><p>系统变量新建变量名为<code>BOOST_LIBRARYDIR</code>，将变量值设置为<code>D:\software\colmap\boost1660\lib64-msvc-14.1</code>。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/6.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
+<li><strong>命令参数含义</strong><ul>
+<li><strong><code>mapper</code></strong>：colmap的子命令，表示执行”增量式映射器”（Incremental Mapper），即增量式稀疏重建。它会从数据库中读取特征点和匹配信息，逐步注册相机、三角化三维点，并通过光束平差法（Bundle Adjustment）优化所有参数。</li>
+<li><strong><code>--database_path</code></strong>：指定输入的数据库文件路径。该文件必须已经通过 <code>feature_extractor</code> 和 <code>exhaustive_matcher</code> 两步填充了特征点数据和匹配关系。</li>
+<li><strong><code>--image_path</code></strong>：指定原始图像文件夹路径。mapper 需要读取图像文件本身（用于验证和可视化），同时会根据图像文件名与数据库中的记录进行关联。</li>
+<li><strong><code>--output_path</code></strong>：指定稀疏重建结果的输出目录。colmap会在该目录下自动创建子文件夹（如 <code>sparse/0/</code>、<code>sparse/1/</code> 等），每个子文件夹代表一个独立的重建模型，包含 cameras.bin（相机参数）、images.bin（相机位姿）、points3D.bin（稀疏点云）。</li>
 </ul>
 </li>
 </ul>
-<h3 id="四、QT5安装"><a href="#四、QT5安装" class="headerlink" title="四、QT5安装"></a>四、QT5安装</h3><ul>
-<li><p>下载地址：<a target="_blank" rel="noopener" href="https://download.qt.io/archive/qt/5.9/5.9.3/">Index of &#x2F;archive&#x2F;qt&#x2F;5.9&#x2F;5.9.3</a>，下载<code>qt-opensource-windows-x86-5.9.3.exe</code>版本。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/7.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>安装</p>
+<p><img src="/img/post/Colmap_Command/5.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="4-图像去畸变"><a href="#4-图像去畸变" class="headerlink" title="4. 图像去畸变"></a>4. 图像去畸变</h3><ul>
+<li><strong>新建dense文件夹</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">md D:\software\colmap\project1\dense<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/post/Colmap_Command/6.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
-<li>安装时好像时需要注册账号。注册后输入账号密码进行安装，安装的时候注意勾选<code>msvc2017_64</code>，根据VS的版本勾选，安装时指定安装路径。我安装在<code>D:\software\colmap\Qt593</code>目录下。</li>
+<li><strong>输入命令</strong></li>
 </ul>
-</li>
-<li><p>添加环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe image_undistorter --image_path D:/software/colmap/project1/images --input_path D:/software/colmap/project1/sparse/0 --output_path D:/software/colmap/project1/dense --output_type COLMAP --max_image_size 2000<br></code></pre></td></tr></table></figure>
+
 <ul>
-<li><p>将<code>D:\software\colmap\Qt593\Tools\QtCreator\bin</code>添加到系统变量Path中。</p>
-</li>
-<li><p>将<code>D:\software\colmap\Qt593\5.9.3\msvc2017_64\bin</code>添加到系统变量Path中。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/8.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
+<li><strong>命令参数含义</strong><ul>
+<li><strong><code>image_undistorter</code></strong>：colmap的子命令，这是<strong>稠密重建的预处理步骤</strong>。它根据稀疏重建得到的相机内参和畸变系数，对原始图像进行去畸变处理，将畸变图像校正为理想的针孔相机模型图像。</li>
+<li><strong><code>--input_path</code></strong>：读取稀疏重建的结果（相机参数和位姿）</li>
+<li><strong><code>--output_type</code></strong>：输出格式为 COLMAP 标准格式</li>
+<li><strong><code>--max_image_size</code></strong>：将图像长边限制为 2000 像素，降低后续计算量（设为 -1 则保持原尺寸）</li>
 </ul>
 </li>
 </ul>
-<h3 id="五、zlib安装"><a href="#五、zlib安装" class="headerlink" title="五、zlib安装"></a>五、zlib安装</h3><ul>
-<li><p>下载地址：<a target="_blank" rel="noopener" href="https://www.zlib.net/">zlib Home Site</a>，下载<code>US (zlib.net)</code>。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/9.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>安装</p>
+<p><img src="/img/post/Colmap_Command/7.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="5-稠密深度估计"><a href="#5-稠密深度估计" class="headerlink" title="5. 稠密深度估计"></a>5. 稠密深度估计</h3><ul>
+<li><strong>输入命令</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe patch_match_stereo --workspace_path D:/software/colmap/project1/dense --workspace_format COLMAP --PatchMatchStereo.geom_consistency true<br></code></pre></td></tr></table></figure>
+
 <ul>
-<li><p>将下载的zip文件解压到自己方便的地址。我放在<code>D:\software\colmap\zlib1211</code>目录下。在文件夹下新建文件夹<code>build</code>。</p>
-</li>
-<li><p>打开cmake，设置如下</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/10.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>然后点击configure，选择使用vs-15-2017-Win64编译。</p>
-</li>
-<li><p>第一次编译后，修改如下选项。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/11.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>如果有报错则逐个问题解决，没有问题后点击generate。</p>
-</li>
-<li><p>点击Open Project会使用VS2017打开，选择Release+x64，右击ALL_BUILD重新生成，然后右击INSTALL重新生成。选择Debug+x64，右击ALL_BUILD重新生成，然后右击INSTALL重新生成。</p>
-</li>
+<li><strong>命令参数含义</strong><ul>
+<li><strong><code>patch_match_stereo</code></strong>：colmap的子命令，这是稠密重建的核心步骤。它基于去畸变后的图像和已知相机位姿，对每张图像进行逐像素的立体匹配，生成每张图像对应的深度图（depth map，每个像素到相机的距离）和法线图（normal map，每个像素表面的法向量方向）。colmap采用的是 PatchMatch Stereo 算法，通过随机初始化 + 传播优化的策略在深度空间中高效搜索最优视差，比传统滑动窗口方法快得多。</li>
+<li><strong><code>--PatchMatchStereo.geom_consistency</code></strong>：启用<strong>几何一致性检查</strong>，通过多视角交叉验证剔除不一致的深度值，显著提升深度图质量。这一步计算量很大，如果有 CUDA 支持会自动使用 GPU 加速。</li>
 </ul>
 </li>
-<li><p>设置环境变量</p>
+</ul>
+<p><img src="/img/post/Colmap_Command/8.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="6-点云融合"><a href="#6-点云融合" class="headerlink" title="6. 点云融合"></a>6. 点云融合</h3><ul>
+<li><strong>输入命令</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe stereo_fusion --workspace_path D:/software/colmap/project1/dense --workspace_format COLMAP --input_type geometric --output_path D:/software/colmap/project1/dense/fused.ply<br></code></pre></td></tr></table></figure>
+
 <ul>
-<li>将<code>D:\software\colmap\zlib1211\build\lib</code>添加到系统变量Path中。</li>
-<li>将<code>D:\software\colmap\zlib1211\build\include</code>添加到系统变量Path中。</li>
+<li><strong>命令参数含义</strong><ul>
+<li><strong><code>stereo_fusion</code></strong>：colmap的子命令，将上一步生成的多张深度图融合为一个统一的稠密三维点云。它会对所有图像的深度图进行几何一致性过滤，剔除异常点，最终输出一个完整的稠密点云文件 fused.ply。</li>
+<li><strong><code>--input_type</code></strong>：使用几何一致性过滤策略（另一种是 <code>photometric</code> 光度一致性）</li>
 </ul>
 </li>
 </ul>
-<h3 id="六、CGAL安装"><a href="#六、CGAL安装" class="headerlink" title="六、CGAL安装"></a>六、CGAL安装</h3><ul>
-<li><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/CGAL/cgal/releases?after=v4.14.1">Releases · CGAL&#x2F;cgal (github.com)</a>，下载<code>CGAL-4.13.2-Setup.exe</code></p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/12.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>安装</p>
+<p><img src="/img/post/Colmap_Command/9.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="7-泊松表面重建"><a href="#7-泊松表面重建" class="headerlink" title="7. 泊松表面重建"></a>7. 泊松表面重建</h3><ul>
+<li><strong>输入命令</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap.exe poisson_mesher --input_path D:/software/colmap/project1/dense/fused.ply --output_path D:/software/colmap/project1/dense/meshed-poisson.ply<br></code></pre></td></tr></table></figure>
+
 <ul>
-<li><p>先双击启动安装，指定安装目录，我安装在<code>D:\software\colmap\CGAL4132</code>目录下。并在该目录下新建文件夹<code>build</code>。</p>
-</li>
-<li><p>打开CMake软件，设置如下</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/13.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>然后点击configure，选择使用vs-15-2017-Win64编译。</p>
-</li>
-<li><p>第一次编译后，将<code>CMAKE_INSTALL_PREFIX</code>设置为<code>D:/software/colmap/CGAL4132/build</code>，勾选<code>WITH_ZLIB</code>然后再次点击configure。</p>
-</li>
-<li><p>如果有报错则逐个问题解决，没有问题后点击generate。</p>
-</li>
-<li><p>点击Open Project会使用VS2017打开，选择Release+x64，右击ALL_BUILD重新生成，然后右击INSTALL重新生成。选择Debug+x64，右击ALL_BUILD重新生成，然后右击INSTALL重新生成</p>
-</li>
+<li><strong><code>poisson_mesher</code></strong>：这是网格生成的一种方式。它基于泊松方程，从稠密点云重建出一个连续、封闭的三角网格曲面。特点：倾向于生成光滑、完整的表面，能自动填补点云中的空洞，对噪声有一定鲁棒性，但可能会抹平细节，且大场景下网格面数较多。输出文件 <code>meshed-poisson.ply</code> 是一个带三角面片的 3D 网格模型。</li>
 </ul>
-</li>
-<li><p>设置环境变量</p>
+<p><img src="/img/post/Colmap_Command/10.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="8-Delaunay-三角剖分"><a href="#8-Delaunay-三角剖分" class="headerlink" title="8. Delaunay 三角剖分"></a>8. Delaunay 三角剖分</h3><ul>
+<li><strong>输入命令</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">colmap delaunay_mesher --input_path D:/software/colmap/project1/dense --output_path D:/software/colmap/project1/dense/meshed-delaunay.ply<br></code></pre></td></tr></table></figure>
+
 <ul>
-<li>将<code>D:\software\colmap\CGAL4132\auxiliary\gmp\lib</code>添加到系统变量Path中。</li>
-<li>将<code>D:\software\colmap\CGAL4132\build\lib</code>添加到系统变量Path中。</li>
-<li>将<code>D:\software\colmap\CGAL4132\build\bin</code>添加到系统变量Path中。</li>
+<li><strong><code>delaunay_mesher</code></strong>：这是网格生成的另一种方式。它基于Delaunay 三角剖分算法，直接从稠密重建的工作空间中提取三角网格。特点：更忠实于原始点云的几何结构，细节保留更好，不会像泊松重建那样”补洞”，表面可能不够封闭，通常需要编译时启用 CGAL 库支持。</li>
 </ul>
-</li>
-</ul>
-<h3 id="七、colmap安装"><a href="#七、colmap安装" class="headerlink" title="七、colmap安装"></a>七、colmap安装</h3><ul>
-<li><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/colmap/colmap">colmap&#x2F;colmap: COLMAP - Structure-from-Motion and Multi-View Stereo (github.com)</a></p>
-</li>
-<li><p>安装</p>
-<ul>
-<li>将zip文件解压到自己的目录下，我解压后放在<code>D:\software\colmap\colmap-dev</code>目录下。在该目录下新建build文件夹。</li>
-<li>打开cmd，将目录切换到<code>D:\software\colmap\colmap-dev\scripts\python</code>文件夹下，切换到conda的tf1环境中，然后输入如下指令</li>
-</ul>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">python build.py --build_path &quot;D:/software/colmap/colmap-dev/build&quot; \<br>            --colmap_path &quot;D:/software/colmap/colmap-dev&quot; \<br>            --boost_path &quot;D:/software/colmap/boost1660/lib64-msvc-14.1&quot; \<br>            --qt_path &quot;D:/software/colmap/Qt593/5.9.3/msvc2017_64&quot; \<br>            --cuda_path &quot;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2&quot; \<br>            --cgal_path &quot;D:/software/colmap/CGAL4132/build&quot;<br></code></pre></td></tr></table></figure>
-<ul>
-<li>如果没有问题的话在<code>D:\software\colmap\colmap-dev\build\colmap\__build__</code>目录下可以生成VS可运行的COLMAP.sln文件</li>
-<li>双击COLMAP.sln文件，用VS2017打开，将colmap.exe 设置为启动项，然后右击重新生成，需要将调试环境设置为Release+x64，Debug+x64会报错。</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>运行调试</p>
-<ul>
-<li><p>重新生成不报错后，点击<code>本地Windows调试器</code>，会弹出提示找不到**.dll文件，需要将以下目录添加到变量的Path中。</p>
-<ul>
-<li><code>D:\software\colmap\colmap-dev\build\__install__\lib</code></li>
-<li><code>D:\software\colmap\colmap-dev\build\__install__\lib64\lapack_blas_windows</code></li>
-</ul>
-</li>
-<li><p>再次单击<code>本地Windows调试器</code>，黑窗口一闪而过直接退出。按<code>Ctrl+F5</code>运行，可以看到窗口中有打印colmap的用法如下，此时右键colmap.exe，在调试&#x2F;命令参数中写入<code>gui</code>后保存。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/14.webp" srcset="/img/loading.gif" lazyload><br><img src="/img/post/Colmap_Source_Code_Compilation/15.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>再次按<code>本地Windows调试器</code>，即可弹出如下界面，colmap安装成功。<br><img src="/img/post/Colmap_Source_Code_Compilation/16.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="八、使用colmap进行重建"><a href="#八、使用colmap进行重建" class="headerlink" title="八、使用colmap进行重建"></a>八、使用colmap进行重建</h3><ul>
-<li><p>准备一个文件夹，将其命名为project，然后在其下新建一个文件夹images，将需要重建的图像放入其中。</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/17.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>在colmap界面中新建工程，file—&gt;new project—&gt;New 命名为test.db，放在project目录下。选择图像路径为images文件夹，save。</p>
-</li>
-<li><p>Processing —&gt; Feature Extraction —&gt; Extract —&gt; 关闭</p>
-</li>
-<li><p>Processing —&gt; Feature matching —&gt; Run —&gt; 关闭</p>
-</li>
-<li><p>Reconstruction —&gt; start reconstruction —&gt; File —&gt; Export model as，将稀疏点云保存在project目录下，命名为sparse.ply。</p>
-</li>
-<li><p>Reconstruction —&gt; Dense reconstruction —&gt; select，在project目录下新建dense文件夹，选择该文件夹。</p>
-</li>
-<li><p>Undistortion —&gt; stereo —&gt; File —&gt; Export model as，将密集点云保存在project文件夹下，命名为dense_cloud.ply</p>
-</li>
-<li><p>依次点击fuse，Poisson，Delaunay，在dense文件夹下会生成fused.ply，meshed-poisson.ply，meshed-delaunay.ply文件。</p>
-</li>
-<li><p>重建效果如下：</p>
-<p><img src="/img/post/Colmap_Source_Code_Compilation/18.webp" srcset="/img/loading.gif" lazyload></p>
-</li>
-</ul>
-<h3 id="九、参考内容"><a href="#九、参考内容" class="headerlink" title="九、参考内容"></a>九、参考内容</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42078760/article/details/80466498">Qt 5.9.2在Windows 10 64位和Microsoft Visual Studio 2017下的安装与配置</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.pianshen.com/article/993034643/">windows10进行Colmap配置</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Todd-Qi/p/10792685.html">三维重建：colmap安装与使用</a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzU4NjkwMjgyMQ==&mid=2247483677&idx=1&sn=b77bdfe8669b9dc7d90fae208f5427a3&chksm=fdf57d57ca82f441f248cb82a088cd360621d70cc6f80dd13b9df1bf03e28fff40bdf8ace59e&mpshare=1&scene=23&srcid=0504PRnN9Kj5P3rTeQpOyOOB&sharer_sharetime=1620125651187&sharer_shareid=e8b624f5efd6892fa8286498bff9328f#rd">Colmap编译教程</a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg3MTA5MDMwNQ==&mid=2247483656&idx=1&sn=0b41a0fc6b50f23c9d1ce7aca37d446f&chksm=ce8290e6f9f519f0ca90b6b2377cd652b888dc03c3865418b1791678b6a85f257f987c6c6760&mpshare=1&scene=23&srcid=05045TBQZr6EFMDO4RbLGsdR&sharer_sharetime=1620125774029&sharer_shareid=e8b624f5efd6892fa8286498bff9328f#rd">编译colmap</a></li>
-</ul>
+<p><img src="/img/post/Colmap_Command/11.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="三、重建结果"><a href="#三、重建结果" class="headerlink" title="三、重建结果"></a>三、重建结果</h2><p><img src="/img/post/Colmap_Command/12.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/Colmap_Command/13.webp" srcset="/img/loading.gif" lazyload></p>
 
                 
               </div>
@@ -918,9 +855,7 @@
       
         <a href="/tags/colmap/" class="print-no-link">#colmap</a>
       
-        <a href="/tags/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" class="print-no-link">#源码编译</a>
-      
-        <a href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="print-no-link">#环境配置</a>
+        <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" class="print-no-link">#命令行</a>
       
     </div>
   
@@ -932,8 +867,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>win10+vs2017编译colmap</div>
-      <div>https://ywxk2016.github.io/2026/09/22/Colmap_Source_Code_Compilation/</div>
+      <div>使用colmap命令行进行三维重建</div>
+      <div>https://ywxk2016.github.io/2026/09/22/Colmap_Command/</div>
     </div>
     <div class="license-meta">
       
@@ -977,18 +912,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/09/22/Colmap_Command/" title="使用colmap命令行进行三维重建">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">使用colmap命令行进行三维重建</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/09/20/Personal_Homepage/" title="零成本个人主页搭建详细流程">
-                        <span class="hidden-mobile">零成本个人主页搭建详细流程</span>
+                      <a href="/2026/09/22/Colmap_Source_Code_Compilation/" title="win10+vs2017编译colmap">
+                        <span class="hidden-mobile">win10+vs2017编译colmap</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
