@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ywxk2016.github.io/img/covers/cameraModel.webp">
 <meta property="article:published_time" content="2026-09-22T17:56:00.000Z">
-<meta property="article:modified_time" content="2026-09-22T11:53:02.646Z">
+<meta property="article:modified_time" content="2026-09-22T11:57:59.707Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="世界坐标系">
 <meta property="article:tag" content="图像像素坐标系">
@@ -244,7 +244,7 @@
     height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=mucm7navajd") center / cover no-repeat;
+    background: #fff url("/img/avatar.jpg?v=mucme0ik0i") center / cover no-repeat;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -739,7 +739,11 @@ $$</div>
 \begin{bmatrix} X_c \\ Y_c \\ Z_c \end{bmatrix} = \begin{bmatrix} \cos\varphi & 0 & -\sin\varphi \\ 0 & 1 & 0 \\ \sin\varphi & 0 & \cos\varphi \end{bmatrix} \begin{bmatrix} X_w \\ Y_w \\ Z_w \end{bmatrix} = R_2 \begin{bmatrix} X_w \\ Y_w \\ Z_w \end{bmatrix}
 $$</div>
 <ul>
-<li>固定$Z_w$旋转<br><img src="/img/post/Camera_Coordinate_System/4.webp" srcset="/img/loading.gif" lazyload><div class="mathjax-block">$$
+<li><p>固定$Z_w$旋转</p>
+<p><img src="/img/post/Camera_Coordinate_System/4.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ul>
+<div class="mathjax-block">$$
 \begin{cases}
 X_c = (Y_w - X_w \tan\omega) \sin\omega + \frac{X_w}{\cos\omega} = Y_w \sin\omega + X_w \cos\omega \\
 Y_c = (Y_w - X_w \tan\omega) \cos\omega = Y_w \cos\omega - X_w \sin\omega \\
@@ -749,8 +753,6 @@ $$</div>
 <blockquote>
 <p>写成矩阵形式：</p>
 </blockquote>
-</li>
-</ul>
 <div class="mathjax-block">$$
 \begin{bmatrix} X_c \\ Y_c \\ Z_c \end{bmatrix} = \begin{bmatrix} \cos\omega & \sin\omega & 0 \\ -\sin\omega & \cos\omega & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} X_w \\ Y_w \\ Z_w \end{bmatrix} = R_3 \begin{bmatrix} X_w \\ Y_w \\ Z_w \end{bmatrix}
 $$</div>
