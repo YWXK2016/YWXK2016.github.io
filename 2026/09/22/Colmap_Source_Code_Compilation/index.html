@@ -17,30 +17,31 @@
   
   <meta name="theme-color" content="#2f4154">
   <meta name="author" content="仰望星空">
-  <meta name="keywords" content="OpenCV,Mat,UMat">
+  <meta name="keywords" content="colmap,三维重建,源码编译,环境配置">
   
-    <meta name="description" content="对比 OpenCV 中 Mat 与 UMat 的数据存储、内存访问方式、性能差异和透明 API 用法。">
+    <meta name="description" content="从colmap依赖库的安装，到源码的下载编译以及如何使用GUI快速进行三维重建的完整流程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenCV中的Mat和UMat的区别">
-<meta property="og:url" content="https://ywxk2016.github.io/2026/09/23/0006_OpenCV_Mat_UMat/index.html">
+<meta property="og:title" content="win10+vs2017编译colmap">
+<meta property="og:url" content="https://ywxk2016.github.io/2026/09/22/Colmap_Source_Code_Compilation/index.html">
 <meta property="og:site_name" content="仰望星空">
-<meta property="og:description" content="对比 OpenCV 中 Mat 与 UMat 的数据存储、内存访问方式、性能差异和透明 API 用法。">
+<meta property="og:description" content="从colmap依赖库的安装，到源码的下载编译以及如何使用GUI快速进行三维重建的完整流程。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ywxk2016.github.io/img/covers/OpenCV.webp">
-<meta property="article:published_time" content="2026-09-23T00:58:00.000Z">
+<meta property="og:image" content="https://ywxk2016.github.io/img/covers/colmap.webp">
+<meta property="article:published_time" content="2026-09-22T11:58:00.000Z">
 <meta property="article:modified_time" content="2026-09-22T17:31:16.019Z">
 <meta property="article:author" content="仰望星空">
-<meta property="article:tag" content="Mat">
-<meta property="article:tag" content="OpenCV">
-<meta property="article:tag" content="UMat">
+<meta property="article:tag" content="colmap">
+<meta property="article:tag" content="三维重建">
+<meta property="article:tag" content="源码编译">
+<meta property="article:tag" content="环境配置">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/OpenCV.webp">
+<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/colmap.webp">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>OpenCV中的Mat和UMat的区别 - 仰望星空</title>
+  <title>win10+vs2017编译colmap - 仰望星空</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -588,7 +589,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">OpenCV中的Mat和UMat的区别</span>
+            <span id="subtitle">win10+vs2017编译colmap</span>
           
         </div>
 
@@ -599,8 +600,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-09-23 00:58" pubdate>
-          2026年9月23日 凌晨
+        <time datetime="2026-09-22 11:58" pubdate>
+          2026年9月22日 中午
         </time>
       </span>
     
@@ -611,7 +612,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.5k 字
+          4k 字
         
       </span>
     
@@ -622,7 +623,7 @@
         
         
         
-          21 分钟
+          34 分钟
         
       </span>
     
@@ -674,40 +675,209 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">OpenCV中的Mat和UMat的区别</h1>
+            <h1 id="seo-header">win10+vs2017编译colmap</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="OpenCV中的Mat和UMat的区别"><a href="#OpenCV中的Mat和UMat的区别" class="headerlink" title="OpenCV中的Mat和UMat的区别"></a>OpenCV中的Mat和UMat的区别</h1><blockquote>
-<p>在 OpenCV 4.5.1 中，<code>Mat</code> 和 <code>UMat</code> 的核心区别在于<strong>数据的存储位置</strong>以及<strong>底层计算硬件</strong>的不同。简单来说，<code>Mat</code> 是传统的 CPU 矩阵容器，而 <code>UMat</code> 是 OpenCV 引入的用于实现透明硬件加速（Transparent API, T-API）的统一矩阵容器。</p>
-</blockquote>
-<p>以下是它们在几个核心维度的具体区别：</p>
-<h3 id="1-存储位置与执行硬件"><a href="#1-存储位置与执行硬件" class="headerlink" title="1. 存储位置与执行硬件"></a>1. 存储位置与执行硬件</h3><ul>
-<li><strong>Mat</strong>：数据存储在**主机内存（CPU内存）**中。所有的图像处理操作默认由 CPU 执行。</li>
-<li><strong>UMat</strong>：数据通常存储在**设备内存（如 GPU 显存）**中。当对 <code>UMat</code> 执行操作时，OpenCV 会在底层自动调用 OpenCL，利用 GPU 或其他支持 OpenCL 的硬件进行加速计算。</li>
+                <h2 id="win10-vs2017编译colmap"><a href="#win10-vs2017编译colmap" class="headerlink" title="win10+vs2017编译colmap"></a>win10+vs2017编译colmap</h2><h3 id="一、项目环境及版本信息"><a href="#一、项目环境及版本信息" class="headerlink" title="一、项目环境及版本信息"></a>一、项目环境及版本信息</h3><ul>
+<li><p><strong>操作系统</strong>：windows10(cpu 16G + gpu 6G)</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/1.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p><strong>VS版本</strong>：VS2017</p>
+</li>
+<li><p><strong>CMake版本</strong>：3.12.3</p>
+</li>
+<li><p><strong>Boost版本</strong>：1.66.0</p>
+</li>
+<li><p><strong>QT5版本</strong>：5.9.3</p>
+</li>
+<li><p><strong>CUDA版本</strong>：10.2.89（之前已安装）</p>
+</li>
+<li><p><strong>zlib版本</strong>：1.2.11</p>
+</li>
+<li><p><strong>CGAL版本</strong>：4.13.2</p>
+</li>
+<li><p><strong>colmap</strong>：colmap-dev(20210505)</p>
+</li>
 </ul>
-<h3 id="2-内存管理与数据交互"><a href="#2-内存管理与数据交互" class="headerlink" title="2. 内存管理与数据交互"></a>2. 内存管理与数据交互</h3><ul>
-<li><strong>Mat</strong>：由引用计数机制自动管理 CPU 内存。当最后一个 <code>Mat</code> 对象被销毁时，内存会自动释放。</li>
-<li><strong>UMat</strong>：涉及 CPU 与 GPU 之间的数据拷贝。当你将 <code>Mat</code> 转换为 <code>UMat</code> 时，数据会从主机内存拷贝到设备内存；反之亦然。这种跨设备的内存拷贝会产生一定的开销。</li>
-<li><strong>特殊情况（共享内存）</strong>：在某些支持 OpenCL-SVM（共享虚拟内存）的硬件上，<code>Mat</code> 和 <code>UMat</code> 之间可能会共享同一块内存区域。在这种情况下，对 <code>UMat</code> 的修改可能会直接反映在 <code>Mat</code> 上，但这依赖于具体的硬件支持，不能作为通用逻辑依赖。</li>
+<h3 id="二、CMake安装"><a href="#二、CMake安装" class="headerlink" title="二、CMake安装"></a>二、CMake安装</h3><ul>
+<li><p>下载地址：<a target="_blank" rel="noopener" href="https://cmake.org/files/v3.12/">Index of &#x2F;files&#x2F;v3.12 (cmake.org)</a>，下载<code>cmake-3.12.3-win64-x64.zip</code>版本。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/2.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>安装</p>
+<ul>
+<li>直接解压后放在自己方便的目录，我放在<code>D:\software\colmap\cmake3123</code></li>
 </ul>
-<h3 id="3-像素级访问与操作方式"><a href="#3-像素级访问与操作方式" class="headerlink" title="3. 像素级访问与操作方式"></a>3. 像素级访问与操作方式</h3><ul>
-<li><strong>Mat</strong>：支持 CPU 端的<strong>随机访问</strong>。可以使用 <code>Mat::at(row, col)</code> 或 <code>Mat::ptr(row)</code> 等函数直接读取或修改特定的像素值。</li>
-<li><strong>UMat</strong>：对 CPU 是<strong>不透明</strong>的，不支持 <code>at()</code> 等随机访问操作。GPU 编程通常以“向量”或“批量”的方式处理数据，无法进行简单的 <code>(i, j)</code> 坐标随机访问。如果需要对 <code>UMat</code> 进行逐像素操作，必须先调用 <code>getMat()</code> 将其转换回 <code>Mat</code>，但这会抵消硬件加速的优势。</li>
+</li>
+<li><p>添加环境变量</p>
+<ul>
+<li><p>将<code>D:\software\colmap\cmake3123\bin</code>添加到系统变量Path中。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/3.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
 </ul>
-<h3 id="4-性能表现与适用场景"><a href="#4-性能表现与适用场景" class="headerlink" title="4. 性能表现与适用场景"></a>4. 性能表现与适用场景</h3><ul>
-<li><strong>Mat</strong>：适合处理小尺寸图像、需要频繁进行像素级随机访问的算法，或者计算量不足以弥补 GPU 数据传输开销的任务。</li>
-<li><strong>UMat</strong>：适合处理<strong>大尺寸图像</strong>或<strong>计算密集型</strong>操作（如大核滤波、Canny 边缘检测等）。由于数据在 GPU 上驻留并批量计算，在处理昂贵操作时，性能可能比 <code>Mat</code> 提升数倍。但如果只是进行非常简单的操作，<code>UMat</code> 在 CPU 和 GPU 之间来回搬运数据的开销反而会使其变慢。</li>
+</li>
 </ul>
-<h3 id="5-代码编写（透明-API）"><a href="#5-代码编写（透明-API）" class="headerlink" title="5. 代码编写（透明 API）"></a>5. 代码编写（透明 API）</h3><blockquote>
-<p>OpenCV 的 T-API 设计使得从 <code>Mat</code> 切换到 <code>UMat</code> 的代码改动极小。只需要将 <code>Mat</code> 替换为 <code>UMat</code>（例如使用 <code>mat.copyTo(umat)</code> 或 <code>mat.getUMat()</code>），后续的 OpenCV 函数（如 <code>cvtColor</code>, <code>GaussianBlur</code> 等）会自动识别并调用 OpenCL 加速版本，无需修改业务逻辑代码。</p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2/opencv.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2/core/ocl.hpp&gt;</span> <span class="hljs-comment">// 必须包含OpenCL模块头文件</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-comment">/******************************** CPU ********************************/</span><br>	cv::Mat img_cpu = cv::<span class="hljs-built_in">imread</span>(<span class="hljs-string">&quot;../../source/lena.png&quot;</span>); <span class="hljs-comment">// 从CPU内存加载</span><br>	cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">&quot;source_image&quot;</span>, img_cpu);<br>	cv::<span class="hljs-built_in">waitKey</span>(<span class="hljs-number">0</span>);<br><br>	cv::Mat gray_cpu, blurred_cpu, edges_cpu;<br><br>	<span class="hljs-comment">// 以下操作均在CPU执行</span><br>	cv::<span class="hljs-built_in">cvtColor</span>(img_cpu, gray_cpu, cv::COLOR_BGR2GRAY);<br>	cv::<span class="hljs-built_in">GaussianBlur</span>(gray_cpu, blurred_cpu, cv::<span class="hljs-built_in">Size</span>(<span class="hljs-number">5</span>, <span class="hljs-number">5</span>), <span class="hljs-number">1.5</span>);<br>	cv::<span class="hljs-built_in">Canny</span>(blurred_cpu, edges_cpu, <span class="hljs-number">50</span>, <span class="hljs-number">150</span>);<br><br>	cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">&quot;edges_cpu&quot;</span>, edges_cpu);<br>	cv::<span class="hljs-built_in">waitKey</span>(<span class="hljs-number">0</span>);<br>	<span class="hljs-comment">/******************************** CPU ********************************/</span><br><br>	<span class="hljs-comment">/******************************** GPU ********************************/</span><br>	cv::ocl::<span class="hljs-built_in">setUseOpenCL</span>(<span class="hljs-literal">true</span>); <span class="hljs-comment">// 启用OpenCL加速（关键步骤）</span><br>	<span class="hljs-keyword">if</span> (!cv::ocl::<span class="hljs-built_in">haveOpenCL</span>()) &#123;<br>		std::cerr &lt;&lt; <span class="hljs-string">&quot;OpenCL不可用，降级至CPU&quot;</span> &lt;&lt; std::endl;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>	&#125;<br><br>	cv::UMat img_gpu = img_cpu.<span class="hljs-built_in">getUMat</span>(cv::ACCESS_READ); <span class="hljs-comment">// 转为UMat</span><br>	cv::UMat gray_gpu, blurred_gpu, edges_gpu;<br><br>	<span class="hljs-comment">// 以下操作自动在GPU执行（若支持）</span><br>	cv::<span class="hljs-built_in">cvtColor</span>(img_gpu, gray_gpu, cv::COLOR_BGR2GRAY);<br>	cv::<span class="hljs-built_in">GaussianBlur</span>(gray_gpu, blurred_gpu, cv::<span class="hljs-built_in">Size</span>(<span class="hljs-number">5</span>, <span class="hljs-number">5</span>), <span class="hljs-number">1.5</span>);<br>	cv::<span class="hljs-built_in">Canny</span>(blurred_gpu, edges_gpu, <span class="hljs-number">50</span>, <span class="hljs-number">150</span>);<br><br>	cv::Mat result = edges_gpu.<span class="hljs-built_in">getMat</span>(cv::ACCESS_READ); <span class="hljs-comment">// 结果转回CPU内存</span><br>	cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">&quot;edges_gpu&quot;</span>, result);<br>	cv::<span class="hljs-built_in">waitKey</span>(<span class="hljs-number">0</span>);<br>	<span class="hljs-comment">/******************************** GPU ********************************/</span><br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p><img src="/img/post/0006_OpenCV_Mat_UMat/1.webp" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/img/post/0006_OpenCV_Mat_UMat/2.webp" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/img/post/0006_OpenCV_Mat_UMat/3.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="三、Boost安装"><a href="#三、Boost安装" class="headerlink" title="三、Boost安装"></a>三、Boost安装</h3><ul>
+<li><p>下载地址：<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/boost/files/boost-binaries/">Boost C++ Libraries - Browse &#x2F;boost-binaries at SourceForge.net</a>，下载<code>[boost_1_66_0-msvc-14.1-64.exe]</code>版本。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/4.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>安装</p>
+<ul>
+<li>双击启动安装，然后指定安装路径一步步安装就行。我安装在<code>D:\software\colmap\boost1660</code>目录下。</li>
+</ul>
+</li>
+<li><p>添加环境变量</p>
+<ul>
+<li><p>将<code>D:\software\colmap\boost1660\lib64-msvc-14.1</code>添加到系统变量Path中。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/5.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>系统变量新建变量名为<code>BOOST_INCLUDEDIR</code>，将变量值设置为<code>D:\software\colmap\boost1660</code>。</p>
+</li>
+<li><p>系统变量新建变量名为<code>BOOST_LIBRARYDIR</code>，将变量值设置为<code>D:\software\colmap\boost1660\lib64-msvc-14.1</code>。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/6.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="四、QT5安装"><a href="#四、QT5安装" class="headerlink" title="四、QT5安装"></a>四、QT5安装</h3><ul>
+<li><p>下载地址：<a target="_blank" rel="noopener" href="https://download.qt.io/archive/qt/5.9/5.9.3/">Index of &#x2F;archive&#x2F;qt&#x2F;5.9&#x2F;5.9.3</a>，下载<code>qt-opensource-windows-x86-5.9.3.exe</code>版本。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/7.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>安装</p>
+<ul>
+<li>安装时好像时需要注册账号。注册后输入账号密码进行安装，安装的时候注意勾选<code>msvc2017_64</code>，根据VS的版本勾选，安装时指定安装路径。我安装在<code>D:\software\colmap\Qt593</code>目录下。</li>
+</ul>
+</li>
+<li><p>添加环境变量</p>
+<ul>
+<li><p>将<code>D:\software\colmap\Qt593\Tools\QtCreator\bin</code>添加到系统变量Path中。</p>
+</li>
+<li><p>将<code>D:\software\colmap\Qt593\5.9.3\msvc2017_64\bin</code>添加到系统变量Path中。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/8.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="五、zlib安装"><a href="#五、zlib安装" class="headerlink" title="五、zlib安装"></a>五、zlib安装</h3><ul>
+<li><p>下载地址：<a target="_blank" rel="noopener" href="https://www.zlib.net/">zlib Home Site</a>，下载<code>US (zlib.net)</code>。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/9.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>安装</p>
+<ul>
+<li><p>将下载的zip文件解压到自己方便的地址。我放在<code>D:\software\colmap\zlib1211</code>目录下。在文件夹下新建文件夹<code>build</code>。</p>
+</li>
+<li><p>打开cmake，设置如下</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/10.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>然后点击configure，选择使用vs-15-2017-Win64编译。</p>
+</li>
+<li><p>第一次编译后，修改如下选项。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/11.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>如果有报错则逐个问题解决，没有问题后点击generate。</p>
+</li>
+<li><p>点击Open Project会使用VS2017打开，选择Release+x64，右击ALL_BUILD重新生成，然后右击INSTALL重新生成。选择Debug+x64，右击ALL_BUILD重新生成，然后右击INSTALL重新生成。</p>
+</li>
+</ul>
+</li>
+<li><p>设置环境变量</p>
+<ul>
+<li>将<code>D:\software\colmap\zlib1211\build\lib</code>添加到系统变量Path中。</li>
+<li>将<code>D:\software\colmap\zlib1211\build\include</code>添加到系统变量Path中。</li>
+</ul>
+</li>
+</ul>
+<h3 id="六、CGAL安装"><a href="#六、CGAL安装" class="headerlink" title="六、CGAL安装"></a>六、CGAL安装</h3><ul>
+<li><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/CGAL/cgal/releases?after=v4.14.1">Releases · CGAL&#x2F;cgal (github.com)</a>，下载<code>CGAL-4.13.2-Setup.exe</code></p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/12.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>安装</p>
+<ul>
+<li><p>先双击启动安装，指定安装目录，我安装在<code>D:\software\colmap\CGAL4132</code>目录下。并在该目录下新建文件夹<code>build</code>。</p>
+</li>
+<li><p>打开CMake软件，设置如下</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/13.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>然后点击configure，选择使用vs-15-2017-Win64编译。</p>
+</li>
+<li><p>第一次编译后，将<code>CMAKE_INSTALL_PREFIX</code>设置为<code>D:/software/colmap/CGAL4132/build</code>，勾选<code>WITH_ZLIB</code>然后再次点击configure。</p>
+</li>
+<li><p>如果有报错则逐个问题解决，没有问题后点击generate。</p>
+</li>
+<li><p>点击Open Project会使用VS2017打开，选择Release+x64，右击ALL_BUILD重新生成，然后右击INSTALL重新生成。选择Debug+x64，右击ALL_BUILD重新生成，然后右击INSTALL重新生成</p>
+</li>
+</ul>
+</li>
+<li><p>设置环境变量</p>
+<ul>
+<li>将<code>D:\software\colmap\CGAL4132\auxiliary\gmp\lib</code>添加到系统变量Path中。</li>
+<li>将<code>D:\software\colmap\CGAL4132\build\lib</code>添加到系统变量Path中。</li>
+<li>将<code>D:\software\colmap\CGAL4132\build\bin</code>添加到系统变量Path中。</li>
+</ul>
+</li>
+</ul>
+<h3 id="七、colmap安装"><a href="#七、colmap安装" class="headerlink" title="七、colmap安装"></a>七、colmap安装</h3><ul>
+<li><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/colmap/colmap">colmap&#x2F;colmap: COLMAP - Structure-from-Motion and Multi-View Stereo (github.com)</a></p>
+</li>
+<li><p>安装</p>
+<ul>
+<li>将zip文件解压到自己的目录下，我解压后放在<code>D:\software\colmap\colmap-dev</code>目录下。在该目录下新建build文件夹。</li>
+<li>打开cmd，将目录切换到<code>D:\software\colmap\colmap-dev\scripts\python</code>文件夹下，切换到conda的tf1环境中，然后输入如下指令</li>
+</ul>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">python build.py --build_path &quot;D:/software/colmap/colmap-dev/build&quot; \<br>            --colmap_path &quot;D:/software/colmap/colmap-dev&quot; \<br>            --boost_path &quot;D:/software/colmap/boost1660/lib64-msvc-14.1&quot; \<br>            --qt_path &quot;D:/software/colmap/Qt593/5.9.3/msvc2017_64&quot; \<br>            --cuda_path &quot;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2&quot; \<br>            --cgal_path &quot;D:/software/colmap/CGAL4132/build&quot;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>如果没有问题的话在<code>D:\software\colmap\colmap-dev\build\colmap\__build__</code>目录下可以生成VS可运行的COLMAP.sln文件</li>
+<li>双击COLMAP.sln文件，用VS2017打开，将colmap.exe 设置为启动项，然后右击重新生成，需要将调试环境设置为Release+x64，Debug+x64会报错。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>运行调试</p>
+<ul>
+<li><p>重新生成不报错后，点击<code>本地Windows调试器</code>，会弹出提示找不到**.dll文件，需要将以下目录添加到变量的Path中。</p>
+<ul>
+<li><code>D:\software\colmap\colmap-dev\build\__install__\lib</code></li>
+<li><code>D:\software\colmap\colmap-dev\build\__install__\lib64\lapack_blas_windows</code></li>
+</ul>
+</li>
+<li><p>再次单击<code>本地Windows调试器</code>，黑窗口一闪而过直接退出。按<code>Ctrl+F5</code>运行，可以看到窗口中有打印colmap的用法如下，此时右键colmap.exe，在调试&#x2F;命令参数中写入<code>gui</code>后保存。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/14.webp" srcset="/img/loading.gif" lazyload><br><img src="/img/post/0002_Colmap_Source_Code_Compilation/15.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>再次按<code>本地Windows调试器</code>，即可弹出如下界面，colmap安装成功。<br><img src="/img/post/0002_Colmap_Source_Code_Compilation/16.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="八、使用colmap进行重建"><a href="#八、使用colmap进行重建" class="headerlink" title="八、使用colmap进行重建"></a>八、使用colmap进行重建</h3><ul>
+<li><p>准备一个文件夹，将其命名为project，然后在其下新建一个文件夹images，将需要重建的图像放入其中。</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/17.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>在colmap界面中新建工程，file—&gt;new project—&gt;New 命名为test.db，放在project目录下。选择图像路径为images文件夹，save。</p>
+</li>
+<li><p>Processing —&gt; Feature Extraction —&gt; Extract —&gt; 关闭</p>
+</li>
+<li><p>Processing —&gt; Feature matching —&gt; Run —&gt; 关闭</p>
+</li>
+<li><p>Reconstruction —&gt; start reconstruction —&gt; File —&gt; Export model as，将稀疏点云保存在project目录下，命名为sparse.ply。</p>
+</li>
+<li><p>Reconstruction —&gt; Dense reconstruction —&gt; select，在project目录下新建dense文件夹，选择该文件夹。</p>
+</li>
+<li><p>Undistortion —&gt; stereo —&gt; File —&gt; Export model as，将密集点云保存在project文件夹下，命名为dense_cloud.ply</p>
+</li>
+<li><p>依次点击fuse，Poisson，Delaunay，在dense文件夹下会生成fused.ply，meshed-poisson.ply，meshed-delaunay.ply文件。</p>
+</li>
+<li><p>重建效果如下：</p>
+<p><img src="/img/post/0002_Colmap_Source_Code_Compilation/18.webp" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ul>
+<h3 id="九、参考内容"><a href="#九、参考内容" class="headerlink" title="九、参考内容"></a>九、参考内容</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42078760/article/details/80466498">Qt 5.9.2在Windows 10 64位和Microsoft Visual Studio 2017下的安装与配置</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.pianshen.com/article/993034643/">windows10进行Colmap配置</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Todd-Qi/p/10792685.html">三维重建：colmap安装与使用</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzU4NjkwMjgyMQ==&mid=2247483677&idx=1&sn=b77bdfe8669b9dc7d90fae208f5427a3&chksm=fdf57d57ca82f441f248cb82a088cd360621d70cc6f80dd13b9df1bf03e28fff40bdf8ace59e&mpshare=1&scene=23&srcid=0504PRnN9Kj5P3rTeQpOyOOB&sharer_sharetime=1620125651187&sharer_shareid=e8b624f5efd6892fa8286498bff9328f#rd">Colmap编译教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg3MTA5MDMwNQ==&mid=2247483656&idx=1&sn=0b41a0fc6b50f23c9d1ce7aca37d446f&chksm=ce8290e6f9f519f0ca90b6b2377cd652b888dc03c3865418b1791678b6a85f257f987c6c6760&mpshare=1&scene=23&srcid=05045TBQZr6EFMDO4RbLGsdR&sharer_sharetime=1620125774029&sharer_shareid=e8b624f5efd6892fa8286498bff9328f#rd">编译colmap</a></li>
+</ul>
 
                 
               </div>
@@ -726,12 +896,12 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" class="category-chain-item">计算机视觉</a>
+  <a href="/categories/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="category-chain-item">三维重建</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/OpenCV/" class="category-chain-item">OpenCV</a>
+  <a href="/categories/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/colmap/" class="category-chain-item">colmap</a>
   
   
 
@@ -748,11 +918,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/OpenCV/" class="print-no-link">#OpenCV</a>
+        <a href="/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="print-no-link">#三维重建</a>
       
-        <a href="/tags/Mat/" class="print-no-link">#Mat</a>
+        <a href="/tags/colmap/" class="print-no-link">#colmap</a>
       
-        <a href="/tags/UMat/" class="print-no-link">#UMat</a>
+        <a href="/tags/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" class="print-no-link">#源码编译</a>
+      
+        <a href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="print-no-link">#环境配置</a>
       
     </div>
   
@@ -764,8 +936,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>OpenCV中的Mat和UMat的区别</div>
-      <div>https://ywxk2016.github.io/2026/09/23/0006_OpenCV_Mat_UMat/</div>
+      <div>win10+vs2017编译colmap</div>
+      <div>https://ywxk2016.github.io/2026/09/22/Colmap_Source_Code_Compilation/</div>
     </div>
     <div class="license-meta">
       
@@ -777,7 +949,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年9月23日</div>
+          <div>2026年9月22日</div>
         </div>
       
       
@@ -809,12 +981,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2026/09/22/Colmap_Command/" title="使用colmap命令行进行三维重建">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用colmap命令行进行三维重建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/09/23/0005_OpenCV_Contrib_Compilation/" title="OpenCV扩展模块的安装与配置">
-                        <span class="hidden-mobile">OpenCV扩展模块的安装与配置</span>
+                      <a href="/2026/09/20/Personal_Homepage/" title="零成本个人主页搭建详细流程">
+                        <span class="hidden-mobile">零成本个人主页搭建详细流程</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
