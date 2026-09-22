@@ -1,0 +1,32 @@
+/* Keep the toggle and heading on one row, while letting child lists use the full width. */
+.toc-list-item {
+  display: grid;
+  grid-template-columns: .7rem minmax(0, 1fr);
+  column-gap: .15rem;
+  align-items: baseline;
+  overflow: visible;
+  text-overflow: clip;
+  -webkit-box-orient: initial;
+  -webkit-line-clamp: unset;
+}
+
+.toc-list-item > .toc-toggle {
+  grid-column: 1;
+  margin-right: 0;
+  line-height: 1.5;
+}
+
+.toc-list-item > .tocbot-link {
+  grid-column: 2;
+  display: -webkit-box;
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.toc-list-item > ol {
+  grid-column: 1 / -1;
+  align-self: start;
+}
