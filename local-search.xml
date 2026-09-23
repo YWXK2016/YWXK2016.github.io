@@ -4,6 +4,47 @@
   
   
   <entry>
+    <title>[论文阅读] Unsupervised Learning of Depth and Ego-Motion from Video</title>
+    <link href="/2026/09/23/SFMLearner_Paper/"/>
+    <url>/2026/09/23/SFMLearner_Paper/</url>
+    
+    <content type="html"><![CDATA[<h1 id="论文阅读-Unsupervised-Learning-of-Depth-and-Ego-Motion-from-Video"><a href="#论文阅读-Unsupervised-Learning-of-Depth-and-Ego-Motion-from-Video" class="headerlink" title="[论文阅读] Unsupervised Learning of Depth and Ego-Motion from Video"></a>[论文阅读] Unsupervised Learning of Depth and Ego-Motion from Video</h1><p><img src="/img/post/0010_SFMLearner_Paper/1.webp"></p><center>图1：本系统的训练数据仅由从不同视角捕捉场景外观的未标记图像序列组成，没有提供图像的姿态。我们的训练过程会生成两个独立运行的模型，一个用于单目深度估计，另一个用于多视角相机姿态的估计。</center><h2 id="一、关注的问题"><a href="#一、关注的问题" class="headerlink" title="一、关注的问题"></a>一、关注的问题</h2><h3 id="1-输入什么？"><a href="#1-输入什么？" class="headerlink" title="1. 输入什么？"></a>1. 输入什么？</h3><ul><li><strong>training data</strong>: unlabeled image sequences capturing scene appearance from different viewpoints.</li></ul><h3 id="2-输出什么？"><a href="#2-输出什么？" class="headerlink" title="2. 输出什么？"></a>2. 输出什么？</h3><ul><li>6-DoF transformation matrices.</li><li>per-pixel depth maps under a reference view.</li></ul><h3 id="3-监督信号是什么？"><a href="#3-监督信号是什么？" class="headerlink" title="3. 监督信号是什么？"></a>3. 监督信号是什么？</h3><ul><li>It is an unsupervised learning framework with view synthesis as the supervisory signal.</li><li>The key supervision signal for our depth and pose prediction CNNs comes from the task of novel view synthesis.</li></ul><h3 id="4-损失函数是什么？"><a href="#4-损失函数是什么？" class="headerlink" title="4. 损失函数是什么？"></a>4. 损失函数是什么？</h3><ul><li><strong>loss</strong> based on warping nearby views to the target using the computed depth and pose.</li></ul><h3 id="5-训练方式？"><a href="#5-训练方式？" class="headerlink" title="5. 训练方式？"></a>5. 训练方式？</h3><ul><li>It is an <strong>end-to-end</strong> learning approach.</li><li>The networks are coupled by the loss during training, but can be applied independently at test time.</li><li>jointly training a single-view depth CNN and a camera pose estimation CNN from unlabeled video sequences.</li></ul><h3 id="6-优点和创新点是什么？"><a href="#6-优点和创新点是什么？" class="headerlink" title="6. 优点和创新点是什么？"></a>6. 优点和创新点是什么？</h3><ul><li>monocular depth performs comparably with supervised methods that use either ground-truth pose or depth for training.</li><li>pose estimation performs favorably compared to established SLAM systems under comparable input settings.</li></ul><h3 id="7-存在哪些缺点？"><a href="#7-存在哪些缺点？" class="headerlink" title="7. 存在哪些缺点？"></a>7. 存在哪些缺点？</h3><ul><li>our explainability mask discounts regions undergoing motion, occlusion and other factors。</li><li>虽然该方法在基准评价上有良好的表现，但它并不能很好地解决三维场景结构预测的无监督学习问题。</li><li>还有一些重大挑战有待解决：<ul><li>我们目前的框架并没有明确地估计场景运动和遮挡(尽管它们被可解释性遮罩隐含地考虑在内)，这两者都是对3D场景理解的关键因素。（通过运动分割直接建模场景运动可能是一个潜在的解决方案。）</li><li>我们的框架假设相机的内参是给定的，这禁止使用随机未知的相机类型&#x2F;校准的互联网视频。</li><li>深度图是底层3D场景的简化表示。</li></ul></li></ul><h2 id="二、方法"><a href="#二、方法" class="headerlink" title="二、方法"></a>二、方法</h2><blockquote><p>本文提出了一种从未标记视频序列中联合训练单目深度估计CNN和相机姿态估计CNN的框架。另外，在测试时，两个模型可以单独使用。</p></blockquote><h3 id="1-合成视图作为监督信号"><a href="#1-合成视图作为监督信号" class="headerlink" title="1. 合成视图作为监督信号"></a>1. 合成视图作为监督信号</h3><ul><li>given one input view of a scene, synthesize a new image of the scene seen from a different camera pose.</li><li>denote $\langle I_1,\dots,I_N\rangle$ as a training image sequence with one of the frames $I_t$ being the target view and the rest being the source views $I_s(1 \leqslant s \leqslant N, s \neq t)$. The view synthesis objective can be formulated as:</li></ul><div class="mathjax-block">$$\mathcal{L}_{vs}=\sum\limits_s\sum\limits_p|I_t(p)-\hat{I}_s(p)|\tag{1}$$</div><blockquote><p>$p$ : indexes over pixel coordinates.<br>$\hat{I}_s$ : the source view $I_s$ warped to the target coordinate frame based on a depth image-based rendering module.</p></blockquote><p><img src="/img/post/0010_SFMLearner_Paper/2.webp"></p><center>图2：基于视图合成监督方法的框架。深度网络只把目标视图作为输入，输出一张逐像素的深度图$\hat{D}_t$。姿态网络将目标视图($I_t$)和相邻的源视图(如：$I_{t-1}$和$I_{t+1}$)一起作为输入，输出相对相机姿态($\hat{T}_{t\rightarrow t-1},\hat{T}_{t\rightarrow t+1}$)。之后，两个网络的输出被用来对源视图进行反向扭曲以对目标视图进行重建，另外利用光度重建损失对卷积神经网络进行训练。通过将合成视图作为监督，我们可以从视频中以无监督的方式训练整个框架。</center><h3 id="2-基于深度图的可微渲染"><a href="#2-基于深度图的可微渲染" class="headerlink" title="2. 基于深度图的可微渲染"></a>2. 基于深度图的可微渲染</h3><ul><li>$p_t$ denote the homogeneous coordinates of a pixel in the target view, $K$ denote the camera intrinsics matrix. We can obtain $p_t$’s projected coordinates onto the source view $p_s$ by:</li></ul><div class="mathjax-block">$$p_s \sim K\hat{T}_{t\rightarrow s}\hat{D}_t(p_t)K^{-1}p_t\tag{2}$$</div><p><img src="/img/post/0010_SFMLearner_Paper/3.webp"></p><center>图3：可微图像扭曲过程插图。对于目标视图中的每一点$p_t$，首先根据预测得到的深度和相机姿态将它投影到源图像上，然后使用双线性插值得到扭曲后的图像$\hat{I}_s$在位置$p_t$处的值。</center><div class="mathjax-block">$$\hat{I}_s(p_t)=I_s(p_s)=\sum\limits_{i\in\{t,b\},j\in\{l,r\}}w^{ij}I_s(p_s^{ij})$$</div><ul><li>$w^{ij}$与$p_s$和$p_s^{ij}$之间的空间距离成线性关系，且满足$\sum\limits_{i,j}w^{ij}&#x3D;1$。</li></ul><blockquote><p><strong>理解</strong>：目标视图$I_t$上位置为$p_t$的像素点映射到源视图$I_s$上的位置为$p_s$，即$p_t$和$p_s$为同名点，即在误差为0的情况下$p_t$和$p_s$的值相等。但是因为$p_s$可能是非整数，为了得到$p_s$的值，使用双线性插值的方式求得$p_s$点的像素值，并将该值作为扭曲后的图像$\hat{I}_s$位置为$p_t$处的像素值。</p></blockquote><h3 id="3-对模型限制因素的建模"><a href="#3-对模型限制因素的建模" class="headerlink" title="3. 对模型限制因素的建模"></a>3. 对模型限制因素的建模</h3><ul><li><p>注意，当应用于单眼视频时，上述视图合成公式隐含以下假设：</p><ul><li>场景是静态的，没有移动的对象；</li><li>在目标视图和源视图之间没有遮挡和非遮挡区域；</li><li>对象表面是朗伯体表面，因此图像的一致性误差是有意义的。</li></ul></li><li><p>在实际训练中这些假设并不一定满足，导致梯度被破坏而抑制训练。</p></li></ul><p>本文另外训练了一个 explainability prediction network （和深度网络以及姿态估计网络同时训练）来解决上述假设不成立的问题，该网络的输出是每个 target-source pair 的 per-pixel soft mask $\hat{E}_s$。因此视图合成的目标可以表示为：</p><div class="mathjax-block">$$\mathcal{L}_{vs}=\sum\limits_{\langle I_1,\dots,I_N\rangle\in s}\sum\limits_p\hat{E}_s(p)|I_t(p)-\hat{I}_s(p)| \tag{3}$$</div><ul><li>又因为没有对$\hat{E}_s$进行直接监督，使用上述损失函数进行训练时会导致预测的$\hat{E}_s$为0。<ul><li>为了解决这个问题，增加了一个正则化项$\mathcal{L}_{reg}(\hat{E}_s)$，鼓励网络将视图综合目标最小化，但对模型未考虑的因素给予一定的松弛。</li></ul></li></ul><h3 id="4-克服梯度局部化问题"><a href="#4-克服梯度局部化问题" class="headerlink" title="4. 克服梯度局部化问题"></a>4. 克服梯度局部化问题</h3><ul><li>使用上述学习方式存在一个问题，因为梯度主要来源于$I(p_t)$和$I(p_s)$周围的四个像素值的差异，所以如果准确的$p_s$位于弱纹理区域或者和当前预测相差较大时，会抑制训练。</li><li>克服这个问题的两个策略：<ul><li>使用带有小瓶颈的卷积编译码器架构，隐式地限制输出全局平滑，并促进梯度从有意义的区域传播到附近的区域。</li><li>显式的多尺度和平滑损失，允许梯度从更大的空间区域直接获得。</li></ul></li><li>本文方法采用第二种策略。对于平滑损失，对二阶梯度的$L_1$范数最小化来预测深度图。<br><strong>最后的目标函数：</strong></li></ul><div class="mathjax-block">$$\mathcal{L}_{final}=\sum\limits_l\mathcal{L}_{vs}^l+\lambda_s\mathcal{L}_{smooth}^l+\lambda_e\sum\limits_s\mathcal{L}_{reg}(\hat{E}_s^l)\tag{4}$$</div><blockquote><p>$l$ indexes over different image scales<br>$s$ indexes over source images<br>$\lambda_s$和$\lambda_e$分别表示深度平滑损失和可解释性正则化项的权重。</p></blockquote><h3 id="5-网络结构"><a href="#5-网络结构" class="headerlink" title="5. 网络结构"></a>5. 网络结构</h3><p><img src="/img/post/0010_SFMLearner_Paper/4.webp"></p><center>图4：本文的深度/姿态/可解释性预测模型的网络结构。每个矩形块的宽度和高度分别决定了对应层的特征图的输出通道和空间维度，尺寸的每一次减小/增加都表示一个因子为2的变化。(a)对于单目深度估计，本文采用的是带有多尺度侧估计的DispNet网络结构。除了前4个卷积层分别使用的7，7，5，5的卷积核外，其它层的卷积核大小都为3.第一个卷积层的输出通道数为32。(b)姿态估计和可解释性估计网络共享前几个卷积层，然后两个分支网络分别估计6自由度的相对姿态以及多尺度的可解释性掩膜（explainability masks）。第一个卷积层的输出通道数量为16，除了前两个卷积层最后两个卷积/预测层的卷积核大小分别为7，5，5，7外，其它层的卷积核大小都为3。</center><ul><li><p><strong>单目深度估计</strong></p><ul><li>除了预测层外的所有卷积层后都带有ReLU激活函数，使用$\frac{1}{\alpha\times sigmoid(x)+\beta}$，$\alpha&#x3D;10, \beta&#x3D;0.1$将预测的深度约束在合理范围内且始终为正。</li></ul></li><li><p><strong>姿态估计</strong></p><ul><li><strong>input</strong>：目标视图与所有源视图连接(沿着颜色通道)。</li><li><strong>output</strong>：目标视图与每张源视图之间的相对姿态。</li><li>姿态估计网络由7个步长为2的卷积层组成，带有输出为$6\times(N-1)$个输出通道的1×1的卷积。$N-1$为源图像的数量，每张源图像对应6个参数：3个欧拉角以及3维的平移向量。</li><li>最后运用全局平均池化来聚合所有空间上的预测。</li><li>除了最后一层没有非线性激活函数外，其它卷积层都带有ReLU激活函数。</li></ul></li><li><p><strong>可解释性掩膜预测</strong></p><ul><li>可解释性预测网络与姿态估计网路共享前5个特征编码层，后面跟有5个带有多尺度步长预测的反卷积层。</li><li>除了预测层没有非线性激活函数外，其它层都带有ReLU激活函数。</li><li>每个预测层输出的通道数为$2\times(N-1)$，每两个通道经过$softmax$归一化后得到对应 source-target pair 的可解释性预测结果，其中第二个通道经过归一化后即为公式3中的$\hat{E}_s$。</li></ul></li></ul><h2 id="三、实验"><a href="#三、实验" class="headerlink" title="三、实验"></a>三、实验</h2><blockquote><p>使用KITTI数据集作为基准数据集，Make3D数据集来评价跨数据集的泛化能力。</p></blockquote><h3 id="训练细节"><a href="#训练细节" class="headerlink" title="训练细节"></a>训练细节</h3><ul><li>$\lambda_s&#x3D;\frac{0.5}{l}$，$l$是对应步长的下采样因子。</li><li>$\lambda_e&#x3D;0.2$</li><li>除了输出层外其它所有层都使用了批归一化（batch normalization）。</li><li>Adam optimizer：$\beta_1&#x3D;0.9,\beta_2&#x3D;0.999$，学习率（learning rate）：0.0002，最小批（mini-batch）大小：4</li><li>训练通常在150K次后收敛。</li><li>训练时把图像大小缩放为128×416，但是深度和位姿网络都可以在测试时对任意大小的图像进行完全卷积。</li></ul><h3 id="1-单目深度估计"><a href="#1-单目深度估计" class="headerlink" title="1.单目深度估计"></a>1.单目深度估计</h3><ul><li>每3帧图像为一个图像序列，中间帧的那张作为目标图像，前一帧和后一帧作为源图像。</li><li>一共得到44540个图像序列，其中40109个用于训练，另外4431个用于验证。</li><li>本文方法预测的深度是定义在一个步长因子（scale factor）上的：$\hat{s}&#x3D;\frac{median(D_{gt})}{median{D_{pred}}}$。</li><li>在larger Cityscapes dataset上进行预训练（pre-training），在KITTI数据集上进行调整（fine-tune）。</li></ul><p><img src="/img/post/0010_SFMLearner_Paper/5.webp"></p><center>图5：使用仅在Cityscapes上训练的模型对Cityscapes数据集中的样本进行预测</center><p><strong>KITTI</strong></p><p><img src="/img/post/0010_SFMLearner_Paper/6.webp"></p><center>表1：在采用Eigen等人提出的分割方法对KITTI数据集进行分割得到的数据上进行单目深度估计的结果（阈值(baseline numbers)根据参考文献[16]选取的）。K代表KITTI, CS代表Cityscapes。我们作为比较的方法中有些使用ground-truth深度作为监督信号，有些使用校正的相机姿态作为监督信号。</center><ul><li>本文的无监督方法效果和[7]、[14]效果相当，但是相比于[16]还有一定的差距，[16]中使用校正的立体图像（带有姿态监督）以及左右循环一致性损失进行训练。</li></ul><p><img src="/img/post/0010_SFMLearner_Paper/7.webp"></p><center>图6：将Eigen等人提出的[7](使用ground-truth深度进行监督)，Garg等人提出的[14](使用ground-truth姿态进行监督)以及本文提出的无监督单目深度预测进行比较。地面真深度图是由稀疏测量插值用于可视化目的。最后两行显示了本文模型的典型故障案例，它有时会在巨大的开放场景和靠近相机前面的对象中出现故障。</center><p><img src="/img/post/0010_SFMLearner_Paper/8.webp"></p><center>图7：将初始的Cityscapes模型和最终模型(在Cityscapes上预训练，然后再KITTI上调整)在KITTI数据集上进行单目深度预测比较。Cityscapes模型有时产生结构错误（车身上的小洞），可能是由于两个数据集之间的 domain gap 造成的。</center><p><strong>ablation study of the explainability modeling</strong></p><ul><li>只取得了非常小的效果，可能是因为:<ul><li>KITTI中的大多数场景都是静态的，没有明显的场景运动。</li><li>在较短的时间跨度（3帧），遮挡&#x2F;可见效应只出现在图像序列的小区域内，这使得可解释性建模对模型的成功训练不那么重要。</li></ul></li></ul><p><strong>Make3D</strong></p><ul><li>直接将在Cityscapes+KITTI数据集上训练的模型对Make3D数据集进行测试，来验证模型的泛化能力。</li></ul><p><img src="/img/post/0010_SFMLearner_Paper/9.webp"></p><center>表2：Make3D数据集上的测试结果。Godard等人提出的[16]和本文一样，在训练时没有使用任何的Make3D中的数据，直接将KITTI+Cityscapes上训练的模型在Make3D数据集上进行测试。</center><p><img src="/img/post/0010_SFMLearner_Paper/10.webp"></p><center>图8：本文方法在Make3D数据集样本上的预测结果。</center><h3 id="2-姿态估计"><a href="#2-姿态估计" class="headerlink" title="2.姿态估计"></a>2.姿态估计</h3><ul><li>00-08序列用于训练，09-10序列用于测试。</li><li>输入图像序列包含5帧图像。</li></ul><p><img src="/img/post/0010_SFMLearner_Paper/11.webp"></p><center>表3：在KITTI odometry split上的5帧小片段的平均绝对轨迹误差(Absolute Trajectory Error,ATE)</center><p><img src="/img/post/0010_SFMLearner_Paper/12.webp"></p><center>图9：不同左右回转幅度的绝对轨迹误差(ATE)(测试序列开始帧和结束帧之间的侧向(side-direction)坐标差)。</center><ul><li>本文方法的性能优于相同输入设置的mean odometry和ORB-SLAM(short)，但是相对ORB-SLAM(full)性能较差。</li></ul><h3 id="3-可解释性预测可视化"><a href="#3-可解释性预测可视化" class="headerlink" title="3.可解释性预测可视化"></a>3.可解释性预测可视化</h3><p><img src="/img/post/0010_SFMLearner_Paper/13.webp"></p><center>图10：可解释掩模可视化的样例。</center><ul><li>深度CNN在预测薄结构方面信心不足，并倾向于将其掩盖为不可解释。</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机视觉</category>
+      
+      <category>三维重建</category>
+      
+      <category>SfM</category>
+      
+      <category>论文阅读和复现</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>SFMLearner</tag>
+      
+      <tag>SfM</tag>
+      
+      <tag>单目深度估计</tag>
+      
+      <tag>相机位姿估计</tag>
+      
+      <tag>深度学习</tag>
+      
+      <tag>CVPR2017</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[代码复现] SFMLearner代码运行记录</title>
     <link href="/2026/09/23/SFMLearner_code/"/>
     <url>/2026/09/23/SFMLearner_code/</url>
@@ -26,8 +67,6 @@
     
     <tags>
       
-      <tag>深度学习</tag>
-      
       <tag>SFMLearner</tag>
       
       <tag>SfM</tag>
@@ -35,6 +74,8 @@
       <tag>单目深度估计</tag>
       
       <tag>相机位姿估计</tag>
+      
+      <tag>深度学习</tag>
       
       <tag>CVPR2017</tag>
       
@@ -73,9 +114,9 @@
       
       <tag>单应性变换</tag>
       
-      <tag>深度估计</tag>
-      
       <tag>深度学习</tag>
+      
+      <tag>深度估计</tag>
       
       <tag>ECCV2018</tag>
       
