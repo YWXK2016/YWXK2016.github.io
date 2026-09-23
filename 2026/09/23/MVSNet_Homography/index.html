@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ywxk2016.github.io/img/covers/MVSNet.webp">
 <meta property="article:published_time" content="2026-09-23T11:40:00.000Z">
-<meta property="article:modified_time" content="2026-09-23T04:36:52.537Z">
+<meta property="article:modified_time" content="2026-09-23T04:54:12.166Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="MVSNet">
 <meta property="article:tag" content="单应性变换">
@@ -242,7 +242,7 @@
     height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=mudm2kzdtw") center / cover no-repeat;
+    background: #fff url("/img/avatar.jpg?v=mudmov5zdm") center / cover no-repeat;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -689,7 +689,7 @@ m\cong KM,\ m'\cong KM'
 \tag{1}
 $$</div>
 <blockquote>
-<p>其中，$\cong$表示在相差一个非零标量因子的意义下相等，$\begin{split} K&#x3D;\begin{bmatrix}f_u &amp; s &amp; u_0\ 0 &amp; f_v &amp; v_0\ 0 &amp; 0 &amp; 1\end{bmatrix}\end{split}$为摄像机内参矩阵。</p>
+<p>其中，$\cong$表示在相差一个非零标量因子的意义下相等，$\begin{split} K&#x3D;\begin{bmatrix}f_u &amp; s &amp; u_0\\ 0 &amp; f_v &amp; v_0\\ 0 &amp; 0 &amp; 1\end{bmatrix}\end{split}$为摄像机内参矩阵。</p>
 </blockquote>
 <blockquote>
 <p>$\pi$为场景中的一个平面，设平面$\pi$在第一个相机坐标系下的单位法向量为$n$，其到第一个相机中心（坐标原点）的距离为$d$，则平面$\pi$可以表示为:</p>
@@ -778,9 +778,12 @@ $$</div>
 <p>假设场景空间中点$X$在第一个相机和第二个相机上的成像点齐次坐标分别为$m_1&#x3D;(x_1,y_1,1)$和$m_2&#x3D;(x_2,y_2,1)$，根据上面推导的公式(6)可以推得：</p>
 </blockquote>
 <div class="mathjax-block">$$
-\begin{split}
-m_2=K_2(R+T\centerdot\frac{1}{d}n^T)K_1^{-1}m_1\\=K_2[R_2R_1^{-1}+(T_2-R_2R_1^{-1}T_1)\centerdot\frac{1}{d}n^{T}]K_1^{-1}m_1\\=K_2[R_2R_1^{-1}+(R_2R_2^{-1}T_2-R_2R_1^{-1}T_1)\centerdot\frac{1}{d}n^{T}]K_1^{-1}m_1\\=K_2R_2[I+\frac{(R_2^{-1}T_2-R_1^{-1}T_1)n^TR_1}{d}]R_1^{-1}K_1^{-1}m_1
-\end{split}
+\begin{flalign}
+&m_2=K_2(R+T\centerdot\frac{1}{d}n^T)K_1^{-1}m_1\\
+&=K_2[R_2R_1^{-1}+(T_2-R_2R_1^{-1}T_1)\centerdot\frac{1}{d}n^{T}]K_1^{-1}m_1\\
+&=K_2[R_2R_1^{-1}+(R_2R_2^{-1}T_2-R_2R_1^{-1}T_1)\centerdot\frac{1}{d}n^{T}]K_1^{-1}m_1\\
+&=K_2R_2[I+\frac{(R_2^{-1}T_2-R_1^{-1}T_1)n^TR_1}{d}]R_1^{-1}K_1^{-1}m_1
+\end{flalign}
 \tag{14}
 $$</div>
 <blockquote>
