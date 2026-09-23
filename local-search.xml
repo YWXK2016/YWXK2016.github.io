@@ -4,6 +4,45 @@
   
   
   <entry>
+    <title>[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo</title>
+    <link href="/2026/09/23/MVSNet_Paper/"/>
+    <url>/2026/09/23/MVSNet_Paper/</url>
+    
+    <content type="html"><![CDATA[<h1 id="论文阅读-MVSNet-Depth-Inference-for-Unstructured-Multi-view-Stereo"><a href="#论文阅读-MVSNet-Depth-Inference-for-Unstructured-Multi-view-Stereo" class="headerlink" title="[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo"></a>[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo</h1><ul><li><code>MVSNet</code>是计算机视觉三维重建领域的里程碑式工作，由香港科技大学姚遥等人提出，发表于 ECCV 2018（并获 Oral 口头报告）。作为首个端到端深度学习多视图立体视觉（MVS）框架，它彻底改变了传统依赖手工特征与启发式匹配的范式。</li><li>它的输入是一副参考图像和几张其他视角的图像，最终预测出的是参考图像的深度图。每次选择不同的图像作为参考图像就能得到各个视角下的深度图。</li><li><strong>历史地位</strong>：MVSNet 开启了“基于代价体的深度学习 MVS”这一主流研究方向。后续著名的 <strong>R-MVSNet</strong>（引入循环神经网络优化）、<strong>Cascade MVSNet</strong>（级联细化）、<strong>Point-MVSNet</strong> 等均是基于此工作的改进。</li><li><strong>核心贡献</strong>：<strong>将几何先验（相机参数、单应性变换）显式地嵌入到深度学习网络中</strong>，既保留了传统 MVS 的几何严谨性，又利用了深度学习强大的特征表达能力，完美解决了非结构化多视图的深度推断问题。</li></ul><h2 id="一、网络结构"><a href="#一、网络结构" class="headerlink" title="一、网络结构"></a>一、网络结构</h2><ul><li><h3 id="网络整体结构"><a href="#网络整体结构" class="headerlink" title="网络整体结构"></a>网络整体结构</h3></li></ul><p><img src="/img/post/0008_MVSNet_Paper/1.webp" alt="MVSNet 网络整体结构"></p><ul><li><h3 id="Feature-Extraction的结构"><a href="#Feature-Extraction的结构" class="headerlink" title="Feature Extraction的结构"></a>Feature Extraction的结构</h3></li></ul><p><img src="/img/post/0008_MVSNet_Paper/2.webp" alt="特征提取网络结构"></p><ul><li><h3 id="Differentiable-Homography"><a href="#Differentiable-Homography" class="headerlink" title="Differentiable Homography"></a>Differentiable Homography</h3></li></ul><blockquote><p>具体可以看下这个：<a href="https://ywxk2016.github.io/2026/09/23/MVSNet_Homography/">MVSNet中的单应性公式推导 - 仰望星空</a></p></blockquote><ul><li><h3 id="Cost-Volume-Regularization的结构"><a href="#Cost-Volume-Regularization的结构" class="headerlink" title="Cost Volume Regularization的结构"></a>Cost Volume Regularization的结构</h3></li></ul><p><img src="/img/post/0008_MVSNet_Paper/3.webp" alt="代价体正则化网络结构"></p><ul><li><h3 id="Deep-Map-Refinement的结构"><a href="#Deep-Map-Refinement的结构" class="headerlink" title="Deep Map Refinement的结构"></a>Deep Map Refinement的结构</h3></li></ul><p><img src="/img/post/0008_MVSNet_Paper/4.webp" alt="深度图细化网络结构"></p><h2 id="二、代码与论文描述的出入"><a href="#二、代码与论文描述的出入" class="headerlink" title="二、代码与论文描述的出入"></a>二、代码与论文描述的出入</h2><h3 id="1-特征提取网络"><a href="#1-特征提取网络" class="headerlink" title="1. 特征提取网络"></a>1. 特征提取网络</h3><ul><li>论文中：使用的是8层的2D CNN，除最后一层外，其它层后面都带有BN和ReLU，对应代码为：</li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># mvsnet.py</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">UniNetDS2</span>(<span class="hljs-title class_ inherited__">Network</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;Simple UniNet, as described in the paper.&quot;&quot;&quot;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">setup</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&#x27;2D with 32 filters&#x27;</span>)<br>        base_filter = <span class="hljs-number">8</span><br>        <span class="hljs-comment"># 链式调用</span><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;data&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv0_0&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv0_1&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">5</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv1_0&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv1_1&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv1_2&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">5</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv2_0&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv2_1&#x27;</span>)<br>        .conv(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, biased=<span class="hljs-literal">False</span>, relu=<span class="hljs-literal">False</span>, name=<span class="hljs-string">&#x27;conv2_2&#x27;</span>))<br></code></pre></td></tr></table></figure><ul><li>代码中：没有使用论文中介绍的网络，使用的是另一个网络UNetDS2GN：</li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># mvsnet.py</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">UNetDS2GN</span>(<span class="hljs-title class_ inherited__">Network</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;2D U-Net with group normalization.&quot;&quot;&quot;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">setup</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&#x27;2D UNet with 32 channel output&#x27;</span>)<br>        base_filter = <span class="hljs-number">8</span><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;data&#x27;</span>)  <br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv1_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv2_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv3_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">16</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv4_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;data&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv0_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv0_2&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv1_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv1_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv1_2&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv2_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv2_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv2_2&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv3_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv3_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv3_2&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv4_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">16</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv4_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">16</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv4_2&#x27;</span>)<br>        .deconv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv5_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv5_0&#x27;</span>, <span class="hljs-string">&#x27;2dconv3_2&#x27;</span>)<br>        .concat(axis=-<span class="hljs-number">1</span>, name=<span class="hljs-string">&#x27;2dconcat5_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv5_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv5_2&#x27;</span>)<br>        .deconv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv6_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv6_0&#x27;</span>, <span class="hljs-string">&#x27;2dconv2_2&#x27;</span>)<br>        .concat(axis=-<span class="hljs-number">1</span>, name=<span class="hljs-string">&#x27;2dconcat6_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv6_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv6_2&#x27;</span>)<br>        .deconv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv7_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv7_0&#x27;</span>, <span class="hljs-string">&#x27;2dconv1_2&#x27;</span>)<br>        .concat(axis=-<span class="hljs-number">1</span>, name=<span class="hljs-string">&#x27;2dconcat7_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv7_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv7_2&#x27;</span>)<br>        .deconv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv8_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv8_0&#x27;</span>, <span class="hljs-string">&#x27;2dconv0_2&#x27;</span>)<br>        .concat(axis=-<span class="hljs-number">1</span>, name=<span class="hljs-string">&#x27;2dconcat8_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv8_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv8_2&#x27;</span>)   <span class="hljs-comment"># end of UNet</span><br>        .conv_gn(<span class="hljs-number">5</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv9_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv9_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv9_2&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">5</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv10_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv10_1&#x27;</span>)<br>        .conv(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, biased=<span class="hljs-literal">False</span>, relu = <span class="hljs-literal">False</span>, name=<span class="hljs-string">&#x27;conv10_2&#x27;</span>))<br></code></pre></td></tr></table></figure><h3 id="2-单应矩阵计算公式"><a href="#2-单应矩阵计算公式" class="headerlink" title="2. 单应矩阵计算公式"></a>2. 单应矩阵计算公式</h3><ul><li>论文中的推导公式：</li></ul><div class="mathjax-block">$${\rm H}_i(d)={\rm K}_i \centerdot {\rm R}_i \centerdot ({\rm I}-\frac{(t_1-t_i) \centerdot {\rm n}_1^T}{d}) \centerdot {\rm R}_1^T \centerdot {\rm K}_1^T$$</div><ul><li>代码推导得到的公式：<div class="mathjax-block">$${\rm H}_i(d)={\rm K}_i\centerdot{\rm R}_i\centerdot({\rm I}-\frac{({\rm R}_1^T t_1-{\rm R}_i^T t_i)n_1^T}{d})\centerdot{\rm R}_1^T\centerdot{\rm k}_1^{-1}$$</div></li></ul><h3 id="3-基于方差的成本度量公式"><a href="#3-基于方差的成本度量公式" class="headerlink" title="3. 基于方差的成本度量公式"></a>3. 基于方差的成本度量公式</h3><ul><li><p>论文中的成本度量公式：</p><div class="mathjax-block">$${\rm C} = \mathcal{M}({\rm V}_1,\dots,{\rm V}_N)=\frac{\sum\limits_{i=1}^N({\rm V}_i-\overline{\rm V}_i)^2}{N}$$</div></li><li><p>代码推导得到的成本度量公式：</p></li></ul><div class="mathjax-block">$${\rm C}=\frac{\sum\limits_{i=1}^{N}{\rm V}_i^2-\frac{(\sum\limits_{i=1}^{N}{\rm V}_i)^2}{N}}{N}$$</div>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机视觉</category>
+      
+      <category>三维重建</category>
+      
+      <category>MVS</category>
+      
+      <category>论文阅读和复现</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>相机模型</tag>
+      
+      <tag>MVSNet</tag>
+      
+      <tag>多视图立体匹配</tag>
+      
+      <tag>单应性变换</tag>
+      
+      <tag>ECCV2018</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MVSNet中的单应性公式推导</title>
     <link href="/2026/09/23/MVSNet_Homography/"/>
     <url>/2026/09/23/MVSNet_Homography/</url>
@@ -14,6 +53,8 @@
     <categories>
       
       <category>计算机视觉</category>
+      
+      <category>三维重建</category>
       
       <category>MVS</category>
       
@@ -86,8 +127,6 @@
     
     <tags>
       
-      <tag>源码编译</tag>
-      
       <tag>OpenCV</tag>
       
       <tag>opencv contrib</tag>
@@ -95,6 +134,8 @@
       <tag>CMake</tag>
       
       <tag>Visual Studio</tag>
+      
+      <tag>源码编译</tag>
       
     </tags>
     
@@ -113,6 +154,8 @@
     <categories>
       
       <category>计算机视觉</category>
+      
+      <category>基础理论</category>
       
     </categories>
     
@@ -147,6 +190,8 @@
     
     <categories>
       
+      <category>计算机视觉</category>
+      
       <category>三维重建</category>
       
       <category>colmap</category>
@@ -156,9 +201,9 @@
     
     <tags>
       
-      <tag>colmap</tag>
-      
       <tag>三维重建</tag>
+      
+      <tag>colmap</tag>
       
       <tag>命令行</tag>
       
@@ -178,6 +223,8 @@
     
     <categories>
       
+      <category>计算机视觉</category>
+      
       <category>三维重建</category>
       
       <category>colmap</category>
@@ -187,9 +234,9 @@
     
     <tags>
       
-      <tag>colmap</tag>
-      
       <tag>三维重建</tag>
+      
+      <tag>colmap</tag>
       
       <tag>源码编译</tag>
       
@@ -210,6 +257,8 @@
     
     
     <categories>
+      
+      <category>其他分类</category>
       
       <category>博客搭建</category>
       

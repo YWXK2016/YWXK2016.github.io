@@ -17,32 +17,32 @@
   
   <meta name="theme-color" content="#2f4154">
   <meta name="author" content="仰望星空">
-  <meta name="keywords" content="OpenCV,opencv contrib,CMake,Visual Studio,源码编译">
+  <meta name="keywords" content="MVSNet,多视图立体匹配,单应性变换,相机模型,ECCV2018">
   
-    <meta name="description" content="基于Windows平台使用CMake和Visual Studio 2017编译opencv contrib。">
+    <meta name="description" content="根据开源代码理解MVSNet网络结构的实现细节，并比较代码实现与论文中的差异。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenCV扩展模块的安装与配置">
-<meta property="og:url" content="https://ywxk2016.github.io/2026/09/23/0005_OpenCV_Contrib_Compilation/index.html">
+<meta property="og:title" content="[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo">
+<meta property="og:url" content="https://ywxk2016.github.io/2026/09/23/MVSNet_Paper/index.html">
 <meta property="og:site_name" content="仰望星空">
-<meta property="og:description" content="基于Windows平台使用CMake和Visual Studio 2017编译opencv contrib。">
+<meta property="og:description" content="根据开源代码理解MVSNet网络结构的实现细节，并比较代码实现与论文中的差异。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ywxk2016.github.io/img/covers/OpenCV.webp">
-<meta property="article:published_time" content="2026-09-23T00:45:00.000Z">
+<meta property="og:image" content="https://ywxk2016.github.io/img/covers/MVSNet.webp">
+<meta property="article:published_time" content="2026-09-23T15:51:00.000Z">
 <meta property="article:modified_time" content="2026-09-23T09:47:47.936Z">
 <meta property="article:author" content="仰望星空">
-<meta property="article:tag" content="CMake">
-<meta property="article:tag" content="OpenCV">
-<meta property="article:tag" content="Visual Studio">
-<meta property="article:tag" content="opencv contrib">
-<meta property="article:tag" content="源码编译">
+<meta property="article:tag" content="ECCV2018">
+<meta property="article:tag" content="MVSNet">
+<meta property="article:tag" content="单应性变换">
+<meta property="article:tag" content="多视图立体匹配">
+<meta property="article:tag" content="相机模型">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/OpenCV.webp">
+<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/MVSNet.webp">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>OpenCV扩展模块的安装与配置 - 仰望星空</title>
+  <title>[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo - 仰望星空</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -590,7 +590,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">OpenCV扩展模块的安装与配置</span>
+            <span id="subtitle">[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo</span>
           
         </div>
 
@@ -601,8 +601,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-09-23 00:45" pubdate>
-          2026年9月23日 凌晨
+        <time datetime="2026-09-23 15:51" pubdate>
+          2026年9月23日 下午
         </time>
       </span>
     
@@ -613,7 +613,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.8k 字
+          5.4k 字
         
       </span>
     
@@ -624,7 +624,7 @@
         
         
         
-          74 分钟
+          45 分钟
         
       </span>
     
@@ -676,61 +676,73 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">OpenCV扩展模块的安装与配置</h1>
+            <h1 id="seo-header">[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="OpenCV扩展模块的安装与配置"><a href="#OpenCV扩展模块的安装与配置" class="headerlink" title="OpenCV扩展模块的安装与配置"></a>OpenCV扩展模块的安装与配置</h1><h2 id="一、opencv-contrib-下载"><a href="#一、opencv-contrib-下载" class="headerlink" title="一、opencv contrib 下载"></a>一、opencv contrib 下载</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/opencv/opencv_contrib/tags?after=3.4.15">下载地址</a></p>
-<p>下载opencv_contrib 4.5.1版本对应的zip压缩包到<code>D:\software\opencv451</code>并解压，然后使用CMake工具生成编译工程。</p>
-</blockquote>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/1.webp" srcset="/img/loading.gif" lazyload></p>
-<h2 id="二、使用CMake生成基于Visual-Studio-2017的OpenCV源码编译工程"><a href="#二、使用CMake生成基于Visual-Studio-2017的OpenCV源码编译工程" class="headerlink" title="二、使用CMake生成基于Visual Studio 2017的OpenCV源码编译工程"></a>二、使用CMake生成基于Visual Studio 2017的OpenCV源码编译工程</h2><blockquote>
-<p>CMake版本3.12.3</p>
-<p>在<code>D:\software\opencv451</code>目录下新建文件夹<code>MyBuild</code>，打开CMake，选择源码路径和build目录。勾选<code>BUILD_opencv_world</code>和<code>OPENCV_ENABLE_NONFREE</code>，并将<code>OPENCV_EXTRA_MODULES_PATH</code>设置为<code>D:/software/opencv451/opencv_contrib-4.5.1/modules</code>。<br>注意：windows系统下拷贝出来的路径分隔符是”&quot;，需要改成”&#x2F;“。</p>
-</blockquote>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/2.webp" srcset="/img/loading.gif" lazyload></p>
-<blockquote>
-<p>然后依次点击Configure和Generate，Configure过程中可能会提示下载依赖文件失败的问题，解决办法比较简单，在第一条参考内容中有描述。解决所有问题后Configure和Generate时打印的信息如下：</p>
-</blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br></pre></td><td class="code"><pre><code class="hljs shell">Selecting Windows SDK version 10.0.17763.0 to target Windows 10.0.19045.<br>Detected processor: AMD64<br>Could NOT find PythonInterp: Found unsuitable version &quot;1.4&quot;, but required is at least &quot;3.2&quot; (found C:/Users/ywxk/AppData/Local/Microsoft/WindowsApps/python3.exe)<br>libjpeg-turbo: VERSION = 2.0.6, BUILD = opencv-4.5.1-libjpeg-turbo<br>Could NOT find OpenJPEG (minimal suitable version: 2.0, recommended version &gt;= 2.3.1). OpenJPEG will be built from sources<br>OpenJPEG: VERSION = 2.3.1, BUILD = opencv-4.5.1-openjp2-2.3.1<br>OpenJPEG libraries will be built from sources: libopenjp2 (version &quot;2.3.1&quot;)<br>found Intel IPP (ICV version): 2020.0.0 [2020.0.0 Gold]<br>at: D:/software/opencv451/MyBuild/3rdparty/ippicv/ippicv_win/icv<br>found Intel IPP Integration Wrappers sources: 2020.0.0<br>at: D:/software/opencv451/MyBuild/3rdparty/ippicv/ippicv_win/iw<br>Could not find OpenBLAS include. Turning OpenBLAS_FOUND off<br>Could not find OpenBLAS lib. Turning OpenBLAS_FOUND off<br>Could NOT find BLAS (missing: BLAS_LIBRARIES) <br>LAPACK requires BLAS<br>A library with LAPACK API not found. Please specify library location.<br>Could NOT find JNI (missing: JAVA_AWT_LIBRARY JAVA_JVM_LIBRARY JAVA_INCLUDE_PATH JAVA_INCLUDE_PATH2 JAVA_AWT_INCLUDE_PATH) <br>VTK is not found. Please set -DVTK_DIR in CMake to VTK build directory, or to VTK install subdirectory with VTKConfig.cmake file<br>OpenCV Python: during development append to PYTHONPATH: D:/software/opencv451/MyBuild/python_loader<br>Caffe:   NO<br>Protobuf:   NO<br>Glog:   YES<br>freetype2:   NO<br>harfbuzz:    NO<br>Julia not found. Not compiling Julia Bindings. <br>Module opencv_ovis disabled because OGRE3D was not found<br>CERES support is disabled. Ceres Solver for reconstruction API is required.<br>Tesseract:   NO<br>Processing WORLD modules...<br>    module opencv_core...<br>Allocator metrics storage type: &#x27;long long&#x27;<br>    module opencv_flann...<br>    module opencv_imgproc...<br>    module opencv_intensity_transform...<br>    module opencv_ml...<br>    module opencv_phase_unwrapping...<br>    module opencv_photo...<br>    module opencv_plot...<br>    module opencv_quality...<br>    module opencv_reg...<br>    module opencv_surface_matching...<br>    module opencv_xphoto...<br>    module opencv_alphamat...<br>    module opencv_dnn...<br>Registering hook &#x27;INIT_MODULE_SOURCES_opencv_dnn&#x27;: D:/software/opencv451/sources/modules/dnn/cmake/hooks/INIT_MODULE_SOURCES_opencv_dnn.cmake<br>opencv_dnn: filter out cuda4dnn source code<br>    module opencv_dnn_superres...<br>    module opencv_features2d...<br>    module opencv_fuzzy...<br>    module opencv_hfs...<br>    module opencv_imgcodecs...<br>    module opencv_line_descriptor...<br>    module opencv_saliency...<br>    module opencv_text...<br>    module opencv_videoio...<br>    module opencv_calib3d...<br>    module opencv_datasets...<br>    module opencv_highgui...<br>    module opencv_mcc...<br>    module opencv_objdetect...<br>    module opencv_rapid...<br>    module opencv_rgbd...<br>rgbd: CERES support is disabled. Ceres Solver is Required for Posegraph optimization<br>    module opencv_shape...<br>    module opencv_structured_light...<br>    module opencv_video...<br>    module opencv_videostab...<br>    module opencv_xfeatures2d...<br>    module opencv_ximgproc...<br>    module opencv_xobjdetect...<br>    module opencv_aruco...<br>    module opencv_bgsegm...<br>    module opencv_bioinspired...<br>    module opencv_ccalib...<br>    module opencv_dnn_objdetect...<br>    module opencv_dpm...<br>    module opencv_face...<br>    module opencv_gapi...<br>    module opencv_optflow...<br>    module opencv_stitching...<br>    module opencv_superres...<br>    module opencv_tracking...<br>    module opencv_stereo...<br>Processing WORLD modules... DONE<br>CERES support is disabled. Ceres Solver for reconstruction API is required.<br><br>General configuration for OpenCV 4.5.1 =====================================<br>  Version control:               unknown<br><br>  Extra modules:<br>    Location (extra):            D:/software/opencv451/opencv_contrib-4.5.1/modules<br>    Version control (extra):     unknown<br><br>  Platform:<br>    Timestamp:                   2026-07-16T16:36:16Z<br>    Host:                        Windows 10.0.19045 AMD64<br>    CMake:                       3.12.3<br>    CMake generator:             Visual Studio 15 2017 Win64<br>    CMake build tool:            D:/software/vs2017/MSBuild/15.0/Bin/MSBuild.exe<br>    MSVC:                        1916<br><br>  CPU/HW features:<br>    Baseline:                    SSE SSE2 SSE3<br>      requested:                 SSE3<br>    Dispatched code generation:  SSE4_1 SSE4_2 FP16 AVX AVX2 AVX512_SKX<br>      requested:                 SSE4_1 SSE4_2 AVX FP16 AVX2 AVX512_SKX<br>      SSE4_1 (17 files):         + SSSE3 SSE4_1<br>      SSE4_2 (2 files):          + SSSE3 SSE4_1 POPCNT SSE4_2<br>      FP16 (1 files):            + SSSE3 SSE4_1 POPCNT SSE4_2 FP16 AVX<br>      AVX (5 files):             + SSSE3 SSE4_1 POPCNT SSE4_2 AVX<br>      AVX2 (31 files):           + SSSE3 SSE4_1 POPCNT SSE4_2 FP16 FMA3 AVX AVX2<br>      AVX512_SKX (7 files):      + SSSE3 SSE4_1 POPCNT SSE4_2 FP16 FMA3 AVX AVX2 AVX_512F AVX512_COMMON AVX512_SKX<br><br>  C/C++:<br>    Built as dynamic libs?:      YES<br>    C++ standard:                11<br>    C++ Compiler:                D:/software/vs2017/VC/Tools/MSVC/14.16.27023/bin/Hostx86/x64/cl.exe  (ver 19.16.27045.0)<br>    C++ flags (Release):         /DWIN32 /D_WINDOWS /W4 /GR  /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D _SCL_SECURE_NO_WARNINGS /Gy /bigobj /Oi  /fp:precise     /EHa /wd4127 /wd4251 /wd4324 /wd4275 /wd4512 /wd4589 /MP  /MD /O2 /Ob2 /DNDEBUG <br>    C++ flags (Debug):           /DWIN32 /D_WINDOWS /W4 /GR  /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D _SCL_SECURE_NO_WARNINGS /Gy /bigobj /Oi  /fp:precise     /EHa /wd4127 /wd4251 /wd4324 /wd4275 /wd4512 /wd4589 /MP  /MDd /Zi /Ob0 /Od /RTC1 <br>    C Compiler:                  D:/software/vs2017/VC/Tools/MSVC/14.16.27023/bin/Hostx86/x64/cl.exe<br>    C flags (Release):           /DWIN32 /D_WINDOWS /W3  /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D _SCL_SECURE_NO_WARNINGS /Gy /bigobj /Oi  /fp:precise     /MP   /MD /O2 /Ob2 /DNDEBUG <br>    C flags (Debug):             /DWIN32 /D_WINDOWS /W3  /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D _SCL_SECURE_NO_WARNINGS /Gy /bigobj /Oi  /fp:precise     /MP /MDd /Zi /Ob0 /Od /RTC1 <br>    Linker flags (Release):      /machine:x64  /INCREMENTAL:NO <br>    Linker flags (Debug):        /machine:x64  /debug /INCREMENTAL <br>    ccache:                      NO<br>    Precompiled headers:         NO<br>    Extra dependencies:<br>    3rdparty dependencies:<br><br>  OpenCV modules:<br>    To be built:                 alphamat aruco bgsegm bioinspired calib3d ccalib core datasets dnn dnn_objdetect dnn_superres dpm face features2d flann fuzzy gapi hfs highgui img_hash imgcodecs imgproc intensity_transform line_descriptor mcc ml objdetect optflow phase_unwrapping photo plot quality rapid reg rgbd saliency sfm shape stereo stitching structured_light superres surface_matching text tracking ts video videoio videostab world xfeatures2d ximgproc xobjdetect xphoto<br>    Disabled:                    -<br>    Disabled by dependency:      -<br>    Unavailable:                 cnn_3dobj cudaarithm cudabgsegm cudacodec cudafeatures2d cudafilters cudaimgproc cudalegacy cudaobjdetect cudaoptflow cudastereo cudawarping cudev cvv freetype hdf java julia matlab ovis python2 python3 viz<br>    Applications:                tests perf_tests apps<br>    Documentation:               NO<br>    Non-free algorithms:         YES<br><br>  Windows RT support:            NO<br><br>  GUI: <br>    Win32 UI:                    YES<br>    VTK support:                 NO<br><br>  Media I/O: <br>    ZLib:                        build (ver 1.2.11)<br>    JPEG:                        build-libjpeg-turbo (ver 2.0.6-62)<br>    WEBP:                        build (ver encoder: 0x020f)<br>    PNG:                         build (ver 1.6.37)<br>    TIFF:                        build (ver 42 - 4.0.10)<br>    JPEG 2000:                   build (ver 2.3.1)<br>    OpenEXR:                     build (ver 2.3.0)<br>    HDR:                         YES<br>    SUNRASTER:                   YES<br>    PXM:                         YES<br>    PFM:                         YES<br><br>  Video I/O:<br>    DC1394:                      NO<br>    FFMPEG:                      YES (prebuilt binaries)<br>      avcodec:                   YES (58.91.100)<br>      avformat:                  YES (58.45.100)<br>      avutil:                    YES (56.51.100)<br>      swscale:                   YES (5.7.100)<br>      avresample:                YES (4.0.0)<br>    GStreamer:                   NO<br>    DirectShow:                  YES<br>    Media Foundation:            YES<br>      DXVA:                      YES<br><br>  Parallel framework:            Concurrency<br><br>  Trace:                         YES (with Intel ITT)<br><br>  Other third-party libraries:<br>    Intel IPP:                   2020.0.0 Gold [2020.0.0]<br>           at:                   D:/software/opencv451/MyBuild/3rdparty/ippicv/ippicv_win/icv<br>    Intel IPP IW:                sources (2020.0.0)<br>              at:                D:/software/opencv451/MyBuild/3rdparty/ippicv/ippicv_win/iw<br>    Lapack:                      NO<br>    Eigen:                       YES (ver 3.3.7)<br>    Custom HAL:                  NO<br>    Protobuf:                    build (3.5.1)<br><br>  OpenCL:                        YES (NVD3D11)<br>    Include path:                D:/software/opencv451/sources/3rdparty/include/opencl/1.2<br>    Link libraries:              Dynamic load<br><br>  Python (for build):            NO<br><br>  Java:                          <br>    ant:                         NO<br>    JNI:                         NO<br>    Java wrappers:               NO<br>    Java tests:                  NO<br><br>  Install to:                    D:/software/opencv451/MyBuild/install<br>-----------------------------------------------------------------<br><br>Configuring done<br>Generating done<br></code></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Generate完成之后会在<code>D:\software\opencv451\MyBuild</code>目录下生成Visual Studio 2017项目工程，双击<code>OpenCV.sln</code>即可在Visual Studio 2017中打开工程进行编译。</p>
-</blockquote>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/3.webp" srcset="/img/loading.gif" lazyload></p>
-<h2 id="三、使用Visual-studio-2017编译OpenCV源码"><a href="#三、使用Visual-studio-2017编译OpenCV源码" class="headerlink" title="三、使用Visual studio 2017编译OpenCV源码"></a>三、使用Visual studio 2017编译OpenCV源码</h2><blockquote>
-<p>打开<code>OpenCV.sln</code>后，选择<code>生成/批生成</code>。</p>
-</blockquote>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/4.webp" srcset="/img/loading.gif" lazyload></p>
-<blockquote>
-<p>勾选如下四个选项，然后点击生成。等待编译即可。</p>
-</blockquote>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/5.webp" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/6.webp" srcset="/img/loading.gif" lazyload></p>
-<blockquote>
-<p>期间可能会编译报错，原因是有些依赖库只有release版本没有debug版本，可以自行下载对应源码进行编译生成对应的debug版本的库文件。</p>
-</blockquote>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/7.webp" srcset="/img/loading.gif" lazyload></p>
-<blockquote>
-<p>这个问题的原因是编译debug版本的opencv_sfm时，没有对应的glog依赖库。CMake时检测到本地（D:\software\colmap\colmap-dev\build_<em>install</em>_\lib\glog.lib，之前编译Colmap时安装的）存在release版本的glog依赖库，因此编译release版本的opencv_sfm时没有问题。</p>
-<p><strong>解决办法</strong>：下载glog源码，重新编译生成debug版本的动态库，然后右键单击modules&#x2F;opencv_sfm择属性，在<code>通用属性/VC++目录/包含目录</code>中添加<code>D:\software\opencv451\glog-0.4.0\mybuild\glog</code>，在<code>通用属性/链接器/输入/附加依赖项</code>中添加<code>D:\software\opencv451\glog-0.4.0\mybuild\Debug\glogd.lib</code>然后再重新生成即可。</p>
-</blockquote>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/8.webp" srcset="/img/loading.gif" lazyload></p>
-<blockquote>
-<p>这个问题的原因是编译debug版本的opencv_sfm时使用的release版本的gflags库，同样需要将gflags源码重编生成debug版本的动态库，然后将这个附加依赖项改为<code>D:\software\colmap\colmap-dev\build\gflags\__build__\lib\Debug\gflags_nothreads_static_debug.lib</code></p>
-</blockquote>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/9.webp" srcset="/img/loading.gif" lazyload></p>
-<blockquote>
-<p>解决以上两个问题即可完成OpenCV的源码编译，release版本和debug版本均可使用。</p>
-</blockquote>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/10.webp" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/img/post/0005_OpenCV_Contrib_Compilation/11.webp" srcset="/img/loading.gif" lazyload></p>
-<h2 id="四、参考内容"><a href="#四、参考内容" class="headerlink" title="四、参考内容"></a>四、参考内容</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/620264713">opencv4.5.1+Contrib+VS2019源码编译</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/GHL284271090/article/details/159169334">glog_v0.7编译及使用</a></li>
+                <h1 id="论文阅读-MVSNet-Depth-Inference-for-Unstructured-Multi-view-Stereo"><a href="#论文阅读-MVSNet-Depth-Inference-for-Unstructured-Multi-view-Stereo" class="headerlink" title="[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo"></a>[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo</h1><ul>
+<li><code>MVSNet</code>是计算机视觉三维重建领域的里程碑式工作，由香港科技大学姚遥等人提出，发表于 ECCV 2018（并获 Oral 口头报告）。作为首个端到端深度学习多视图立体视觉（MVS）框架，它彻底改变了传统依赖手工特征与启发式匹配的范式。</li>
+<li>它的输入是一副参考图像和几张其他视角的图像，最终预测出的是参考图像的深度图。每次选择不同的图像作为参考图像就能得到各个视角下的深度图。</li>
+<li><strong>历史地位</strong>：MVSNet 开启了“基于代价体的深度学习 MVS”这一主流研究方向。后续著名的 <strong>R-MVSNet</strong>（引入循环神经网络优化）、<strong>Cascade MVSNet</strong>（级联细化）、<strong>Point-MVSNet</strong> 等均是基于此工作的改进。</li>
+<li><strong>核心贡献</strong>：<strong>将几何先验（相机参数、单应性变换）显式地嵌入到深度学习网络中</strong>，既保留了传统 MVS 的几何严谨性，又利用了深度学习强大的特征表达能力，完美解决了非结构化多视图的深度推断问题。</li>
 </ul>
+<h2 id="一、网络结构"><a href="#一、网络结构" class="headerlink" title="一、网络结构"></a>一、网络结构</h2><ul>
+<li><h3 id="网络整体结构"><a href="#网络整体结构" class="headerlink" title="网络整体结构"></a>网络整体结构</h3></li>
+</ul>
+<p><img src="/img/post/0008_MVSNet_Paper/1.webp" srcset="/img/loading.gif" lazyload alt="MVSNet 网络整体结构"></p>
+<ul>
+<li><h3 id="Feature-Extraction的结构"><a href="#Feature-Extraction的结构" class="headerlink" title="Feature Extraction的结构"></a>Feature Extraction的结构</h3></li>
+</ul>
+<p><img src="/img/post/0008_MVSNet_Paper/2.webp" srcset="/img/loading.gif" lazyload alt="特征提取网络结构"></p>
+<ul>
+<li><h3 id="Differentiable-Homography"><a href="#Differentiable-Homography" class="headerlink" title="Differentiable Homography"></a>Differentiable Homography</h3></li>
+</ul>
+<blockquote>
+<p>具体可以看下这个：<a href="https://ywxk2016.github.io/2026/09/23/MVSNet_Homography/">MVSNet中的单应性公式推导 - 仰望星空</a></p>
+</blockquote>
+<ul>
+<li><h3 id="Cost-Volume-Regularization的结构"><a href="#Cost-Volume-Regularization的结构" class="headerlink" title="Cost Volume Regularization的结构"></a>Cost Volume Regularization的结构</h3></li>
+</ul>
+<p><img src="/img/post/0008_MVSNet_Paper/3.webp" srcset="/img/loading.gif" lazyload alt="代价体正则化网络结构"></p>
+<ul>
+<li><h3 id="Deep-Map-Refinement的结构"><a href="#Deep-Map-Refinement的结构" class="headerlink" title="Deep Map Refinement的结构"></a>Deep Map Refinement的结构</h3></li>
+</ul>
+<p><img src="/img/post/0008_MVSNet_Paper/4.webp" srcset="/img/loading.gif" lazyload alt="深度图细化网络结构"></p>
+<h2 id="二、代码与论文描述的出入"><a href="#二、代码与论文描述的出入" class="headerlink" title="二、代码与论文描述的出入"></a>二、代码与论文描述的出入</h2><h3 id="1-特征提取网络"><a href="#1-特征提取网络" class="headerlink" title="1. 特征提取网络"></a>1. 特征提取网络</h3><ul>
+<li>论文中：使用的是8层的2D CNN，除最后一层外，其它层后面都带有BN和ReLU，对应代码为：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># mvsnet.py</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">UniNetDS2</span>(<span class="hljs-title class_ inherited__">Network</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;Simple UniNet, as described in the paper.&quot;&quot;&quot;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">setup</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&#x27;2D with 32 filters&#x27;</span>)<br>        base_filter = <span class="hljs-number">8</span><br>        <span class="hljs-comment"># 链式调用</span><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;data&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv0_0&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv0_1&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">5</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv1_0&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv1_1&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv1_2&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">5</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv2_0&#x27;</span>)<br>        .conv_bn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv2_1&#x27;</span>)<br>        .conv(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, biased=<span class="hljs-literal">False</span>, relu=<span class="hljs-literal">False</span>, name=<span class="hljs-string">&#x27;conv2_2&#x27;</span>))<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>代码中：没有使用论文中介绍的网络，使用的是另一个网络UNetDS2GN：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># mvsnet.py</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">UNetDS2GN</span>(<span class="hljs-title class_ inherited__">Network</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;2D U-Net with group normalization.&quot;&quot;&quot;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">setup</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&#x27;2D UNet with 32 channel output&#x27;</span>)<br>        base_filter = <span class="hljs-number">8</span><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;data&#x27;</span>)  <br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv1_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv2_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv3_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">16</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv4_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;data&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv0_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv0_2&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv1_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv1_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv1_2&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv2_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv2_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv2_2&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv3_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv3_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv3_2&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv4_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">16</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv4_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">16</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv4_2&#x27;</span>)<br>        .deconv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv5_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv5_0&#x27;</span>, <span class="hljs-string">&#x27;2dconv3_2&#x27;</span>)<br>        .concat(axis=-<span class="hljs-number">1</span>, name=<span class="hljs-string">&#x27;2dconcat5_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv5_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv5_2&#x27;</span>)<br>        .deconv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv6_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv6_0&#x27;</span>, <span class="hljs-string">&#x27;2dconv2_2&#x27;</span>)<br>        .concat(axis=-<span class="hljs-number">1</span>, name=<span class="hljs-string">&#x27;2dconcat6_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv6_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv6_2&#x27;</span>)<br>        .deconv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv7_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv7_0&#x27;</span>, <span class="hljs-string">&#x27;2dconv1_2&#x27;</span>)<br>        .concat(axis=-<span class="hljs-number">1</span>, name=<span class="hljs-string">&#x27;2dconcat7_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv7_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv7_2&#x27;</span>)<br>        .deconv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv8_0&#x27;</span>))<br><br>        (<span class="hljs-variable language_">self</span>.feed(<span class="hljs-string">&#x27;2dconv8_0&#x27;</span>, <span class="hljs-string">&#x27;2dconv0_2&#x27;</span>)<br>        .concat(axis=-<span class="hljs-number">1</span>, name=<span class="hljs-string">&#x27;2dconcat8_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv8_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;2dconv8_2&#x27;</span>)   <span class="hljs-comment"># end of UNet</span><br>        .conv_gn(<span class="hljs-number">5</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv9_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv9_1&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv9_2&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">5</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv10_0&#x27;</span>)<br>        .conv_gn(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, center=<span class="hljs-literal">True</span>, scale=<span class="hljs-literal">True</span>, name=<span class="hljs-string">&#x27;conv10_1&#x27;</span>)<br>        .conv(<span class="hljs-number">3</span>, base_filter * <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, biased=<span class="hljs-literal">False</span>, relu = <span class="hljs-literal">False</span>, name=<span class="hljs-string">&#x27;conv10_2&#x27;</span>))<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-单应矩阵计算公式"><a href="#2-单应矩阵计算公式" class="headerlink" title="2. 单应矩阵计算公式"></a>2. 单应矩阵计算公式</h3><ul>
+<li>论文中的推导公式：</li>
+</ul>
+<div class="mathjax-block">$$
+{\rm H}_i(d)={\rm K}_i \centerdot {\rm R}_i \centerdot ({\rm I}-\frac{(t_1-t_i) \centerdot {\rm n}_1^T}{d}) \centerdot {\rm R}_1^T \centerdot {\rm K}_1^T
+$$</div>
+<ul>
+<li>代码推导得到的公式：<div class="mathjax-block">$$
+{\rm H}_i(d)={\rm K}_i\centerdot{\rm R}_i\centerdot({\rm I}-\frac{({\rm R}_1^T t_1-{\rm R}_i^T t_i)n_1^T}{d})\centerdot{\rm R}_1^T\centerdot{\rm k}_1^{-1}
+$$</div>
+</li>
+</ul>
+<h3 id="3-基于方差的成本度量公式"><a href="#3-基于方差的成本度量公式" class="headerlink" title="3. 基于方差的成本度量公式"></a>3. 基于方差的成本度量公式</h3><ul>
+<li><p>论文中的成本度量公式：</p>
+<div class="mathjax-block">$$
+{\rm C} = \mathcal{M}({\rm V}_1,\dots,{\rm V}_N)=\frac{\sum\limits_{i=1}^N({\rm V}_i-\overline{\rm V}_i)^2}{N}
+$$</div>
+</li>
+<li><p>代码推导得到的成本度量公式：</p>
+</li>
+</ul>
+<div class="mathjax-block">$$
+{\rm C}=\frac{\sum\limits_{i=1}^{N}{\rm V}_i^2-\frac{(\sum\limits_{i=1}^{N}{\rm V}_i)^2}{N}}{N}
+$$</div>
 
                 
               </div>
@@ -754,10 +766,27 @@
   
     <span>></span>
     
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/OpenCV/" class="category-chain-item">OpenCV</a>
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="category-chain-item">三维重建</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/MVS/" class="category-chain-item">MVS</a>
   
   
 
+  
+
+  
+
+      </span>
+    
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E5%92%8C%E5%A4%8D%E7%8E%B0/" class="category-chain-item">论文阅读和复现</a>
+  
   
 
       </span>
@@ -771,15 +800,15 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/OpenCV/" class="print-no-link">#OpenCV</a>
+        <a href="/tags/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/" class="print-no-link">#相机模型</a>
       
-        <a href="/tags/opencv-contrib/" class="print-no-link">#opencv contrib</a>
+        <a href="/tags/MVSNet/" class="print-no-link">#MVSNet</a>
       
-        <a href="/tags/CMake/" class="print-no-link">#CMake</a>
+        <a href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/" class="print-no-link">#多视图立体匹配</a>
       
-        <a href="/tags/Visual-Studio/" class="print-no-link">#Visual Studio</a>
+        <a href="/tags/%E5%8D%95%E5%BA%94%E6%80%A7%E5%8F%98%E6%8D%A2/" class="print-no-link">#单应性变换</a>
       
-        <a href="/tags/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" class="print-no-link">#源码编译</a>
+        <a href="/tags/ECCV2018/" class="print-no-link">#ECCV2018</a>
       
     </div>
   
@@ -791,8 +820,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>OpenCV扩展模块的安装与配置</div>
-      <div>https://ywxk2016.github.io/2026/09/23/0005_OpenCV_Contrib_Compilation/</div>
+      <div>[论文阅读] MVSNet: Depth Inference for Unstructured Multi-view Stereo</div>
+      <div>https://ywxk2016.github.io/2026/09/23/MVSNet_Paper/</div>
     </div>
     <div class="license-meta">
       
@@ -836,18 +865,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/09/23/0006_OpenCV_Mat_UMat/" title="OpenCV中的Mat和UMat的区别">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">OpenCV中的Mat和UMat的区别</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/09/22/Camera_Coordinate_System/" title="相机模型中几个坐标系的关系">
-                        <span class="hidden-mobile">相机模型中几个坐标系的关系</span>
+                      <a href="/2026/09/23/MVSNet_Homography/" title="MVSNet中的单应性公式推导">
+                        <span class="hidden-mobile">MVSNet中的单应性公式推导</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
