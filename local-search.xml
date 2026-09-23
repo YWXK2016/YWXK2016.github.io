@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>MVSNet中的单应性公式推导</title>
+    <link href="/2026/09/23/MVSNet_Homography/"/>
+    <url>/2026/09/23/MVSNet_Homography/</url>
+    
+    <content type="html"><![CDATA[<h1 id="MVSNet中的单应性公式推导"><a href="#MVSNet中的单应性公式推导" class="headerlink" title="MVSNet中的单应性公式推导"></a>MVSNet中的单应性公式推导</h1><p><img src="/img/post/0007_MVSNet_Homography/1.webp"></p><h2 id="一、已知两个相机坐标系之间的旋转平移矩阵"><a href="#一、已知两个相机坐标系之间的旋转平移矩阵" class="headerlink" title="一、已知两个相机坐标系之间的旋转平移矩阵"></a>一、已知两个相机坐标系之间的旋转平移矩阵</h2><blockquote><p>$X$为场景中的一点，它在摄像机的两个不同视角坐标系下的坐标分别为$M&#x3D;(X,Y,Z)^T$和$M’&#x3D;(X’,Y’,Z’)^T$，$X$在两幅图像上的齐次坐标分别为$m&#x3D;(x,y,1)^T$和$m’&#x3D;(x’,y’,1)^T$。于是可以得到：</p></blockquote><div class="mathjax-block">$$m\cong KM,\ m'\cong KM'\tag{1}$$</div><blockquote><p>其中，$\cong$表示在相差一个非零标量因子的意义下相等，$\begin{split} K&#x3D;\begin{bmatrix}f_u &amp; s &amp; u_0\ 0 &amp; f_v &amp; v_0\ 0 &amp; 0 &amp; 1\end{bmatrix}\end{split}$为摄像机内参矩阵。</p></blockquote><blockquote><p>$\pi$为场景中的一个平面，设平面$\pi$在第一个相机坐标系下的单位法向量为$n$，其到第一个相机中心（坐标原点）的距离为$d$，则平面$\pi$可以表示为:</p></blockquote><div class="mathjax-block">$$n^TM=d\tag{2}$$</div><blockquote><p>即</p></blockquote><div class="mathjax-block">$$\frac{1}{d}n^TM=1,∀M\in\pi\tag{3}$$</div><blockquote><p>$M$是三维点$X$在第一个相机坐标系下的坐标，其在第二个相机坐标系下的坐标为$M’$，两个相机坐标系之间的运动为$(R,T)$，其中：$R$是旋转运动分量，$T$是平移运动分量，则：</p></blockquote><div class="mathjax-block">$$M'=RM+T=RM+T\centerdot\frac{1}{d}n^TM=(R+T\centerdot\frac{1}{d}n^T)M\tag{4}$$</div><blockquote><p>由公式(1)得：</p></blockquote><div class="mathjax-block">$$M=K^{-1}m, M'=K^{-1}m'\tag{5}$$</div><blockquote><p>将公式(5)代入公式(4)得到：</p></blockquote><div class="mathjax-block">$$m'=K(R+T\centerdot\frac{1}{d}n^T)K^{-1}m\tag{6}$$</div><blockquote><p>即</p></blockquote><div class="mathjax-block">$$m'=Hm\tag{7}$$</div><blockquote><p>其中，$H&#x3D;K(R+T\centerdot\frac{1}{d}n^T)K^{-1}$，称为平面$\pi$关于两个视角的单应矩阵，其中两个相机的内参相同。</p></blockquote><h2 id="二、已知两个相机坐标系分别相对于世界坐标系的旋转平移矩阵"><a href="#二、已知两个相机坐标系分别相对于世界坐标系的旋转平移矩阵" class="headerlink" title="二、已知两个相机坐标系分别相对于世界坐标系的旋转平移矩阵"></a>二、已知两个相机坐标系分别相对于世界坐标系的旋转平移矩阵</h2><blockquote><p>现在考虑一种更一般得情况，已知第一个相机(内参为$K_1$)相对参考世界坐标系的旋转、平移矩阵为$(R_1,T_1)$，第二个相机(内参为$K_2$)相对参考世界坐标系的旋转、平移矩阵为$(R_2,T_2)$，如何求两个相机成像平面之间的单应矩阵？</p></blockquote><blockquote><p>首先，求两个相机之间的旋转、平移矩阵$(R,T)$。假设场景空间中的一点$X$在参考世界坐标系中的坐标为$M$，在第一个相机坐标系下的坐标为$M_1$，在第二个相机坐标系下的坐标为$M_2$。于是可以得到：</p></blockquote><div class="mathjax-block">$$M_1=R_1M+T_1\tag{8}$$</div><div class="mathjax-block">$$M_2=R_2M+T_2\tag{9}$$</div><div class="mathjax-block">$$M_2=RM_1+T\tag{10}$$</div><blockquote><p>将公式(8)和(9)代入公式(10)得到：</p></blockquote><div class="mathjax-block">$$R_2M+T_2=R(R_1M+T_1)+T=RR_1M+RT_1+T\tag{11}$$</div><blockquote><p>根据公式(11)的第一项和第三项对比得到：</p></blockquote><div class="mathjax-block">$$\left\{\begin{array}{center}R_2=RR_1\\T_2=RT_1+T\end{array}\right.\tag{12}$$</div><blockquote><p>由公式(12)解得：</p></blockquote><div class="mathjax-block">$$\left\{\begin{array}{center}R=R_2R_1^{-1}\\T=T_2-R_2R_1^{-1}T_1\end{array}\right.\tag{13}$$</div><blockquote><p>假设场景空间中点$X$在第一个相机和第二个相机上的成像点齐次坐标分别为$m_1&#x3D;(x_1,y_1,1)$和$m_2&#x3D;(x_2,y_2,1)$，根据上面推导的公式(6)可以推得：</p></blockquote><div class="mathjax-block">$$\begin{split}m_2=K_2(R+T\centerdot\frac{1}{d}n^T)K_1^{-1}m_1\\=K_2[R_2R_1^{-1}+(T_2-R_2R_1^{-1}T_1)\centerdot\frac{1}{d}n^{T}]K_1^{-1}m_1\\=K_2[R_2R_1^{-1}+(R_2R_2^{-1}T_2-R_2R_1^{-1}T_1)\centerdot\frac{1}{d}n^{T}]K_1^{-1}m_1\\=K_2R_2[I+\frac{(R_2^{-1}T_2-R_1^{-1}T_1)n^TR_1}{d}]R_1^{-1}K_1^{-1}m_1\end{split}\tag{14}$$</div><blockquote><p>当平面$\pi$与第一个相机成像平面平行时，则平面$\pi$其在第一个相机坐标系下的单位法向量$n$为$(0,0,1)$，则公式(14)中$n^TR_1$表示第一个相机旋转矩阵的最后一行。将其记为$n_1^T$，则：</p></blockquote><div class="mathjax-block">$$m_2=K_2R_2[I+\frac{(R_2^{-1}T_2-R_1^{-1}T_1)n_1^T}{d}]R_1^{-1}K_1^{-1}m_1=Hm_1\tag{15}$$</div><blockquote><p>其中：$H&#x3D;K_2R_2[I+\frac{(R_2^{-1}T_2-R_1^{-1}T_1)n_1^T}{d}]R_1^{-1}K_1^{-1}$为平面$\pi$关于两个相机视角之间的单应矩阵。</p></blockquote><h2 id="三、MVSNet论文中的单应性变换"><a href="#三、MVSNet论文中的单应性变换" class="headerlink" title="三、MVSNet论文中的单应性变换"></a>三、MVSNet论文中的单应性变换</h2><blockquote><p>固定第一个相机的视角，另一个相机视角进行变化；另外选取的平面$\pi$始终与第一个相机成像平面平行，改变其与第一个相机之间的距离$d$，则可以进一步得到：</p></blockquote><div class="mathjax-block">$$H_i(d)=K_iR_i[I+\frac{(R_i^{-1}T_i-R_1^{-1}T_1)n_1^T}{d}]R_1^{-1}K_1^{-1},i=2,3,4\dots\tag{16}$$</div><blockquote><p>对于不同的视角$i$，可以通过$m_i&#x3D;H_i(d)m_1$将不同视角的扭曲(wrap)到第一个相机的视角；对于不同的$d$可以将其它视角的图像扭曲(wrap)到距离相机不同距离的视角平面上。<br>以上就是MVSNet论文中可微单应性的公式推导。</p></blockquote><ul><li>论文中给出的公式为：</li></ul><div class="mathjax-block">$${\rm H}_i(d)={\rm K}_i\centerdot{\rm R}_i\centerdot({\rm I}-\frac{({\rm t}_1-{\rm t}_i)\centerdot{\rm n}_1^T}{d})\centerdot{\rm R}_1^T\centerdot{\rm K}_1^T\tag{17}$$</div><ul><li>根据代码得出的公式为：</li></ul><div class="mathjax-block">$${\rm H}_i(d)={\rm K}_i\centerdot{\rm R}_i\centerdot({\rm I}-\frac{({\rm R}_1^T t_1-{\rm R}_i^T t_i)n_1^T}{d})\centerdot{\rm R}_1^T\centerdot{\rm k}_1^{-1}\tag{18}$$</div><h2 id="四、结论"><a href="#四、结论" class="headerlink" title="四、结论"></a>四、结论</h2><ul><li>推导出的$H_i(d)$与论文中的有出入，但与代码中得出的计算公式一致。</li><li>一开始推导时直接运用四个坐标系之间的转换关系进行推导，前前后后推了几遍推不出来。后面看到别人引入了场景中的平面$\pi$进行推导，就是本文的第一部分内容。受此启发，先运用两个相机相对世界坐标系的旋转平移矩阵得出两个相机之间的旋转平移矩阵，再代入第一部分得出的结论，在推导过程中做一些变换即可推出结果。幸好没有放弃！</li><li>以结果为导向进行推导可能更容易找到问题的切入点。</li></ul><h2 id="五、参考内容"><a href="#五、参考内容" class="headerlink" title="五、参考内容"></a>五、参考内容</h2><ul><li><a href="https://www.cnblogs.com/wangguchangqing/p/8287585.html">SLAM入门之视觉里程计(5)：单应矩阵</a></li><li>吴福朝, 张备伟. 平移视点间的单应矩阵[J]. 安徽大学学报(自然科学版), 2000, 24(003):40-45.</li><li><a href="https://arxiv.org/abs/1804.02505">Yao Y , Luo Z , Li S ,et al.MVSNet: Depth Inference for Unstructured Multi-view Stereo[J].  2018.DOI:10.1007&#x2F;978-3-030-01237-3_47.</a></li><li><a href="https://github.com/YoYo000/MVSNet">YoYo000&#x2F;MVSNet: MVSNet (ECCV2018) &amp; R-MVSNet (CVPR2019)</a></li><li><a href="https://github.com/xy-guo/MVSNet_pytorch">xy-guo&#x2F;MVSNet_pytorch: PyTorch Implementation of MVSNet</a></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机视觉</category>
+      
+      <category>MVS</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>相机模型</tag>
+      
+      <tag>MVSNet</tag>
+      
+      <tag>多视图立体匹配</tag>
+      
+      <tag>单应性变换</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>OpenCV中的Mat和UMat的区别</title>
     <link href="/2026/09/23/0006_OpenCV_Mat_UMat/"/>
     <url>/2026/09/23/0006_OpenCV_Mat_UMat/</url>
@@ -53,6 +86,8 @@
     
     <tags>
       
+      <tag>源码编译</tag>
+      
       <tag>OpenCV</tag>
       
       <tag>opencv contrib</tag>
@@ -60,8 +95,6 @@
       <tag>CMake</tag>
       
       <tag>Visual Studio</tag>
-      
-      <tag>源码编译</tag>
       
     </tags>
     
@@ -123,9 +156,9 @@
     
     <tags>
       
-      <tag>三维重建</tag>
-      
       <tag>colmap</tag>
+      
+      <tag>三维重建</tag>
       
       <tag>命令行</tag>
       
@@ -154,9 +187,9 @@
     
     <tags>
       
-      <tag>三维重建</tag>
-      
       <tag>colmap</tag>
+      
+      <tag>三维重建</tag>
       
       <tag>源码编译</tag>
       
