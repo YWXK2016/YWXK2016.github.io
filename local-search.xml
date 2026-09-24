@@ -4,6 +4,47 @@
   
   
   <entry>
+    <title>[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description</title>
+    <link href="/2026/09/23/SuperPoint_Paper/"/>
+    <url>/2026/09/23/SuperPoint_Paper/</url>
+    
+    <content type="html"><![CDATA[<h1 id="论文阅读-SuperPoint-Self-Supervised-Interest-Point-Detection-and-Description"><a href="#论文阅读-SuperPoint-Self-Supervised-Interest-Point-Detection-and-Description" class="headerlink" title="[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description"></a>[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description</h1><h2 id="一、特别关注"><a href="#一、特别关注" class="headerlink" title="一、特别关注"></a>一、特别关注</h2><h3 id="1-输入和输出是什么？"><a href="#1-输入和输出是什么？" class="headerlink" title="1. 输入和输出是什么？"></a>1. 输入和输出是什么？</h3><blockquote><p><code>输入</code>：整张图像（full-sized image）及其经过随机产生的单应性变换后的图像。</p></blockquote><blockquote><p><code>输出</code>：特征点&#x2F;兴趣点（Interest points）及其描述子（descriptors）。</p></blockquote><h3 id="2-监督信号是什么？"><a href="#2-监督信号是什么？" class="headerlink" title="2. 监督信号是什么？"></a>2. 监督信号是什么？</h3><blockquote><p><code>MagicPoint</code>：将带有标注点的 <strong>Synthetic Shapes Dataset</strong> 作为监督信号。</p></blockquote><p><img src="/img/post/0011_SuperPoint_Paper/1.webp"></p><blockquote><p><code>SuperPoint</code>：<strong>MagicPoint</strong> 与 <strong>Homographic Adaptation</strong> 相结合对真实图像(<strong>real images</strong>)进行兴趣点的自标注(<strong>Interest Point Self-Labeling</strong>)，得到的伪地面真实兴趣点(<strong>Pseudo-Ground Truth Interest Points</strong>)作为<strong>SuperPoint</strong>的监督信号。</p></blockquote><p><img src="/img/post/0011_SuperPoint_Paper/2.webp"></p><h3 id="3-损失函数是什么？"><a href="#3-损失函数是什么？" class="headerlink" title="3. 损失函数是什么？"></a>3. 损失函数是什么？</h3><blockquote><p>特征点&#x2F;兴趣点提取网络的损失为 $\mathcal{L}_p$，描述子网络的的损失为 $\mathcal{L}_d$。</p></blockquote><blockquote><p>从整个网络结构来看，因为整个网络同时输入两张图像，这两张图像都带有伪地面真实兴趣点坐标，其中一张是另一张经过随机产生的单应性变换后的图像。因此可以将两个损失进行同时优化。最终的损失是特征点&#x2F;兴趣点提取网络的损失 $\mathcal{L}_p$ 和描述子网络的的损失 $\mathcal{L}_d$之和。</p></blockquote><p><img src="/img/post/0011_SuperPoint_Paper/3.webp"></p>$$\mathcal{L}(\mathcal{X},\mathcal{X}',\mathcal{D},\mathcal{D}';Y,Y',S)=\mathcal{L}_p(\mathcal{X},Y)+\mathcal{L}_p(\mathcal{X}',Y')+\lambda\mathcal{L}_d(\mathcal{D},\mathcal{D}',S)\tag{1}$$<blockquote><p>特征点&#x2F;兴趣点提取网络的损失是全卷积交叉熵损失：</p></blockquote>$$\mathcal{L}_p(\mathcal{X},Y)=\frac{1}{H_c W_c}\sum\limits_{h=1,w=1}^{H_c,W_c}l_p({\rm x}_{hw};y_{hw})\tag{2}$$$$l_p({\rm x}_{hw};y)=-log(\frac{{\rm exp}({\rm x}_{hwy})}{\sum_{k=1}^{65}{\rm exp}({\rm x}_{hwk})})\tag{3}$$<blockquote><p>描述子网络的的损失定义为：</p></blockquote>$$\mathcal{s}_{hwh'w'}=\left\{\begin{array}{lr}1,\ if||\widehat{\mathcal{H}{\rm p}_{hw}}-{\rm p}_{h'w'}||\leqslant 8\\0,\ otherwise\end{array}\right.\tag{4}$$$$\mathcal{L}_d(\mathcal{D},\mathcal{D}',S)=\frac{1}{(H_cW_c)^2}\sum\limits^{H_c,W_c}_{h=1,w=1}\sum\limits^{H_c,W_c}_{h'=1,w'=1}l_d({\rm d}_{hw},{\rm d}'_{h'w'};\mathcal{s}_{hwh'w'})\tag{5}$$$$l_d({\rm d},{\rm d}';\mathcal{s})=\lambda_d*\mathcal{s}*max(0,m_p-{\rm d}^T{\rm d}')+(1-\mathcal{s})*max(0,{\rm d}^T{\rm d}'-m_n)\tag{6}$$<h3 id="4-训练方式？"><a href="#4-训练方式？" class="headerlink" title="4. 训练方式？"></a>4. 训练方式？</h3><ul><li><p>第一步是采用合成的三维物体作为数据集，训练网络去提取角点，这里得到的是Base Detector即，MagicPoint。</p></li><li><p>使用真实场景图片，用第一步训练出来的网络 MagicPoint + Homographic Adaptation 提取角点，这一步称作兴趣点自标注（Interest Point Self-Labeling）。</p></li><li><p>把第二步得到的已标注的真实图像及其经过单应性变换后的图像一起输入到最终的网络中进行训练。</p></li></ul><h3 id="5-优点和创新点是什么？"><a href="#5-优点和创新点是什么？" class="headerlink" title="5. 优点和创新点是什么？"></a>5. 优点和创新点是什么？</h3><ul><li><p>与patch-based神经网络不同，本文采用的是在整张图像上操作的全卷积模型，在一次前向传播中同时计算pixel-level的特征点&#x2F;兴趣点坐标及其描述子。</p></li><li><p>本文提出的具有multi-scale，multi-transform的Homographic Adaptation使得特征点检测器可以从不同角度和尺度进行特征点&#x2F;兴趣点的检测，使得检测到的特征点&#x2F;兴趣点的均匀性和重复性更好。</p></li><li><p>使用初始特征点检测器magicpoint对真实图像进行自标记得到伪真实特征点作为监督信号来取代大量的人工标记。</p></li><li><p>采用explicit decoder(sub-pixel convolution)代替传统的上采样decoder来减小计算量，以及避免产生上采样层导致的checkerboard artifacts。</p></li><li><p>学习半稠密的描述子而不是直接学习稠密的描述子，以减少训练内存以及使得运行时间可控。</p></li></ul><h3 id="6-存在哪些缺点？"><a href="#6-存在哪些缺点？" class="headerlink" title="6. 存在哪些缺点？"></a>6. 存在哪些缺点？</h3><ul><li>估计得到的特征点是整数值坐标，不是亚像素级别的坐标。</li></ul><h3 id="7-疑问"><a href="#7-疑问" class="headerlink" title="7. 疑问"></a>7. 疑问</h3><ul><li><p><code>Q1</code>: MagicPoint就是论文中的Interest Points Decoder部分？还是说MagicPoint先对real images进行Interest Point Self-Labeling作为训练数据，然后将labed real image作为训练数据对Interest Points Decoder进行训练？</p></li><li><p><code>Q2</code>: $\mathcal{X}$中的“no interest point” dustbin channel的作用是什么？为什么要有这个channel？</p></li><li><p><code>Q3</code>: 从$\mathbb{R}^{H_c\times W_c\times 64}$ reshape 得到$\mathbb{R}^{H\times W}$这一步的子像素卷积怎么实现的？</p></li></ul><hr><h2 id="二、Introduction"><a href="#二、Introduction" class="headerlink" title="二、Introduction"></a>二、Introduction</h2><ul><li><p>extract interest points from images is the first step in geometric computer vision tasks such as Simultaneous Localization and Mapping(SLAM), Structure-from-Motion(SfM), camera calibration, and image matching.</p></li><li><p>the inputs to most real-world computer vision systems are raw images, not idealized point locations.</p></li><li><p>the notion of interest point detection is semantically ill-defined. Thus training convolution neural networks with strong supervision of interest points is non-trivial.</p></li><li><p>how to generate the pseudo-ground truth interest points?</p><ul><li>we first train a fully-convolutional neural network on millions of examples from a synthetic dataset we created called <strong>Synthetic Shapes</strong>(has interest point labels), call the resulting trained detector <strong>MagicPoint</strong>.<ul><li><strong>MagicPoint</strong> significantly outperforms traditional interest point detectors on the synthetic dataset.(<strong>advantage</strong>)</li><li><strong>MagicPoint</strong> performs surprising well on real images despite domain adaptation difficulties.(<strong>advantage</strong>)</li><li>when compared to classical interest point detectors on a diverse set of image textures and patterns, Magic Point misses many potential interest point locations.(<strong>disadvantage</strong>)</li></ul></li><li>a multi-scale, multi-transform technique — <strong>Homographic Adaptation</strong> is developed to bridge this gap in performance on real images. It warps the input image multiple times to help an interest point detector see the scene from many different viewpoints and scales.</li><li>We use <strong>Homographic Adaptation in conjunction with the MagicPoint detector</strong> to boost the performance of the detector and generate the pseudo-ground truth interest points (see Figure 2b). we named the resulting detector <strong>SuperPoint</strong>.</li></ul></li><li><p>we lastly combine <strong>SuperPoint</strong> with a descriptor subnetwork to computes interest point descriptors.</p></li></ul><p><img src="/img/post/0011_SuperPoint_Paper/4.webp"></p><center>图2：自监督训练概述。在我们的自监督方法中，我们(a)在合成数据集上预训练了一个初始的兴趣点检测器，之后(b)应用Homographic Adaptation自动标记来自同一目标、未标记域的图像。最后生成的标签用于(c)训练一个全卷积神经网络从一张图像中同时提取兴趣点和描述子。</center><p><img src="/img/post/0011_SuperPoint_Paper/5.webp"></p><center>图1：用于几何对应的SuperPoint。我们提出了一种全卷积神经网络，它可以在一次前向传播中计算类似SIFT的2D兴趣点位置和描述子，并在Titan X GPU上以70帧/秒的速度在480×640幅图像上运行。</center><blockquote><p>先在<strong>Synthetic Shapes</strong>（有标签）上训练一个全卷积神经网络，得到一个叫<strong>MagicPoint</strong>的检测器。但是这个检测器在合成图像上和真实图像上的效果存在<strong>domain gap</strong>。因此，作者提出了一个多尺度(<strong>multi-scale</strong>)、多变换(<strong>multi-transform</strong>)技术——<strong>Homographic Adaptation</strong>。它将输入图像多次扭曲是的兴趣点检测器可以从不同的视角和尺度看到场景。作者将<strong>Homographic Adaptation</strong>与<strong>MagicPoint</strong>相结合得到效果更好的检测器以及伪真实(<strong>pseudo-ground truth</strong>)兴趣点。作者将这个新的检测器称之为<strong>SuperPoint</strong>。之后，作者将<strong>SuperPoint</strong>和描述子网络(<strong>descriptor subnetwork</strong>)结合来计算兴趣点的描述子(<strong>descriptors</strong>)。</p></blockquote><hr><h2 id="三、Related-Work"><a href="#三、Related-Work" class="headerlink" title="三、Related Work"></a>三、Related Work</h2><ul><li><p><strong>FAST corner detector</strong>: the first system to cast high-speed corner detection as a machine learning problem.</p><blockquote><p><code>Machine learning for high-speed corner detection</code> <code>ECCV</code> <code>2006</code></p></blockquote></li><li><p><strong>SIFT</strong>: still probably the most well-known traditional local feature descriptor in computer vision.</p><blockquote><p><code>Distinctive image features from scale-invariant keypoints</code> <code>IJCV</code> <code>2004</code></p></blockquote></li><li><p><strong>UCN and DeepDesc</strong>: both do not perform any interest point detection.</p><blockquote><p><code>Universal Correspondence Network</code> <code>NIPS</code> <code>2016</code><br><code>Discriminative learning of deep convolutional feature point descriptors</code> <code>ICCV</code> <code>2015</code></p></blockquote></li><li><p><strong>LIFT</strong>: introduced convolutional replacement for SIFT stays close to the traditional patch-based detect then describe recipe. contains interest point detection, orientation estimation and descriptor computation, but additionally requires supervision from a classical SfM system.</p><blockquote><p><code>LIFT:Learned Invariant Feature Transform</code> <code>ECCV</code> <code>2016</code></p></blockquote></li></ul><p><img src="/img/post/0011_SuperPoint_Paper/6.webp"></p><center>表1：与相关方法的定性比较。我们的SuperPoint方法是唯一一种实时计算兴趣点和描述子的单一网路。</center><ul><li><p><strong>Quad-Networks</strong>: an unsupervised approach; however, their system is patch-based and relatively shallow 2-layer network.</p><blockquote><p><code>Quad-networks: unsupervised learning to rank for interest point detection</code> <code>CVPR</code> <code>2017</code></p></blockquote></li><li><p><strong>TILDE</strong>: used a principle similar to Homographic Adaptation; however, their approach does not benefit from the power of large fully-convolutional neural networks.</p><blockquote><p><code>TILDE: A Temporally Invariant Learned DEtector</code> <code>CVPR</code> <code>2015</code></p></blockquote></li></ul><hr><h2 id="四、SuperPoint-Architecture"><a href="#四、SuperPoint-Architecture" class="headerlink" title="四、SuperPoint Architecture"></a>四、SuperPoint Architecture</h2><p><img src="/img/post/0011_SuperPoint_Paper/7.webp"></p><center>图3：SuperPoint解码器。这两个解码器都对输入的共享的和空间化的表示进行操作。为了保持模型的快速和易训练，两个解码器都使用非学习的上采样，以使表示回到$\mathbb{R}^{H\times W}$。</center><ul><li>这个模型有一个单一的、共享的编码器来处理和降低输入图像的维度。在编码器之后，模型框架分为两个解码器。其中一个用于兴趣点的检测，另一个用于兴趣点的描述。这两个任务的大多数网络参数都是共享的。</li></ul><h3 id="1-Shared-Encoder"><a href="#1-Shared-Encoder" class="headerlink" title="1. Shared Encoder"></a>1. Shared Encoder</h3><ul><li><p><strong>输入</strong>：一张图像$\mathbb{R}^{H\times W}$。</p></li><li><p><strong>结构</strong>：由卷积层组成，通过池化和非线性激活函数进行空间下采样。使用三个$2\times 2$最大池化层使得图像的大小从$H\times W$变为$H_c &#x3D;  H&#x2F;8$, $W_c &#x3D; W&#x2F;8$。</p></li><li><p><strong>输出</strong>：$\mathcal{B}\in \mathbb{B}^{H_c\times W_c\times F}$，$F$表示通道数。</p></li></ul><blockquote><p><strong>主要作用</strong>：对图片降维，提取特征，以减小后续网络的计算量。</p></blockquote><h3 id="2-Interest-Point-Decoder"><a href="#2-Interest-Point-Decoder" class="headerlink" title="2. Interest Point Decoder"></a>2. Interest Point Decoder</h3><p><img src="/img/post/0011_SuperPoint_Paper/8.webp"></p><ul><li><p>$\mathcal{X}\in\mathbb{R}^{H_c\times W_c\times 65} \overset{Softmax}{&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;\Rightarrow} \mathbb{R}^{H_c\times W_c\times 64} \overset{Reshape}{&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;\Rightarrow} \mathbb{R}^{H\times W}$</p></li><li><p>The 65 channels correspond to local, non-overlapping 8 × 8 grid regions of pixels plus an extra “no interest point” dustbin.</p></li></ul><blockquote><p><strong>主要作用</strong>：对图片的每个像素都计算一个概率，这个概率表示的就是其为特征点的可能性大小。</p></blockquote><h3 id="3-Descriptor-Decoder"><a href="#3-Descriptor-Decoder" class="headerlink" title="3. Descriptor Decoder"></a>3. Descriptor Decoder</h3><p><img src="/img/post/0011_SuperPoint_Paper/9.webp"></p><ul><li><p>$\mathcal{D}\in\mathbb{R}^{H_c\times W_c\times D} \overset{\text{Bi-Cubic Interpolate and }L_2\text{-normalizes}}{&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;\Rightarrow} \mathbb{R}^{H\times W\times D}$</p></li><li><p>Learning descriptors semi-densely rather than densely reduces training memory and keeps the run-time tractable.</p></li></ul><p><img src="/img/post/0011_SuperPoint_Paper/10.webp"></p><p><img src="/img/post/0011_SuperPoint_Paper/11.webp"></p><p><img src="/img/post/0011_SuperPoint_Paper/12.webp"></p><h2 id="五、其它关注点"><a href="#五、其它关注点" class="headerlink" title="五、其它关注点"></a>五、其它关注点</h2><ul><li><p>反卷积导致的棋盘格伪影现象</p><blockquote><p>论文：<a href="https://distill.pub/2016/deconv-checkerboard/">Deconvolution and checkerboard artifacts Distill 2016</a><br>博客：<a href="https://www.jianshu.com/p/36ff39344de5">Deconvolution and Checkerboard Artifacts</a></p></blockquote></li><li><p>sub-pixel convolutional</p><blockquote><p>论文：<a href="https://arxiv.org/abs/1609.05158">Real-time single image and video super-resolution using an efficient sub-pixel convolutional neural network CVPR 2016</a></p></blockquote></li><li><p>非极大值抑制（Non-Maximum Suppression，NMS）</p><blockquote><p>论文：<a href="https://homes.esat.kuleuven.be/~konijn/publications/2006/eth_biwi_00446.pdf">Efﬁcient Non-Maximum Suppression CVPR 2006</a></p></blockquote></li></ul><h2 id="六、参考内容"><a href="#六、参考内容" class="headerlink" title="六、参考内容"></a>六、参考内容</h2><ul><li><code>代码</code><ul><li><a href="https://github.com/magicleap/SuperPointPretrainedNetwork">https://github.com/magicleap/SuperPointPretrainedNetwork</a></li><li><a href="https://github.com/rpautrat/SuperPoint">https://github.com/rpautrat/SuperPoint</a></li></ul></li><li><code>相关博客</code><ul><li><a href="https://vincentqin.tech/posts/superpoint/">笔记：SuperPoint: Self-Supervised Interest Point Detection and Description 自监督深度学习特征点</a></li><li><a href="https://blog.csdn.net/qq_36721800/article/details/105103453">SuperPoint学习（一）</a></li><li><a href="https://blog.csdn.net/weixin_42696356/article/details/103517913">Superpoint运行过程问题总结</a></li><li><a href="https://blog.csdn.net/weixin_42696356/article/details/103294649">[代码解读]Superpoint代码解读</a></li></ul></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机视觉</category>
+      
+      <category>三维重建</category>
+      
+      <category>特征提取</category>
+      
+      <category>论文阅读和复现</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>SuperPoint</tag>
+      
+      <tag>特征点提取</tag>
+      
+      <tag>特征点描述</tag>
+      
+      <tag>编解码结构</tag>
+      
+      <tag>CVPR2018</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[论文阅读] Unsupervised Learning of Depth and Ego-Motion from Video</title>
     <link href="/2026/09/23/SFMLearner_Paper/"/>
     <url>/2026/09/23/SFMLearner_Paper/</url>
@@ -26,6 +67,8 @@
     
     <tags>
       
+      <tag>深度学习</tag>
+      
       <tag>SFMLearner</tag>
       
       <tag>SfM</tag>
@@ -33,8 +76,6 @@
       <tag>单目深度估计</tag>
       
       <tag>相机位姿估计</tag>
-      
-      <tag>深度学习</tag>
       
       <tag>CVPR2017</tag>
       
@@ -67,6 +108,8 @@
     
     <tags>
       
+      <tag>深度学习</tag>
+      
       <tag>SFMLearner</tag>
       
       <tag>SfM</tag>
@@ -74,8 +117,6 @@
       <tag>单目深度估计</tag>
       
       <tag>相机位姿估计</tag>
-      
-      <tag>深度学习</tag>
       
       <tag>CVPR2017</tag>
       
@@ -114,9 +155,9 @@
       
       <tag>单应性变换</tag>
       
-      <tag>深度学习</tag>
-      
       <tag>深度估计</tag>
+      
+      <tag>深度学习</tag>
       
       <tag>ECCV2018</tag>
       
@@ -147,13 +188,13 @@
     
     <tags>
       
-      <tag>相机模型</tag>
-      
       <tag>MVSNet</tag>
       
       <tag>多视图立体匹配</tag>
       
       <tag>单应性变换</tag>
+      
+      <tag>相机模型</tag>
       
     </tags>
     

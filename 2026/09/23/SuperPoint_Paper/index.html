@@ -1,0 +1,1460 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar-favicon.png">
+  <link rel="icon" href="/img/avatar-favicon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="仰望星空">
+  <meta name="keywords" content="SuperPoint,特征点提取,特征点描述,编解码结构,深度学习,CVPR2018">
+  
+    <meta name="description" content="SuperPoint论文阅读记录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description">
+<meta property="og:url" content="https://ywxk2016.github.io/2026/09/23/SuperPoint_Paper/index.html">
+<meta property="og:site_name" content="仰望星空">
+<meta property="og:description" content="SuperPoint论文阅读记录。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ywxk2016.github.io/img/covers/SuperPoint.webp">
+<meta property="article:published_time" content="2026-09-24T10:06:00.000Z">
+<meta property="article:modified_time" content="2026-09-24T03:16:33.653Z">
+<meta property="article:author" content="仰望星空">
+<meta property="article:tag" content="CVPR2018">
+<meta property="article:tag" content="SuperPoint">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="特征点描述">
+<meta property="article:tag" content="特征点提取">
+<meta property="article:tag" content="编解码结构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/SuperPoint.webp">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description - 仰望星空</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/toc-fix.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ywxk2016.github.io","root":"/","version":"1.9.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<style>
+  .post-share {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0.25rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--line-color);
+    border-radius: 8px;
+    background: var(--board-bg-color);
+  }
+
+  .post-share-label {
+    margin-right: 0.25rem;
+    color: var(--sec-text-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .post-share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--line-color);
+    border-radius: 999px;
+    color: var(--text-color);
+    background: transparent;
+    font-size: 0.82rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .post-share-btn:hover,
+  .post-share-btn:focus-visible {
+    color: var(--link-hover-color);
+    border-color: var(--link-hover-color);
+    background: var(--link-hover-bg-color);
+  }
+
+  .post-share-btn i {
+    font-size: 1rem;
+  }
+
+  .post-share-moments-icon {
+    display: block;
+    flex: 0 0 1rem;
+  }
+
+  @media (max-width: 575px) {
+    .post-share {
+      padding: 0.75rem;
+    }
+
+    .post-share-btn span {
+      display: none;
+    }
+  }
+</style>
+<style>
+  .github-corner {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1040;
+    display: block;
+    width: 64px;
+    height: 64px;
+    border: 0;
+    transform: scale(1.1);
+    transform-origin: top right;
+  }
+
+  .github-corner svg {
+    width: 64px;
+    height: 64px;
+    color: var(--board-bg-color);
+    fill: var(--post-link-color);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.24));
+    transition: fill 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+
+  .github-corner:hover svg {
+    fill: var(--link-hover-color);
+  }
+
+  .github-corner:hover .octo-arm {
+    animation: github-octocat-wave 0.56s ease-in-out;
+  }
+
+  .github-corner .octo-arm {
+    animation: none;
+    transform-origin: 130px 106px;
+  }
+
+  @keyframes github-octocat-wave {
+    0%, 100% {
+      transform: rotate(0);
+    }
+
+    20%, 60% {
+      transform: rotate(-25deg);
+    }
+
+    40%, 80% {
+      transform: rotate(10deg);
+    }
+  }
+
+  @media (min-width: 992px) {
+    #navbar .navbar-nav {
+      margin-right: 3.6rem;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .github-corner {
+      display: none;
+    }
+  }
+
+  @media print {
+    .github-corner {
+      display: none;
+    }
+  }
+</style>
+<style>
+  #navbar .navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+    max-width: calc(100% - 3.5rem);
+  }
+
+  #navbar .navbar-brand::before {
+    content: "";
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    background: #fff url("/img/avatar.jpg?v=mueyn5divuc") center / cover no-repeat;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #navbar .navbar-brand:hover::before {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  #navbar .navbar-brand strong {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 575px) {
+    #navbar .navbar-brand {
+      gap: 0.4rem;
+      max-width: calc(100% - 3rem);
+    }
+
+    #navbar .navbar-brand::before {
+      flex-basis: 2rem;
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+</style><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body><!-- hexo injector body_begin start -->
+<a
+  class="github-corner"
+  href="https://github.com/YWXK2016"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Follow me on GitHub"
+  title="Follow me on GitHub"
+>
+  <svg viewBox="0 0 250 250" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+    <path
+      d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+      fill="currentColor"
+      class="octo-arm"
+    ></path>
+    <path
+      d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+      fill="currentColor"
+      class="octo-body"
+    ></path>
+  </svg>
+</a><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>仰望星空</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/projects/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>项目</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/community/" target="_self">
+                <i class="iconfont icon-users"></i>
+                <span>社群</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/projects/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>项目</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/links/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>友链</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/community/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-users"></i>
+                  <span>社群</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/banners/post.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-09-24 10:06" pubdate>
+          2026年9月24日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          64 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          阅读 <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="论文阅读-SuperPoint-Self-Supervised-Interest-Point-Detection-and-Description"><a href="#论文阅读-SuperPoint-Self-Supervised-Interest-Point-Detection-and-Description" class="headerlink" title="[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description"></a>[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description</h1><h2 id="一、特别关注"><a href="#一、特别关注" class="headerlink" title="一、特别关注"></a>一、特别关注</h2><h3 id="1-输入和输出是什么？"><a href="#1-输入和输出是什么？" class="headerlink" title="1. 输入和输出是什么？"></a>1. 输入和输出是什么？</h3><blockquote>
+<p><code>输入</code>：整张图像（full-sized image）及其经过随机产生的单应性变换后的图像。</p>
+</blockquote>
+<blockquote>
+<p><code>输出</code>：特征点&#x2F;兴趣点（Interest points）及其描述子（descriptors）。</p>
+</blockquote>
+<h3 id="2-监督信号是什么？"><a href="#2-监督信号是什么？" class="headerlink" title="2. 监督信号是什么？"></a>2. 监督信号是什么？</h3><blockquote>
+<p><code>MagicPoint</code>：将带有标注点的 <strong>Synthetic Shapes Dataset</strong> 作为监督信号。</p>
+</blockquote>
+<p><img src="/img/post/0011_SuperPoint_Paper/1.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p><code>SuperPoint</code>：<strong>MagicPoint</strong> 与 <strong>Homographic Adaptation</strong> 相结合对真实图像(<strong>real images</strong>)进行兴趣点的自标注(<strong>Interest Point Self-Labeling</strong>)，得到的伪地面真实兴趣点(<strong>Pseudo-Ground Truth Interest Points</strong>)作为<strong>SuperPoint</strong>的监督信号。</p>
+</blockquote>
+<p><img src="/img/post/0011_SuperPoint_Paper/2.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3-损失函数是什么？"><a href="#3-损失函数是什么？" class="headerlink" title="3. 损失函数是什么？"></a>3. 损失函数是什么？</h3><blockquote>
+<p>特征点&#x2F;兴趣点提取网络的损失为 $\mathcal{L}_p$，描述子网络的的损失为 $\mathcal{L}_d$。</p>
+</blockquote>
+<blockquote>
+<p>从整个网络结构来看，因为整个网络同时输入两张图像，这两张图像都带有伪地面真实兴趣点坐标，其中一张是另一张经过随机产生的单应性变换后的图像。因此可以将两个损失进行同时优化。最终的损失是特征点&#x2F;兴趣点提取网络的损失 $\mathcal{L}_p$ 和描述子网络的的损失 $\mathcal{L}_d$之和。</p>
+</blockquote>
+<p><img src="/img/post/0011_SuperPoint_Paper/3.webp" srcset="/img/loading.gif" lazyload></p>
+
+$$
+\mathcal{L}(\mathcal{X},\mathcal{X}',\mathcal{D},\mathcal{D}';Y,Y',S)=\mathcal{L}_p(\mathcal{X},Y)+\mathcal{L}_p(\mathcal{X}',Y')+\lambda\mathcal{L}_d(\mathcal{D},\mathcal{D}',S)\tag{1}
+$$
+
+
+<blockquote>
+<p>特征点&#x2F;兴趣点提取网络的损失是全卷积交叉熵损失：</p>
+</blockquote>
+
+$$
+\mathcal{L}_p(\mathcal{X},Y)=\frac{1}{H_c W_c}\sum\limits_{h=1,w=1}^{H_c,W_c}l_p({\rm x}_{hw};y_{hw})\tag{2}
+$$
+
+
+
+$$
+l_p({\rm x}_{hw};y)=-log(\frac{{\rm exp}({\rm x}_{hwy})}{\sum_{k=1}^{65}{\rm exp}({\rm x}_{hwk})})\tag{3}
+$$
+
+
+<blockquote>
+<p>描述子网络的的损失定义为：</p>
+</blockquote>
+
+$$
+\mathcal{s}_{hwh'w'}=\left\{\begin{array}{lr}1,\ if||\widehat{\mathcal{H}{\rm p}_{hw}}-{\rm p}_{h'w'}||\leqslant 8\\0,\ otherwise\end{array}\right.\tag{4}
+$$
+
+
+
+$$
+\mathcal{L}_d(\mathcal{D},\mathcal{D}',S)=\frac{1}{(H_cW_c)^2}\sum\limits^{H_c,W_c}_{h=1,w=1}\sum\limits^{H_c,W_c}_{h'=1,w'=1}l_d({\rm d}_{hw},{\rm d}'_{h'w'};\mathcal{s}_{hwh'w'})\tag{5}
+$$
+
+
+
+$$
+l_d({\rm d},{\rm d}';\mathcal{s})=\lambda_d*\mathcal{s}*max(0,m_p-{\rm d}^T{\rm d}')+(1-\mathcal{s})*max(0,{\rm d}^T{\rm d}'-m_n)\tag{6}
+$$
+
+
+<h3 id="4-训练方式？"><a href="#4-训练方式？" class="headerlink" title="4. 训练方式？"></a>4. 训练方式？</h3><ul>
+<li><p>第一步是采用合成的三维物体作为数据集，训练网络去提取角点，这里得到的是Base Detector即，MagicPoint。</p>
+</li>
+<li><p>使用真实场景图片，用第一步训练出来的网络 MagicPoint + Homographic Adaptation 提取角点，这一步称作兴趣点自标注（Interest Point Self-Labeling）。</p>
+</li>
+<li><p>把第二步得到的已标注的真实图像及其经过单应性变换后的图像一起输入到最终的网络中进行训练。</p>
+</li>
+</ul>
+<h3 id="5-优点和创新点是什么？"><a href="#5-优点和创新点是什么？" class="headerlink" title="5. 优点和创新点是什么？"></a>5. 优点和创新点是什么？</h3><ul>
+<li><p>与patch-based神经网络不同，本文采用的是在整张图像上操作的全卷积模型，在一次前向传播中同时计算pixel-level的特征点&#x2F;兴趣点坐标及其描述子。</p>
+</li>
+<li><p>本文提出的具有multi-scale，multi-transform的Homographic Adaptation使得特征点检测器可以从不同角度和尺度进行特征点&#x2F;兴趣点的检测，使得检测到的特征点&#x2F;兴趣点的均匀性和重复性更好。</p>
+</li>
+<li><p>使用初始特征点检测器magicpoint对真实图像进行自标记得到伪真实特征点作为监督信号来取代大量的人工标记。</p>
+</li>
+<li><p>采用explicit decoder(sub-pixel convolution)代替传统的上采样decoder来减小计算量，以及避免产生上采样层导致的checkerboard artifacts。</p>
+</li>
+<li><p>学习半稠密的描述子而不是直接学习稠密的描述子，以减少训练内存以及使得运行时间可控。</p>
+</li>
+</ul>
+<h3 id="6-存在哪些缺点？"><a href="#6-存在哪些缺点？" class="headerlink" title="6. 存在哪些缺点？"></a>6. 存在哪些缺点？</h3><ul>
+<li>估计得到的特征点是整数值坐标，不是亚像素级别的坐标。</li>
+</ul>
+<h3 id="7-疑问"><a href="#7-疑问" class="headerlink" title="7. 疑问"></a>7. 疑问</h3><ul>
+<li><p><code>Q1</code>: MagicPoint就是论文中的Interest Points Decoder部分？还是说MagicPoint先对real images进行Interest Point Self-Labeling作为训练数据，然后将labed real image作为训练数据对Interest Points Decoder进行训练？</p>
+</li>
+<li><p><code>Q2</code>: $\mathcal{X}$中的“no interest point” dustbin channel的作用是什么？为什么要有这个channel？</p>
+</li>
+<li><p><code>Q3</code>: 从$\mathbb{R}^{H_c\times W_c\times 64}$ reshape 得到$\mathbb{R}^{H\times W}$这一步的子像素卷积怎么实现的？</p>
+</li>
+</ul>
+<hr>
+<h2 id="二、Introduction"><a href="#二、Introduction" class="headerlink" title="二、Introduction"></a>二、Introduction</h2><ul>
+<li><p>extract interest points from images is the first step in geometric computer vision tasks such as Simultaneous Localization and Mapping(SLAM), Structure-from-Motion(SfM), camera calibration, and image matching.</p>
+</li>
+<li><p>the inputs to most real-world computer vision systems are raw images, not idealized point locations.</p>
+</li>
+<li><p>the notion of interest point detection is semantically ill-defined. Thus training convolution neural networks with strong supervision of interest points is non-trivial.</p>
+</li>
+<li><p>how to generate the pseudo-ground truth interest points?</p>
+<ul>
+<li>we first train a fully-convolutional neural network on millions of examples from a synthetic dataset we created called <strong>Synthetic Shapes</strong>(has interest point labels), call the resulting trained detector <strong>MagicPoint</strong>.<ul>
+<li><strong>MagicPoint</strong> significantly outperforms traditional interest point detectors on the synthetic dataset.(<strong>advantage</strong>)</li>
+<li><strong>MagicPoint</strong> performs surprising well on real images despite domain adaptation difficulties.(<strong>advantage</strong>)</li>
+<li>when compared to classical interest point detectors on a diverse set of image textures and patterns, Magic Point misses many potential interest point locations.(<strong>disadvantage</strong>)</li>
+</ul>
+</li>
+<li>a multi-scale, multi-transform technique — <strong>Homographic Adaptation</strong> is developed to bridge this gap in performance on real images. It warps the input image multiple times to help an interest point detector see the scene from many different viewpoints and scales.</li>
+<li>We use <strong>Homographic Adaptation in conjunction with the MagicPoint detector</strong> to boost the performance of the detector and generate the pseudo-ground truth interest points (see Figure 2b). we named the resulting detector <strong>SuperPoint</strong>.</li>
+</ul>
+</li>
+<li><p>we lastly combine <strong>SuperPoint</strong> with a descriptor subnetwork to computes interest point descriptors.</p>
+</li>
+</ul>
+<p><img src="/img/post/0011_SuperPoint_Paper/4.webp" srcset="/img/loading.gif" lazyload></p>
+<center>图2：自监督训练概述。在我们的自监督方法中，我们(a)在合成数据集上预训练了一个初始的兴趣点检测器，之后(b)应用Homographic Adaptation自动标记来自同一目标、未标记域的图像。最后生成的标签用于(c)训练一个全卷积神经网络从一张图像中同时提取兴趣点和描述子。</center>
+
+<p><img src="/img/post/0011_SuperPoint_Paper/5.webp" srcset="/img/loading.gif" lazyload></p>
+<center>图1：用于几何对应的SuperPoint。我们提出了一种全卷积神经网络，它可以在一次前向传播中计算类似SIFT的2D兴趣点位置和描述子，并在Titan X GPU上以70帧/秒的速度在480×640幅图像上运行。</center>
+
+<blockquote>
+<p>先在<strong>Synthetic Shapes</strong>（有标签）上训练一个全卷积神经网络，得到一个叫<strong>MagicPoint</strong>的检测器。但是这个检测器在合成图像上和真实图像上的效果存在<strong>domain gap</strong>。因此，作者提出了一个多尺度(<strong>multi-scale</strong>)、多变换(<strong>multi-transform</strong>)技术——<strong>Homographic Adaptation</strong>。它将输入图像多次扭曲是的兴趣点检测器可以从不同的视角和尺度看到场景。作者将<strong>Homographic Adaptation</strong>与<strong>MagicPoint</strong>相结合得到效果更好的检测器以及伪真实(<strong>pseudo-ground truth</strong>)兴趣点。作者将这个新的检测器称之为<strong>SuperPoint</strong>。之后，作者将<strong>SuperPoint</strong>和描述子网络(<strong>descriptor subnetwork</strong>)结合来计算兴趣点的描述子(<strong>descriptors</strong>)。</p>
+</blockquote>
+<hr>
+<h2 id="三、Related-Work"><a href="#三、Related-Work" class="headerlink" title="三、Related Work"></a>三、Related Work</h2><ul>
+<li><p><strong>FAST corner detector</strong>: the first system to cast high-speed corner detection as a machine learning problem.</p>
+<blockquote>
+<p><code>Machine learning for high-speed corner detection</code> <code>ECCV</code> <code>2006</code></p>
+</blockquote>
+</li>
+<li><p><strong>SIFT</strong>: still probably the most well-known traditional local feature descriptor in computer vision.</p>
+<blockquote>
+<p><code>Distinctive image features from scale-invariant keypoints</code> <code>IJCV</code> <code>2004</code></p>
+</blockquote>
+</li>
+<li><p><strong>UCN and DeepDesc</strong>: both do not perform any interest point detection.</p>
+<blockquote>
+<p><code>Universal Correspondence Network</code> <code>NIPS</code> <code>2016</code><br><code>Discriminative learning of deep convolutional feature point descriptors</code> <code>ICCV</code> <code>2015</code></p>
+</blockquote>
+</li>
+<li><p><strong>LIFT</strong>: introduced convolutional replacement for SIFT stays close to the traditional patch-based detect then describe recipe. contains interest point detection, orientation estimation and descriptor computation, but additionally requires supervision from a classical SfM system.</p>
+<blockquote>
+<p><code>LIFT:Learned Invariant Feature Transform</code> <code>ECCV</code> <code>2016</code></p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/img/post/0011_SuperPoint_Paper/6.webp" srcset="/img/loading.gif" lazyload></p>
+<center>表1：与相关方法的定性比较。我们的SuperPoint方法是唯一一种实时计算兴趣点和描述子的单一网路。</center>
+
+<ul>
+<li><p><strong>Quad-Networks</strong>: an unsupervised approach; however, their system is patch-based and relatively shallow 2-layer network.</p>
+<blockquote>
+<p><code>Quad-networks: unsupervised learning to rank for interest point detection</code> <code>CVPR</code> <code>2017</code></p>
+</blockquote>
+</li>
+<li><p><strong>TILDE</strong>: used a principle similar to Homographic Adaptation; however, their approach does not benefit from the power of large fully-convolutional neural networks.</p>
+<blockquote>
+<p><code>TILDE: A Temporally Invariant Learned DEtector</code> <code>CVPR</code> <code>2015</code></p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h2 id="四、SuperPoint-Architecture"><a href="#四、SuperPoint-Architecture" class="headerlink" title="四、SuperPoint Architecture"></a>四、SuperPoint Architecture</h2><p><img src="/img/post/0011_SuperPoint_Paper/7.webp" srcset="/img/loading.gif" lazyload></p>
+<center>图3：SuperPoint解码器。这两个解码器都对输入的共享的和空间化的表示进行操作。为了保持模型的快速和易训练，两个解码器都使用非学习的上采样，以使表示回到$\mathbb{R}^{H\times W}$。</center>
+
+<ul>
+<li>这个模型有一个单一的、共享的编码器来处理和降低输入图像的维度。在编码器之后，模型框架分为两个解码器。其中一个用于兴趣点的检测，另一个用于兴趣点的描述。这两个任务的大多数网络参数都是共享的。</li>
+</ul>
+<h3 id="1-Shared-Encoder"><a href="#1-Shared-Encoder" class="headerlink" title="1. Shared Encoder"></a>1. Shared Encoder</h3><ul>
+<li><p><strong>输入</strong>：一张图像$\mathbb{R}^{H\times W}$。</p>
+</li>
+<li><p><strong>结构</strong>：由卷积层组成，通过池化和非线性激活函数进行空间下采样。使用三个$2\times 2$最大池化层使得图像的大小从$H\times W$变为$H_c &#x3D;  H&#x2F;8$, $W_c &#x3D; W&#x2F;8$。</p>
+</li>
+<li><p><strong>输出</strong>：$\mathcal{B}\in \mathbb{B}^{H_c\times W_c\times F}$，$F$表示通道数。</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>主要作用</strong>：对图片降维，提取特征，以减小后续网络的计算量。</p>
+</blockquote>
+<h3 id="2-Interest-Point-Decoder"><a href="#2-Interest-Point-Decoder" class="headerlink" title="2. Interest Point Decoder"></a>2. Interest Point Decoder</h3><p><img src="/img/post/0011_SuperPoint_Paper/8.webp" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><p>$\mathcal{X}\in\mathbb{R}^{H_c\times W_c\times 65} \overset{Softmax}{&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;\Rightarrow} \mathbb{R}^{H_c\times W_c\times 64} \overset{Reshape}{&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;\Rightarrow} \mathbb{R}^{H\times W}$</p>
+</li>
+<li><p>The 65 channels correspond to local, non-overlapping 8 × 8 grid regions of pixels plus an extra “no interest point” dustbin.</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>主要作用</strong>：对图片的每个像素都计算一个概率，这个概率表示的就是其为特征点的可能性大小。</p>
+</blockquote>
+<h3 id="3-Descriptor-Decoder"><a href="#3-Descriptor-Decoder" class="headerlink" title="3. Descriptor Decoder"></a>3. Descriptor Decoder</h3><p><img src="/img/post/0011_SuperPoint_Paper/9.webp" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><p>$\mathcal{D}\in\mathbb{R}^{H_c\times W_c\times D} \overset{\text{Bi-Cubic Interpolate and }L_2\text{-normalizes}}{&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;\Rightarrow} \mathbb{R}^{H\times W\times D}$</p>
+</li>
+<li><p>Learning descriptors semi-densely rather than densely reduces training memory and keeps the run-time tractable.</p>
+</li>
+</ul>
+<p><img src="/img/post/0011_SuperPoint_Paper/10.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0011_SuperPoint_Paper/11.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/post/0011_SuperPoint_Paper/12.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="五、其它关注点"><a href="#五、其它关注点" class="headerlink" title="五、其它关注点"></a>五、其它关注点</h2><ul>
+<li><p>反卷积导致的棋盘格伪影现象</p>
+<blockquote>
+<p>论文：<a target="_blank" rel="noopener" href="https://distill.pub/2016/deconv-checkerboard/">Deconvolution and checkerboard artifacts Distill 2016</a><br>博客：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/36ff39344de5">Deconvolution and Checkerboard Artifacts</a></p>
+</blockquote>
+</li>
+<li><p>sub-pixel convolutional</p>
+<blockquote>
+<p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1609.05158">Real-time single image and video super-resolution using an efficient sub-pixel convolutional neural network CVPR 2016</a></p>
+</blockquote>
+</li>
+<li><p>非极大值抑制（Non-Maximum Suppression，NMS）</p>
+<blockquote>
+<p>论文：<a target="_blank" rel="noopener" href="https://homes.esat.kuleuven.be/~konijn/publications/2006/eth_biwi_00446.pdf">Efﬁcient Non-Maximum Suppression CVPR 2006</a></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="六、参考内容"><a href="#六、参考内容" class="headerlink" title="六、参考内容"></a>六、参考内容</h2><ul>
+<li><code>代码</code><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/magicleap/SuperPointPretrainedNetwork">https://github.com/magicleap/SuperPointPretrainedNetwork</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rpautrat/SuperPoint">https://github.com/rpautrat/SuperPoint</a></li>
+</ul>
+</li>
+<li><code>相关博客</code><ul>
+<li><a target="_blank" rel="noopener" href="https://vincentqin.tech/posts/superpoint/">笔记：SuperPoint: Self-Supervised Interest Point Detection and Description 自监督深度学习特征点</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36721800/article/details/105103453">SuperPoint学习（一）</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42696356/article/details/103517913">Superpoint运行过程问题总结</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42696356/article/details/103294649">[代码解读]Superpoint代码解读</a></li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" class="category-chain-item">计算机视觉</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="category-chain-item">三维重建</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" class="category-chain-item">特征提取</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E5%92%8C%E5%A4%8D%E7%8E%B0/" class="category-chain-item">论文阅读和复现</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
+      
+        <a href="/tags/SuperPoint/" class="print-no-link">#SuperPoint</a>
+      
+        <a href="/tags/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%90%E5%8F%96/" class="print-no-link">#特征点提取</a>
+      
+        <a href="/tags/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%8F%E8%BF%B0/" class="print-no-link">#特征点描述</a>
+      
+        <a href="/tags/%E7%BC%96%E8%A7%A3%E7%A0%81%E7%BB%93%E6%9E%84/" class="print-no-link">#编解码结构</a>
+      
+        <a href="/tags/CVPR2018/" class="print-no-link">#CVPR2018</a>
+      
+    </div>
+  
+</div>
+<div class='post-share' data-post-share aria-label='分享这篇文章'><span class='post-share-label'>分享</span><button type='button' class='post-share-btn' data-share='copy' aria-label='复制文章链接' title='复制链接'><i class='iconfont icon-link-fill' aria-hidden='true'></i><span>复制</span></button><button type='button' class='post-share-btn' data-share='wechat' aria-label='分享到微信' title='分享到微信'><i class='iconfont icon-wechat-fill' aria-hidden='true'></i><span>微信</span></button><button type='button' class='post-share-btn' data-share='moments' aria-label='分享到微信朋友圈' title='分享到微信朋友圈'><svg class='post-share-moments-icon' viewBox='0 0 24 24' width='1rem' height='1rem' aria-hidden='true'><circle cx='12' cy='12' r='8' fill='none' stroke='#07c160' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='12.57 37.7'></circle><circle cx='12' cy='12' r='8' fill='none' stroke='#f6c344' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='12.57 37.7' stroke-dashoffset='-12.57'></circle><circle cx='12' cy='12' r='8' fill='none' stroke='#ff6b6b' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='12.57 37.7' stroke-dashoffset='-25.14'></circle><circle cx='12' cy='12' r='8' fill='none' stroke='#4f8cff' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='12.57 37.7' stroke-dashoffset='-37.71'></circle><circle cx='12' cy='12' r='2.2' fill='currentColor'></circle></svg><span>朋友圈</span></button><button type='button' class='post-share-btn' data-share='weibo' aria-label='分享到微博' title='分享到微博'><i class='iconfont icon-weibo-fill' aria-hidden='true'></i><span>微博</span></button><button type='button' class='post-share-btn' data-share='qq' aria-label='分享到QQ' title='分享到QQ'><i class='iconfont icon-qq-fill' aria-hidden='true'></i><span>QQ</span></button><button type='button' class='post-share-btn' data-share='twitter' aria-label='分享到X' title='分享到X'><i class='iconfont icon-twitter-fill' aria-hidden='true'></i><span>X</span></button></div><script src='/js/post-share.js'></script>
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description</div>
+      <div>https://ywxk2016.github.io/2026/09/23/SuperPoint_Paper/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>仰望星空</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年9月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/09/23/SFMLearner_Paper/" title="[论文阅读] Unsupervised Learning of Depth and Ego-Motion from Video">
+                        <span class="hidden-mobile">[论文阅读] Unsupervised Learning of Depth and Ego-Motion from Video</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      ©2026 仰望星空<br>由&nbsp;<a href="https://hexo.io" target="_blank" rel="nofollow noopener" style="font-weight:700"><span>Hexo</span></a>&nbsp;驱动&nbsp;&amp;&nbsp;主题&nbsp;<a target="_blank" rel="nofollow noopener" href="https://github.com/fluid-dev/hexo-theme-fluid" style="font-weight:700">fluid v1.9.9</a><br>本站由&nbsp;<a href="https://pages.github.com/" target="_blank" rel="nofollow noopener" style="font-weight:700"><i class="iconfont icon-github-fill" aria-hidden="true" style="margin-right:4px"></i><span>GitHub</span></a>&nbsp;免费提供部署服务
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总阅读量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访问人数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start -->
+<script>
+  (function () {
+    function movePostMeta() {
+      var markdownBody = document.querySelector('.post-content .markdown-body');
+      var postMetas = document.querySelector('.post-content .post-metas');
+
+      if (!markdownBody || !postMetas || markdownBody.contains(postMetas)) {
+        return;
+      }
+
+      markdownBody.insertBefore(postMetas, markdownBody.firstChild);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', movePostMeta);
+    } else {
+      movePostMeta();
+    }
+  })();
+</script><!-- hexo injector body_end end --></body>
+</html>
