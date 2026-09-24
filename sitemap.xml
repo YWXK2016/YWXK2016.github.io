@@ -56,15 +56,6 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/2026/09/23/0005_OpenCV_Contrib_Compilation/</loc>
-    
-    <lastmod>2026-09-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ywxk2016.github.io/2026/09/23/0006_OpenCV_Mat_UMat/</loc>
     
     <lastmod>2026-09-24</lastmod>
@@ -74,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/2026/09/23/MVSNet_Homography/</loc>
+    <loc>https://ywxk2016.github.io/2026/09/23/0005_OpenCV_Contrib_Compilation/</loc>
     
     <lastmod>2026-09-24</lastmod>
     
@@ -128,7 +119,16 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/community/index.html</loc>
+    <loc>https://ywxk2016.github.io/2026/09/24/SuperPoint_Code/</loc>
+    
+    <lastmod>2026-09-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/2026/09/23/MVSNet_Homography/</loc>
     
     <lastmod>2026-09-24</lastmod>
     
@@ -138,6 +138,15 @@
   
   <url>
     <loc>https://ywxk2016.github.io/about/index.html</loc>
+    
+    <lastmod>2026-09-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/community/index.html</loc>
     
     <lastmod>2026-09-24</lastmod>
     
@@ -296,6 +305,20 @@
   </url>
   
   <url>
+    <loc>https://ywxk2016.github.io/tags/Mat/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/tags/UMat/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ywxk2016.github.io/tags/opencv-contrib/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -311,20 +334,6 @@
   
   <url>
     <loc>https://ywxk2016.github.io/tags/Visual-Studio/</loc>
-    <lastmod>2026-09-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/tags/Mat/</loc>
-    <lastmod>2026-09-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/tags/UMat/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -444,6 +453,27 @@
   
   <url>
     <loc>https://ywxk2016.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/tags/%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%8E%B0/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/tags/MagicPoint/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/tags/HPatches/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
