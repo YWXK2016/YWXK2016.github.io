@@ -4,6 +4,43 @@
   
   
   <entry>
+    <title>SuperPoint网络结构</title>
+    <link href="/2026/09/24/SuperPoint_Network/"/>
+    <url>/2026/09/24/SuperPoint_Network/</url>
+    
+    <content type="html"><![CDATA[<h1 id="SuperPoint网络结构"><a href="#SuperPoint网络结构" class="headerlink" title="SuperPoint网络结构"></a>SuperPoint网络结构</h1><blockquote><p><strong>NOTE</strong>: All convolution layers in the network are followed by ReLU non-linear activation and BatchNorm normalization.</p></blockquote><h2 id="1-Shared-Encoder"><a href="#1-Shared-Encoder" class="headerlink" title="1. Shared Encoder"></a>1. Shared Encoder</h2><table><thead><tr><th align="center">operation</th><th align="center">input</th><th align="center">output</th></tr></thead><tbody><tr><td align="center">3*3@64 convolution</td><td align="center">H * W * 1</td><td align="center">H * W * 64</td></tr><tr><td align="center">3*3@64 convolution</td><td align="center">H * W * 64</td><td align="center">H * W * 64</td></tr><tr><td align="center">2*2 max pooling</td><td align="center">H * W * 64</td><td align="center">H&#x2F;2 * W&#x2F;2 * 64</td></tr><tr><td align="center">3*3@64 convolution</td><td align="center">H&#x2F;2 * W&#x2F;2 * 64</td><td align="center">H&#x2F;2 * W&#x2F;2 * 64</td></tr><tr><td align="center">3*3@64 convolution</td><td align="center">H&#x2F;2 * W&#x2F;2 * 64</td><td align="center">H&#x2F;2 * W&#x2F;2 * 64</td></tr><tr><td align="center">2*2 max pooling</td><td align="center">H&#x2F;2 * W&#x2F;2 * 64</td><td align="center">H&#x2F;4 * W&#x2F;4 * 64</td></tr><tr><td align="center">3*3@128 convolution</td><td align="center">H&#x2F;4 * W&#x2F;4 * 64</td><td align="center">H&#x2F;4 * W&#x2F;4 * 128</td></tr><tr><td align="center">3*3@128 convolution</td><td align="center">H&#x2F;4 * W&#x2F;4 * 128</td><td align="center">H&#x2F;4 * W&#x2F;4 * 128</td></tr><tr><td align="center">2*2 max pooling</td><td align="center">H&#x2F;4 * W&#x2F;4 * 128</td><td align="center">H&#x2F;8 * W&#x2F;8 * 128</td></tr><tr><td align="center">3*3@128 convolution</td><td align="center">H&#x2F;8 * W&#x2F;8 * 128</td><td align="center">H&#x2F;8 * W&#x2F;8 * 128</td></tr><tr><td align="center">3*3@128 convolution</td><td align="center">H&#x2F;8 * W&#x2F;8 * 128</td><td align="center">H&#x2F;8 * W&#x2F;8 * 128</td></tr></tbody></table><h2 id="2-Interest-Point-Decoder"><a href="#2-Interest-Point-Decoder" class="headerlink" title="2. Interest Point Decoder"></a>2. Interest Point Decoder</h2><table><thead><tr><th align="center">operation</th><th align="center">input</th><th align="center">output</th></tr></thead><tbody><tr><td align="center">3*3@256 convolution</td><td align="center">H&#x2F;8 * W&#x2F;8 * 128</td><td align="center">H&#x2F;8 * W&#x2F;8 * 256</td></tr><tr><td align="center">1*1@65 convolution</td><td align="center">H&#x2F;8 * W&#x2F;8 * 256</td><td align="center">H&#x2F;8 * W&#x2F;8 * 65</td></tr><tr><td align="center">channel-wise softmax</td><td align="center">H&#x2F;8 * W&#x2F;8 * 65</td><td align="center">H&#x2F;8 * W&#x2F;8 * 65</td></tr><tr><td align="center">remove dustbin dimension</td><td align="center">H&#x2F;8 * W&#x2F;8 * 65</td><td align="center">H&#x2F;8 * W&#x2F;8 * 64</td></tr><tr><td align="center">reshape</td><td align="center">H&#x2F;8 * W&#x2F;8 * 64</td><td align="center">H * W *1</td></tr></tbody></table><h2 id="3-Descriptor-Decoder"><a href="#3-Descriptor-Decoder" class="headerlink" title="3. Descriptor Decoder"></a>3. Descriptor Decoder</h2><blockquote><p><strong>NOTE</strong>: D为描述子的维度，论文中的D设置为256，则对应输出的描述子为256维的。</p></blockquote><table><thead><tr><th align="center">operation</th><th align="center">input</th><th align="center">output</th></tr></thead><tbody><tr><td align="center">3*3@256 convolution</td><td align="center">H&#x2F;8 * W&#x2F;8 * 128</td><td align="center">H&#x2F;8 * W&#x2F;8 * 256</td></tr><tr><td align="center">1*1@D convolution</td><td align="center">H&#x2F;8 * W&#x2F;8 * 256</td><td align="center">H&#x2F;8 * W&#x2F;8 * D</td></tr><tr><td align="center">bi-cubic interpolation</td><td align="center">H&#x2F;8 * W&#x2F;8 * D</td><td align="center">H * W * D</td></tr><tr><td align="center">L2-normalizes</td><td align="center">H * W * D</td><td align="center">H * W * D</td></tr></tbody></table>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机视觉</category>
+      
+      <category>三维重建</category>
+      
+      <category>特征提取</category>
+      
+      <category>论文阅读和复现</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>SuperPoint</tag>
+      
+      <tag>编解码结构</tag>
+      
+      <tag>网络结构</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[论文阅读] SuperPoint: Self-Supervised Interest Point Detection and Description</title>
     <link href="/2026/09/23/SuperPoint_Paper/"/>
     <url>/2026/09/23/SuperPoint_Paper/</url>
@@ -188,13 +225,13 @@
     
     <tags>
       
+      <tag>相机模型</tag>
+      
       <tag>MVSNet</tag>
       
       <tag>多视图立体匹配</tag>
       
       <tag>单应性变换</tag>
-      
-      <tag>相机模型</tag>
       
     </tags>
     
