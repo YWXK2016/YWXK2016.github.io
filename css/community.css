@@ -1,4 +1,4 @@
-.community-card {
+.community-image-shell {
   position: relative;
   max-width: 860px;
   aspect-ratio: 1885 / 624;
@@ -11,9 +11,7 @@
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
 }
 
-.community-card img.community-qr {
-  position: absolute;
-  inset: 0;
+.community-image {
   display: block;
   width: 100%;
   height: 100%;
@@ -21,30 +19,8 @@
   border-radius: 4px;
 }
 
-.community-qr-dark {
-  display: none !important;
-}
-
-html[data-user-color-scheme='dark'] .community-qr-light {
-  display: none !important;
-}
-
-html[data-user-color-scheme='dark'] .community-qr-dark {
-  display: block !important;
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-user-color-scheme]) .community-qr-light {
-    display: none !important;
-  }
-
-  html:not([data-user-color-scheme]) .community-qr-dark {
-    display: block !important;
-  }
-}
-
 @media (max-width: 575px) {
-  .community-card {
+  .community-image-shell {
     margin: 1.5rem auto;
   }
 }

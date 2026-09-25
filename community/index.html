@@ -19,19 +19,20 @@
   <meta name="author" content="仰望星空">
   <meta name="keywords" content="计算机视觉, 数字图像处理, 人工智能, AI, C, C++, Python, OpenCV, CUDA, PyTorch, LibTorch">
   
-    <meta property="og:type" content="website">
+    <meta name="description" content="(function() {         var image &#x3D; document.querySelector(&#39;.community-image&#39;);         if (!image) return;          function updateCommunityImage() {             var scheme &#x3D; document.do">
+<meta property="og:type" content="website">
 <meta property="og:title" content="社群">
 <meta property="og:url" content="https://ywxk2016.github.io/community/index.html">
 <meta property="og:site_name" content="仰望星空">
+<meta property="og:description" content="(function() {         var image &#x3D; document.querySelector(&#39;.community-image&#39;);         if (!image) return;          function updateCommunityImage() {             var scheme &#x3D; document.do">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ywxk2016.github.io/img/community/green.webp">
 <meta property="og:image" content="https://ywxk2016.github.io/img/community/white.webp">
-<meta property="article:published_time" content="2026-09-25T10:35:47.857Z">
-<meta property="article:modified_time" content="2026-09-25T10:35:47.857Z">
+<meta property="article:published_time" content="2026-09-25T10:43:49.858Z">
+<meta property="article:modified_time" content="2026-09-25T10:43:49.858Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="计算机视觉, 数字图像处理, 人工智能, AI, C, C++, Python, OpenCV, CUDA, PyTorch, LibTorch">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://ywxk2016.github.io/img/community/green.webp">
+<meta name="twitter:image" content="https://ywxk2016.github.io/img/community/white.webp">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -171,7 +172,7 @@
     height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=mugtrv2qdlh") center / cover no-repeat;
+    background: #fff url("/img/avatar.jpg?v=mugu26zn2ke") center / cover no-repeat;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -554,10 +555,28 @@
 <article class="page-content">
   <link rel='stylesheet' href='/css/community.css'>
 
-<div class='community-card'>
-    <img class='community-qr community-qr-light' src='/img/community/green.webp' alt='CVStudio 社群二维码' loading='lazy'>
-    <img class='community-qr community-qr-dark' src='/img/community/white.webp' alt='CVStudio 社群二维码' loading='lazy'>
+<div class='community-image-shell'>
+    <img class='community-image' src='/img/community/green.webp' data-light-src='/img/community/green.webp' data-dark-src='/img/community/white.webp' alt='CVStudio 社群二维码' loading='lazy'>
 </div>
+
+<script>
+    (function() {
+        var image = document.querySelector('.community-image');
+        if (!image) return;
+
+        function updateCommunityImage() {
+            var scheme = document.documentElement.getAttribute('data-user-color-scheme');
+            var dark = scheme === 'dark' || (!scheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            image.src = dark ? image.dataset.darkSrc : image.dataset.lightSrc;
+        }
+
+        updateCommunityImage();
+        new MutationObserver(updateCommunityImage).observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-user-color-scheme']
+        });
+    })();
+</script>
 
 
   
