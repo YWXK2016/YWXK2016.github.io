@@ -28,11 +28,11 @@
       
       <tag>深度学习</tag>
       
+      <tag>代码复现</tag>
+      
       <tag>SuperGlue</tag>
       
       <tag>特征匹配</tag>
-      
-      <tag>代码复现</tag>
       
       <tag>姿态估计</tag>
       
@@ -268,6 +268,8 @@
     
     <tags>
       
+      <tag>深度学习</tag>
+      
       <tag>SFMLearner</tag>
       
       <tag>SfM</tag>
@@ -275,8 +277,6 @@
       <tag>单目深度估计</tag>
       
       <tag>相机位姿估计</tag>
-      
-      <tag>深度学习</tag>
       
       <tag>CVPR2017</tag>
       
@@ -309,6 +309,8 @@
     
     <tags>
       
+      <tag>深度学习</tag>
+      
       <tag>SFMLearner</tag>
       
       <tag>SfM</tag>
@@ -316,8 +318,6 @@
       <tag>单目深度估计</tag>
       
       <tag>相机位姿估计</tag>
-      
-      <tag>深度学习</tag>
       
       <tag>CVPR2017</tag>
       
@@ -350,8 +350,6 @@
     
     <tags>
       
-      <tag>深度学习</tag>
-      
       <tag>MVSNet</tag>
       
       <tag>多视图立体匹配</tag>
@@ -359,6 +357,8 @@
       <tag>单应性变换</tag>
       
       <tag>深度估计</tag>
+      
+      <tag>深度学习</tag>
       
       <tag>ECCV2018</tag>
       

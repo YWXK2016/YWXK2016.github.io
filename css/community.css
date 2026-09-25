@@ -1,4 +1,5 @@
 .community-card {
+  position: relative;
   max-width: 860px;
   margin: 2.5rem auto;
   padding: 1rem;
@@ -16,6 +17,10 @@
 }
 
 .community-qr-dark {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: calc(100% - 2rem) !important;
   display: none !important;
 }
 
@@ -41,5 +46,11 @@ html[data-user-color-scheme='dark'] .community-qr-dark {
   .community-card {
     margin: 1.5rem auto;
     padding: .5rem;
+  }
+
+  .community-qr-dark {
+    top: .5rem;
+    left: .5rem;
+    width: calc(100% - 1rem) !important;
   }
 }
