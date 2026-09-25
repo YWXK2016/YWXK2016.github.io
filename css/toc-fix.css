@@ -30,3 +30,11 @@
   grid-column: 1 / -1;
   align-self: start;
 }
+
+.toc-list-item > ol.tocbot-is-collapsed {
+  display: none;
+}
+
+.toc-list-item > ol.tocbot-is-collapsible:not(.tocbot-is-collapsed) {
+  display: block;
+}
