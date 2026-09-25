@@ -1,44 +1,45 @@
 .community-card {
-  max-width: 420px;
-  margin: 2rem auto;
-  padding: 1.5rem;
+  max-width: 860px;
+  margin: 2.5rem auto;
+  padding: 1rem;
   border: 1px solid var(--line-color);
   border-radius: 8px;
   background: var(--board-bg-color);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  text-align: center;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
 }
 
-.community-message {
-  margin: 0 0 1rem;
-  color: var(--post-heading-color);
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-
-.community-card img {
+.community-card img.community-qr {
   display: block;
-  width: min(100%, 280px);
+  width: 100%;
   height: auto;
-  margin: 0 auto 1rem;
-  padding: 0.4rem;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: 4px;
 }
 
-.community-name {
-  margin: 0;
-  color: var(--sec-text-color);
-  font-size: 0.92rem;
-  letter-spacing: 0.05em;
+.community-qr-dark {
+  display: none !important;
+}
+
+html[data-user-color-scheme='dark'] .community-qr-light {
+  display: none !important;
+}
+
+html[data-user-color-scheme='dark'] .community-qr-dark {
+  display: block !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-user-color-scheme]) .community-qr-light {
+    display: none !important;
+  }
+
+  html:not([data-user-color-scheme]) .community-qr-dark {
+    display: block !important;
+  }
 }
 
 @media (max-width: 575px) {
   .community-card {
-    padding: 1.1rem;
-  }
-
-  .community-card img {
-    width: min(100%, 230px);
+    margin: 1.5rem auto;
+    padding: .5rem;
   }
 }
