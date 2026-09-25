@@ -1,8 +1,10 @@
 .community-card {
   position: relative;
   max-width: 860px;
+  aspect-ratio: 1885 / 624;
   margin: 2.5rem auto;
-  padding: 1rem;
+  padding: 0;
+  overflow: hidden;
   border: 1px solid var(--line-color);
   border-radius: 8px;
   background: var(--board-bg-color);
@@ -10,17 +12,16 @@
 }
 
 .community-card img.community-qr {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
   border-radius: 4px;
 }
 
 .community-qr-dark {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  width: calc(100% - 2rem) !important;
   display: none !important;
 }
 
@@ -45,12 +46,5 @@ html[data-user-color-scheme='dark'] .community-qr-dark {
 @media (max-width: 575px) {
   .community-card {
     margin: 1.5rem auto;
-    padding: .5rem;
-  }
-
-  .community-qr-dark {
-    top: .5rem;
-    left: .5rem;
-    width: calc(100% - 1rem) !important;
   }
 }
