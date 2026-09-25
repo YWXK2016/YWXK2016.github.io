@@ -11,52 +11,7 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/docs/index.html</loc>
-    
-    <lastmod>2026-09-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/2026/09/23/MVSNet_Paper/</loc>
-    
-    <lastmod>2026-09-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/2026/09/23/SFMLearner_code/</loc>
-    
-    <lastmod>2026-09-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/2026/09/24/SuperPoint_Network/</loc>
-    
-    <lastmod>2026-09-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/2026/09/23/SFMLearner_Paper/</loc>
-    
-    <lastmod>2026-09-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/2026/09/23/SuperPoint_Paper/</loc>
+    <loc>https://ywxk2016.github.io/2026/09/24/SuperPoint_Code/</loc>
     
     <lastmod>2026-09-25</lastmod>
     
@@ -92,7 +47,7 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/2026/09/24/SuperPoint_Code/</loc>
+    <loc>https://ywxk2016.github.io/about/index.html</loc>
     
     <lastmod>2026-09-25</lastmod>
     
@@ -110,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/about/index.html</loc>
+    <loc>https://ywxk2016.github.io/docs/index.html</loc>
     
     <lastmod>2026-09-25</lastmod>
     
@@ -137,15 +92,6 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/2026/09/22/Colmap_Command/</loc>
-    
-    <lastmod>2026-09-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ywxk2016.github.io/2026/09/22/Camera_Coordinate_System/</loc>
     
     <lastmod>2026-09-25</lastmod>
@@ -164,6 +110,15 @@
   </url>
   
   <url>
+    <loc>https://ywxk2016.github.io/2026/09/23/0006_OpenCV_Mat_UMat/</loc>
+    
+    <lastmod>2026-09-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://ywxk2016.github.io/2026/09/23/MVSNet_Homography/</loc>
     
     <lastmod>2026-09-25</lastmod>
@@ -173,7 +128,52 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/2026/09/23/0006_OpenCV_Mat_UMat/</loc>
+    <loc>https://ywxk2016.github.io/2026/09/23/MVSNet_Paper/</loc>
+    
+    <lastmod>2026-09-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/2026/09/23/SFMLearner_code/</loc>
+    
+    <lastmod>2026-09-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/2026/09/23/SFMLearner_Paper/</loc>
+    
+    <lastmod>2026-09-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/2026/09/22/Colmap_Command/</loc>
+    
+    <lastmod>2026-09-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/2026/09/24/SuperPoint_Network/</loc>
+    
+    <lastmod>2026-09-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/2026/09/23/SuperPoint_Paper/</loc>
     
     <lastmod>2026-09-25</lastmod>
     
@@ -276,13 +276,6 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ywxk2016.github.io/tags/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -353,6 +346,20 @@
   </url>
   
   <url>
+    <loc>https://ywxk2016.github.io/tags/Mat/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/tags/UMat/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ywxk2016.github.io/tags/MVSNet/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -368,20 +375,6 @@
   
   <url>
     <loc>https://ywxk2016.github.io/tags/%E5%8D%95%E5%BA%94%E6%80%A7%E5%8F%98%E6%8D%A2/</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/tags/Mat/</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/tags/UMat/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -444,6 +437,13 @@
   </url>
   
   <url>
+    <loc>https://ywxk2016.github.io/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ywxk2016.github.io/tags/SuperPoint/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -465,6 +465,20 @@
   </url>
   
   <url>
+    <loc>https://ywxk2016.github.io/tags/%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%8E%B0/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ywxk2016.github.io/tags/MagicPoint/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ywxk2016.github.io/tags/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%90%E5%8F%96/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -472,14 +486,7 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/tags/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%8F%E8%BF%B0/</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ywxk2016.github.io/tags/CVPR2018/</loc>
+    <loc>https://ywxk2016.github.io/tags/HPatches/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -521,13 +528,6 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/tags/%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%8E%B0/</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ywxk2016.github.io/tags/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -542,14 +542,14 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/tags/MagicPoint/</loc>
+    <loc>https://ywxk2016.github.io/tags/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%8F%E8%BF%B0/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/tags/HPatches/</loc>
+    <loc>https://ywxk2016.github.io/tags/CVPR2018/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -586,14 +586,14 @@
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/OpenCV/</loc>
+    <loc>https://ywxk2016.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ywxk2016.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/</loc>
+    <loc>https://ywxk2016.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/OpenCV/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
