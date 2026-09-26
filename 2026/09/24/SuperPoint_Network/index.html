@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ywxk2016.github.io/img/covers/SuperPoint.webp">
 <meta property="article:published_time" content="2026-09-24T11:47:48.000Z">
-<meta property="article:modified_time" content="2026-09-25T10:43:49.857Z">
+<meta property="article:modified_time" content="2026-09-26T07:45:27.383Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="SuperPoint">
 <meta property="article:tag" content="深度学习">
@@ -159,6 +159,52 @@
   }
 </style>
 <style>
+  #navbar .navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+    max-width: calc(100% - 3.5rem);
+  }
+
+  #navbar .navbar-brand::before {
+    content: "";
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    background: #fff url("/img/avatar.jpg?v=mui34nkoow") center / cover no-repeat;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #navbar .navbar-brand:hover::before {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  #navbar .navbar-brand strong {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 575px) {
+    #navbar .navbar-brand {
+      gap: 0.4rem;
+      max-width: calc(100% - 3rem);
+    }
+
+    #navbar .navbar-brand::before {
+      flex-basis: 2rem;
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+</style>
+<style>
   .github-corner {
     position: fixed;
     top: 0;
@@ -223,52 +269,6 @@
   @media print {
     .github-corner {
       display: none;
-    }
-  }
-</style>
-<style>
-  #navbar .navbar-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    min-width: 0;
-    max-width: calc(100% - 3.5rem);
-  }
-
-  #navbar .navbar-brand::before {
-    content: "";
-    flex: 0 0 2.5rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=mugu26zn2ke") center / cover no-repeat;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  #navbar .navbar-brand:hover::before {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  #navbar .navbar-brand strong {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  @media (max-width: 575px) {
-    #navbar .navbar-brand {
-      gap: 0.4rem;
-      max-width: calc(100% - 3rem);
-    }
-
-    #navbar .navbar-brand::before {
-      flex-basis: 2rem;
-      width: 2rem;
-      height: 2rem;
     }
   }
 </style><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
