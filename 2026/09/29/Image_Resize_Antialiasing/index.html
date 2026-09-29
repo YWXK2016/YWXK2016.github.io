@@ -1,0 +1,1333 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar-favicon.png">
+  <link rel="icon" href="/img/avatar-favicon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="仰望星空">
+  <meta name="keywords" content="图像下采样,抗混叠,高斯滤波,OpenCV,图像处理">
+  
+    <meta name="description" content="介绍图像下采样产生混叠与锯齿的原因，梳理 MATLAB 抗混叠流程，并给出基于高斯低通滤波和子采样的 OpenCV 实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像下采样的混叠效应与抗混叠">
+<meta property="og:url" content="https://ywxk2016.github.io/2026/09/29/Image_Resize_Antialiasing/index.html">
+<meta property="og:site_name" content="仰望星空">
+<meta property="og:description" content="介绍图像下采样产生混叠与锯齿的原因，梳理 MATLAB 抗混叠流程，并给出基于高斯低通滤波和子采样的 OpenCV 实现。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ywxk2016.github.io/img/covers/ImageResize.webp">
+<meta property="article:published_time" content="2026-09-29T19:03:02.000Z">
+<meta property="article:modified_time" content="2026-09-29T11:57:16.042Z">
+<meta property="article:author" content="仰望星空">
+<meta property="article:tag" content="OpenCV">
+<meta property="article:tag" content="图像下采样">
+<meta property="article:tag" content="图像处理">
+<meta property="article:tag" content="抗混叠">
+<meta property="article:tag" content="高斯滤波">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ywxk2016.github.io/img/covers/ImageResize.webp">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>图像下采样的混叠效应与抗混叠 - 仰望星空</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/toc-fix.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ywxk2016.github.io","root":"/","version":"1.9.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<style>
+  .post-share {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0.25rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--line-color);
+    border-radius: 8px;
+    background: var(--board-bg-color);
+  }
+
+  .post-share-label {
+    margin-right: 0.25rem;
+    color: var(--sec-text-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .post-share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--line-color);
+    border-radius: 999px;
+    color: var(--text-color);
+    background: transparent;
+    font-size: 0.82rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .post-share-btn:hover,
+  .post-share-btn:focus-visible {
+    color: var(--link-hover-color);
+    border-color: var(--link-hover-color);
+    background: var(--link-hover-bg-color);
+  }
+
+  .post-share-btn i {
+    font-size: 1rem;
+  }
+
+  .post-share-moments-icon {
+    display: block;
+    flex: 0 0 1rem;
+  }
+
+  @media (max-width: 575px) {
+    .post-share {
+      padding: 0.75rem;
+    }
+
+    .post-share-btn span {
+      display: none;
+    }
+  }
+</style>
+<style>
+  .github-corner {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1040;
+    display: block;
+    width: 64px;
+    height: 64px;
+    border: 0;
+    transform: scale(1.1);
+    transform-origin: top right;
+  }
+
+  .github-corner svg {
+    width: 64px;
+    height: 64px;
+    color: var(--board-bg-color);
+    fill: var(--post-link-color);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.24));
+    transition: fill 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+
+  .github-corner:hover svg {
+    fill: var(--link-hover-color);
+  }
+
+  .github-corner:hover .octo-arm {
+    animation: github-octocat-wave 0.56s ease-in-out;
+  }
+
+  .github-corner .octo-arm {
+    animation: none;
+    transform-origin: 130px 106px;
+  }
+
+  @keyframes github-octocat-wave {
+    0%, 100% {
+      transform: rotate(0);
+    }
+
+    20%, 60% {
+      transform: rotate(-25deg);
+    }
+
+    40%, 80% {
+      transform: rotate(10deg);
+    }
+  }
+
+  @media (min-width: 992px) {
+    #navbar .navbar-nav {
+      margin-right: 3.6rem;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .github-corner {
+      display: none;
+    }
+  }
+
+  @media print {
+    .github-corner {
+      display: none;
+    }
+  }
+</style>
+<style>
+  #navbar .navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+    max-width: calc(100% - 3.5rem);
+  }
+
+  #navbar .navbar-brand::before {
+    content: "";
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    background: #fff url("/img/avatar.jpg?v=mummg1hnkct") center / cover no-repeat;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #navbar .navbar-brand:hover::before {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  #navbar .navbar-brand strong {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 575px) {
+    #navbar .navbar-brand {
+      gap: 0.4rem;
+      max-width: calc(100% - 3rem);
+    }
+
+    #navbar .navbar-brand::before {
+      flex-basis: 2rem;
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+</style><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body><!-- hexo injector body_begin start -->
+<a
+  class="github-corner"
+  href="https://github.com/YWXK2016"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Follow me on GitHub"
+  title="Follow me on GitHub"
+>
+  <svg viewBox="0 0 250 250" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+    <path
+      d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+      fill="currentColor"
+      class="octo-arm"
+    ></path>
+    <path
+      d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+      fill="currentColor"
+      class="octo-body"
+    ></path>
+  </svg>
+</a><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>仰望星空</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/projects/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>项目</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/community/" target="_self">
+                <i class="iconfont icon-users"></i>
+                <span>社群</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/projects/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>项目</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/links/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>友链</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/community/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-users"></i>
+                  <span>社群</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/banners/post.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">图像下采样的混叠效应与抗混叠</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-09-29 19:03" pubdate>
+          2026年9月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          69 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          阅读 <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">图像下采样的混叠效应与抗混叠</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="图像下采样的混叠效应与抗混叠"><a href="#图像下采样的混叠效应与抗混叠" class="headerlink" title="图像下采样的混叠效应与抗混叠"></a>图像下采样的混叠效应与抗混叠</h1><h2 id="一、专业名词"><a href="#一、专业名词" class="headerlink" title="一、专业名词"></a>一、专业名词</h2><ul>
+<li><strong>下采样</strong>：<code>Downsampling</code></li>
+<li><strong>混叠</strong>&#x2F;<strong>锯齿效应</strong>：<code>Aliasing</code></li>
+<li><strong>抗混叠</strong>&#x2F;<strong>抗锯齿</strong>：<code>Anti-aliasing</code></li>
+<li><strong>模糊</strong>：<code>Blurring</code></li>
+<li><strong>马赛克效应</strong>：<code>Pixelation</code></li>
+<li><strong>低通滤波</strong>：<code>Low-pass Filtering</code></li>
+</ul>
+<h2 id="二、混叠效应的产生原因"><a href="#二、混叠效应的产生原因" class="headerlink" title="二、混叠效应的产生原因"></a>二、混叠效应的产生原因</h2><h3 id="1-产生混叠效应的原因"><a href="#1-产生混叠效应的原因" class="headerlink" title="1. 产生混叠效应的原因"></a>1. 产生混叠效应的原因</h3><blockquote>
+<p>下采样是减少图像像素的过程。当图像尺寸缩小，原本高频的细节（如密集的条纹、锐利的边缘）在像素减少后无法被正确表达，就会发生“混叠”现象，导致原本平滑的边缘出现阶梯状的锯齿，或者在密集纹理处出现奇怪的摩尔纹。</p>
+</blockquote>
+<blockquote>
+<p>下采样会减少图像的像素密度。根据奈奎斯特采样定理，如果图像中存在高于新采样频率一半的高频成分，这些成分就会“折叠”回低频区域，产生锯齿或摩尔纹。</p>
+</blockquote>
+<blockquote>
+<p>上采样通常表现为模糊或马赛克效应，因为系统需要通过插值算法“猜”出多出来的像素，而不是产生高频的锯齿。</p>
+</blockquote>
+<h3 id="2-解决混叠的基本原理"><a href="#2-解决混叠的基本原理" class="headerlink" title="2. 解决混叠的基本原理"></a>2. 解决混叠的基本原理</h3><blockquote>
+<p>为了防止下采样产生混叠，标准的做法是在缩小图像之前，先进行一次低通滤波，也就是常说的“抗锯齿”处理，把高频细节抹平后再缩小。</p>
+</blockquote>
+<h2 id="三、Matlab中如何实现抗混叠"><a href="#三、Matlab中如何实现抗混叠" class="headerlink" title="三、Matlab中如何实现抗混叠"></a>三、Matlab中如何实现抗混叠</h2><blockquote>
+<p>在 MATLAB 中，图像下采样主要通过 <code>imresize</code> 函数完成。其内置的抗混叠机制由 <code>&#39;Antialiasing&#39;</code> 参数控制（默认值为 <code>true</code>），当输出尺寸小于输入尺寸时，会自动在插值前进行低通滤波，有效抑制混叠伪影。</p>
+</blockquote>
+<h3 id="1-抗混叠流程"><a href="#1-抗混叠流程" class="headerlink" title="1. 抗混叠流程"></a>1. 抗混叠流程</h3><blockquote>
+<p><code>imresize</code> 的整体抗混叠下采样分为两步：</p>
+</blockquote>
+<ul>
+<li><strong>低通滤波</strong>：用一个高斯核对原图进行平滑，滤除高频成分。</li>
+<li><strong>插值&#x2F;重采样</strong>：对平滑后的图像按目标尺寸进行指定的插值（默认为双三次 <code>&#39;bicubic&#39;</code>）。</li>
+</ul>
+<blockquote>
+<p>滤波的目的是让信号满足奈奎斯特采样定理，防止高频折叠到低频区域产生摩尔纹或锯齿。</p>
+</blockquote>
+<h3 id="2-高斯滤波器参数自动计算"><a href="#2-高斯滤波器参数自动计算" class="headerlink" title="2. 高斯滤波器参数自动计算"></a>2. 高斯滤波器参数自动计算</h3><blockquote>
+<p>当 <code>&#39;Antialiasing&#39;</code> 设置为 <code>true</code>时，MATLAB 会根据缩放因子自动决定高斯核的标准差$ \sigma $和核大小。</p>
+</blockquote>
+<ul>
+<li><strong>设缩放因子</strong></li>
+</ul>
+<div class="mathjax-block">$$
+s = \frac{\text{输出尺寸}}{\text{输入尺寸}} （当等比例缩放时， 0 < s < 1 ）
+$$</div>
+<ul>
+<li><strong>标准差</strong>$ \sigma $<strong>计算公式</strong>（经验公式，可在 MATLAB 文档中找到）：</li>
+</ul>
+<div class="mathjax-block">$$
+\sigma = \frac{1/s - 1}{2}
+$$</div>
+<table>
+<thead>
+<tr>
+<th align="center">缩放因子$ s $</th>
+<th align="center">标准差$ \sigma $</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1.0</td>
+<td align="center">0</td>
+<td align="left">不滤波</td>
+</tr>
+<tr>
+<td align="center">0.5</td>
+<td align="center">0.5</td>
+<td align="left">适度滤波</td>
+</tr>
+<tr>
+<td align="center">0.25</td>
+<td align="center">1.5</td>
+<td align="left">较强滤波</td>
+</tr>
+<tr>
+<td align="center">0.1</td>
+<td align="center">4.5</td>
+<td align="left">强滤波</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>滤波阈值</strong></li>
+</ul>
+<blockquote>
+<p>只有当$ \sigma &gt; 0.5 $时才真正进行高斯滤波（即$ s &lt; 0.5 $），否则认为混叠风险很小，直接进行插值下采样。</p>
+</blockquote>
+<ul>
+<li><strong>核尺寸</strong></li>
+</ul>
+<blockquote>
+<p>MATLAB 会根据 $\sigma$ 动态计算滤波器的支持宽度。默认采用截断半径$ 2\sigma $（即覆盖约 95.4% 能量）：<br>$\text{ksize} &#x3D; 2 \times \lceil 2\sigma \rceil + 1$<br>这保证了核大小为奇数，且不会无谓增加计算量（早期版本可能固定为 $11 \times 11$，但从 R2017b 开始已改为自适应）。</p>
+</blockquote>
+<blockquote>
+<p>如果直接为 <code>&#39;Antialiasing&#39;</code> 指定一个数值（例如 <code>imresize(I, 0.2, &#39;Antialiasing&#39;, 1.2)</code>），那么该数值会被直接用作$ \sigma $，不再使用上述自动公式。</p>
+</blockquote>
+<h3 id="3-插值步骤"><a href="#3-插值步骤" class="headerlink" title="3. 插值步骤"></a>3. 插值步骤</h3><blockquote>
+<p>对低通滤波后的图像，<code>imresize</code> 使用指定的插值核（默认为 <code>&#39;bicubic&#39;</code>）计算输出像素。此时由于高频已被衰减，插值过程不会引入明显的混叠，且能保留较好的边缘清晰度。</p>
+</blockquote>
+<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h3><blockquote>
+<p>MATLAB 的抗混叠下采样核心是<strong>自适应高斯低通滤波 + 插值</strong>。其巧妙之处在于通过缩放因子自动推导出合适的滤波强度（$ \sigma &#x3D; \frac{1&#x2F;s - 1}{2} $），无需用户干预即可获得视觉质量优异的缩小图像。</p>
+</blockquote>
+<h2 id="四、OpenCV实现抗混叠"><a href="#四、OpenCV实现抗混叠" class="headerlink" title="四、OpenCV实现抗混叠"></a>四、OpenCV实现抗混叠</h2><blockquote>
+<p>使用 C++ 和 OpenCV 实现抗混叠图像下采样，将<strong>高斯模糊</strong>与<strong>最近邻下采样</strong>结合，有效消除混叠，同时避免二次插值引入的额外模糊。</p>
+</blockquote>
+<h3 id="1-算法原理"><a href="#1-算法原理" class="headerlink" title="1. 算法原理"></a>1. 算法原理</h3><blockquote>
+<p>图像下采样（缩小）时，如果不进行低通滤波，高频成分会超出新采样率对应的奈奎斯特频率，从而产生混叠伪影（如摩尔纹、锯齿）。抗混叠下采样的标准流程是：</p>
+</blockquote>
+<ul>
+<li><strong>低通滤波</strong>：使用高斯核对原图进行平滑，抑制可能导致混叠的高频分量。</li>
+<li><strong>子采样</strong>：对滤波后的图像按目标尺寸进行抽取或插值。</li>
+</ul>
+<p><strong>关键参数</strong>：高斯核的标准差$ \sigma $应与缩放比例$ s $成反比。  </p>
+<ul>
+<li>经验公式：$ \sigma &#x3D; \frac{0.5}{s} $（当$ s \ge 1 $时不需滤波）。  </li>
+<li>高斯核半径通常取$ \lceil 3\sigma \rceil $，保证覆盖绝大部分能量。</li>
+</ul>
+<h3 id="2-代码实现"><a href="#2-代码实现" class="headerlink" title="2. 代码实现"></a>2. 代码实现</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2/opencv.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 抗混叠图像下采样</span><br><span class="hljs-comment"> * @param src     输入图像（支持灰度或彩色）</span><br><span class="hljs-comment"> * @param scale   缩放因子 (0, 1] 之间，scale=1 时返回原图副本</span><br><span class="hljs-comment"> * @return        下采样后的图像</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function">cv::Mat <span class="hljs-title">downsampleAntialiased</span><span class="hljs-params">(<span class="hljs-type">const</span> cv::Mat&amp; src, <span class="hljs-type">double</span> scale)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-built_in">CV_Assert</span>(!src.<span class="hljs-built_in">empty</span>());<br>	<span class="hljs-built_in">CV_Assert</span>(scale &gt; <span class="hljs-number">0.0</span> &amp;&amp; scale &lt;= <span class="hljs-number">1.0</span>);<br><br>	<span class="hljs-comment">// 缩放因子接近 1 时，无需抗混叠，直接双线性插值缩放</span><br>	<span class="hljs-keyword">if</span> (scale &gt;= <span class="hljs-number">1.0</span> - <span class="hljs-number">1e-6</span>)<br>    &#123;<br>		cv::Mat dst;<br>		cv::<span class="hljs-built_in">resize</span>(src, dst, cv::<span class="hljs-built_in">Size</span>(), scale, scale, cv::INTER_LINEAR);<br>		<span class="hljs-keyword">return</span> dst;<br>	&#125;<br><br>	<span class="hljs-comment">// 1. 根据缩放因子计算高斯核标准差</span><br>	<span class="hljs-type">double</span> sigma = <span class="hljs-number">0.5</span> / scale;<br><br>	<span class="hljs-comment">// 2. 计算高斯核尺寸（覆盖 ±3σ，保证平滑效果）</span><br>	<span class="hljs-type">int</span> ksize = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-number">2</span> * std::<span class="hljs-built_in">ceil</span>(<span class="hljs-number">3.0</span> * sigma) + <span class="hljs-number">1</span>);<br>	<span class="hljs-comment">// 确保尺寸为奇数且不小于 3</span><br>	<span class="hljs-keyword">if</span> (ksize % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) ksize++;<br>	<span class="hljs-keyword">if</span> (ksize &lt; <span class="hljs-number">3</span>) ksize = <span class="hljs-number">3</span>;<br><br>	<span class="hljs-comment">// 3. 高斯低通滤波</span><br>	cv::Mat blurred;<br>	cv::<span class="hljs-built_in">GaussianBlur</span>(src, blurred, cv::<span class="hljs-built_in">Size</span>(ksize, ksize), sigma, sigma, cv::BORDER_REFLECT);<br><br>	<span class="hljs-comment">// 4. 最近邻下采样（直接抽取像素，无额外插值模糊）</span><br>	cv::Mat dst;<br>	cv::<span class="hljs-built_in">resize</span>(blurred, dst, cv::<span class="hljs-built_in">Size</span>(), scale, scale, cv::INTER_NEAREST);<br><br>	<span class="hljs-keyword">return</span> dst;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 抗混叠图像下采样（优化版）</span><br><span class="hljs-comment"> * @param src     输入图像</span><br><span class="hljs-comment"> * @param scale   缩放因子 (0, 1]</span><br><span class="hljs-comment"> * @return        下采样后的图像</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function">cv::Mat <span class="hljs-title">downsampleAntialiasedOptimized</span><span class="hljs-params">(<span class="hljs-type">const</span> cv::Mat&amp; src, <span class="hljs-type">double</span> scale)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-built_in">CV_Assert</span>(!src.<span class="hljs-built_in">empty</span>());<br>	<span class="hljs-built_in">CV_Assert</span>(scale &gt; <span class="hljs-number">0.0</span> &amp;&amp; scale &lt;= <span class="hljs-number">1.0</span>);<br><br>	<span class="hljs-comment">// 缩放因子接近 1 时，直接线性缩放（无滤波）</span><br>	<span class="hljs-keyword">if</span> (scale &gt;= <span class="hljs-number">1.0</span> - <span class="hljs-number">1e-6</span>)<br>    &#123;<br>		cv::Mat dst;<br>		cv::<span class="hljs-built_in">resize</span>(src, dst, cv::<span class="hljs-built_in">Size</span>(), scale, scale, cv::INTER_LINEAR);<br>		<span class="hljs-keyword">return</span> dst;<br>	&#125;<br><br>	<span class="hljs-comment">// ========== 优化：极端小缩放时，使用多次 2 倍降采样 ==========</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">double</span> THRESHOLD = <span class="hljs-number">0.25</span>;  <span class="hljs-comment">// 剩余缩放因子小于此值时触发多级降采样</span><br>	<span class="hljs-type">double</span> targetScale = scale;     <span class="hljs-comment">// 原始目标缩放比</span><br>	cv::Mat current = src;<br><br>	<span class="hljs-comment">// 当目标缩放比小于阈值时，反复执行 2 倍抗混叠下采样</span><br>    <span class="hljs-comment">// 相比一次性下采样，高斯滤波核尺寸更小，虽然下采样次数变多，但整体计算量反而比原来更小。</span><br>	<span class="hljs-keyword">while</span> (targetScale &lt; THRESHOLD)<br>    &#123;<br>		<span class="hljs-comment">// 2 倍降采样，σ = 0.5 / 0.5 = 1.0</span><br>		<span class="hljs-type">double</span> sigma = <span class="hljs-number">1.0</span>;<br>		<span class="hljs-type">int</span> ksize = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-number">2</span> * std::<span class="hljs-built_in">ceil</span>(<span class="hljs-number">3.0</span> * sigma) + <span class="hljs-number">1</span>);<br>		<span class="hljs-keyword">if</span> (ksize % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) ksize++;<br>		<span class="hljs-keyword">if</span> (ksize &lt; <span class="hljs-number">3</span>) ksize = <span class="hljs-number">3</span>;<br><br>		cv::Mat blurred;<br>		cv::<span class="hljs-built_in">GaussianBlur</span>(current, blurred, cv::<span class="hljs-built_in">Size</span>(ksize, ksize), sigma, sigma, cv::BORDER_REFLECT);<br>		cv::Mat half;<br>		cv::<span class="hljs-built_in">resize</span>(blurred, half, cv::<span class="hljs-built_in">Size</span>(), <span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>, cv::INTER_NEAREST);<br><br>		current = half;<br>		targetScale *= <span class="hljs-number">2.0</span>;   <span class="hljs-comment">// 剩余缩放因子相应增大</span><br><br>		<span class="hljs-comment">// 若已达到目标尺寸，直接返回</span><br>		<span class="hljs-keyword">if</span> (targetScale &gt;= <span class="hljs-number">1.0</span> - <span class="hljs-number">1e-6</span>)<br>        &#123;<br>			<span class="hljs-keyword">return</span> current;<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-comment">// ========== 对当前图像执行最终缩放（此时 targetScale ∈ [0.25, 1) ） ==========</span><br>	<span class="hljs-type">double</span> sigma = <span class="hljs-number">0.5</span> / targetScale;<br>	<span class="hljs-type">int</span> ksize = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-number">2</span> * std::<span class="hljs-built_in">ceil</span>(<span class="hljs-number">3.0</span> * sigma) + <span class="hljs-number">1</span>);<br>	<span class="hljs-keyword">if</span> (ksize % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) ksize++;<br>	<span class="hljs-keyword">if</span> (ksize &lt; <span class="hljs-number">3</span>) ksize = <span class="hljs-number">3</span>;<br><br>	cv::Mat blurred;<br>	cv::<span class="hljs-built_in">GaussianBlur</span>(current, blurred, cv::<span class="hljs-built_in">Size</span>(ksize, ksize), sigma, sigma, cv::BORDER_REFLECT);<br>	cv::Mat dst;<br>	cv::<span class="hljs-built_in">resize</span>(blurred, dst, cv::<span class="hljs-built_in">Size</span>(), targetScale, targetScale, cv::INTER_NEAREST);<br><br>	<span class="hljs-keyword">return</span> dst;<br>&#125;<br><br><span class="hljs-comment">// 重载版本：直接指定目标尺寸（宽、高）</span><br><span class="hljs-function">cv::Mat <span class="hljs-title">downsampleAntialiased</span><span class="hljs-params">(<span class="hljs-type">const</span> cv::Mat&amp; src, <span class="hljs-type">int</span> dstWidth, <span class="hljs-type">int</span> dstHeight)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-type">double</span> scaleX = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-type">double</span>&gt;(dstWidth) / src.cols;<br>	<span class="hljs-type">double</span> scaleY = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-type">double</span>&gt;(dstHeight) / src.rows;<br>	<span class="hljs-comment">// 取较小的缩放因子以保证在两个方向上都满足抗混叠条件</span><br>	<span class="hljs-type">double</span> scale = std::<span class="hljs-built_in">min</span>(scaleX, scaleY);<br>	<span class="hljs-comment">// 如果非等比缩放，会对图像拉伸，这里仍按最小因子滤波，用 INTER_LINEAR 做最终缩放</span><br>	cv::Mat temp = downsampleAntialiased(src, scale);<br>	cv::Mat dst;<br>	<span class="hljs-keyword">if</span> (std::<span class="hljs-built_in">abs</span>(scaleX - scaleY) &gt; <span class="hljs-number">1e-6</span>)<br>    &#123;<br>		cv::<span class="hljs-built_in">resize</span>(temp, dst, cv::<span class="hljs-built_in">Size</span>(dstWidth, dstHeight), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, cv::INTER_LINEAR);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>    &#123;<br>		dst = temp; <span class="hljs-comment">// 等比时已为目标尺寸</span><br>	&#125;<br>	<span class="hljs-keyword">return</span> dst;<br>&#125;<br><br><span class="hljs-function">cv::Mat <span class="hljs-title">downsampleAntialiasedOptimized</span><span class="hljs-params">(<span class="hljs-type">const</span> cv::Mat&amp; src, <span class="hljs-type">int</span> dstWidth, <span class="hljs-type">int</span> dstHeight)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-type">double</span> scaleX = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-type">double</span>&gt;(dstWidth) / src.cols;<br>	<span class="hljs-type">double</span> scaleY = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-type">double</span>&gt;(dstHeight) / src.rows;<br>	<span class="hljs-comment">// 取较小的缩放因子以保证在两个方向上都满足抗混叠条件</span><br>	<span class="hljs-type">double</span> scale = std::<span class="hljs-built_in">min</span>(scaleX, scaleY);<br>	<span class="hljs-comment">// 如果非等比缩放，会对图像拉伸，这里仍按最小因子滤波，用 INTER_LINEAR 做最终缩放</span><br>	cv::Mat temp = downsampleAntialiasedOptimized(src, scale);<br>	cv::Mat dst;<br>	<span class="hljs-keyword">if</span> (std::<span class="hljs-built_in">abs</span>(scaleX - scaleY) &gt; <span class="hljs-number">1e-6</span>)<br>    &#123;<br>		cv::<span class="hljs-built_in">resize</span>(temp, dst, cv::<span class="hljs-built_in">Size</span>(dstWidth, dstHeight), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, cv::INTER_LINEAR);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>    &#123;<br>		dst = temp; <span class="hljs-comment">// 等比时已为目标尺寸</span><br>	&#125;<br>	<span class="hljs-keyword">return</span> dst;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-comment">// ========== 生成高频测试图像（棋盘格） ==========</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">int</span> size = <span class="hljs-number">512</span>;<br>	<span class="hljs-function">cv::Mat <span class="hljs-title">chessboard</span><span class="hljs-params">(size, size, CV_8UC1)</span></span>;<br>	<span class="hljs-type">int</span> blockSize = <span class="hljs-number">4</span>; <span class="hljs-comment">// 块大小越小，高频分量越丰富</span><br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; size; i++)<br>    &#123;<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; size; j++)<br>        &#123;<br>			<span class="hljs-type">bool</span> white = ((i / blockSize) + (j / blockSize)) % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>;<br>			chessboard.<span class="hljs-built_in">at</span>&lt;uchar&gt;(i, j) = white ? <span class="hljs-number">255</span> : <span class="hljs-number">0</span>;<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-comment">// 添加少量正弦纹理，增加频率成分</span><br>	cv::Mat testPattern = chessboard.<span class="hljs-built_in">clone</span>();<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; testPattern.rows; i++)<br>    &#123;<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; testPattern.cols; j++)<br>        &#123;<br>			<span class="hljs-type">double</span> val = testPattern.<span class="hljs-built_in">at</span>&lt;uchar&gt;(i, j) +<br>				<span class="hljs-number">50</span> * std::<span class="hljs-built_in">sin</span>(<span class="hljs-number">2</span> * CV_PI * j / <span class="hljs-number">20.0</span>); <span class="hljs-comment">// 高频正弦</span><br>			testPattern.<span class="hljs-built_in">at</span>&lt;uchar&gt;(i, j) = cv::<span class="hljs-built_in">saturate_cast</span>&lt;uchar&gt;(val);<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-comment">// 转为彩色以便观察</span><br>	cv::Mat testColor;<br>	cv::<span class="hljs-built_in">cvtColor</span>(testPattern, testColor, cv::COLOR_GRAY2BGR);<br><br>	<span class="hljs-comment">// 测试缩放因子</span><br>	<span class="hljs-type">double</span> scale = <span class="hljs-number">0.2</span>;  <span class="hljs-comment">// 缩小到 20%</span><br><br>	<span class="hljs-comment">// ---------- 普通下采样（无抗混叠） ----------</span><br>	cv::Mat naiveDown;<br>	cv::<span class="hljs-built_in">resize</span>(testColor, naiveDown, cv::<span class="hljs-built_in">Size</span>(), scale, scale, cv::INTER_LINEAR);<br><br>	<span class="hljs-comment">// ---------- 抗混叠下采样 ----------</span><br>	<span class="hljs-comment">//cv::Mat antialiasedDown = downsampleAntialiased(testColor, scale);</span><br>	cv::Mat antialiasedDown = downsampleAntialiasedOptimized(testColor, scale);<br><br>	<span class="hljs-comment">// ---------- 显示结果 ----------</span><br>	cv::<span class="hljs-built_in">namedWindow</span>(<span class="hljs-string">&quot;Original&quot;</span>, cv::WINDOW_NORMAL);<br>	cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">&quot;Original&quot;</span>, testColor);<br>	cv::<span class="hljs-built_in">namedWindow</span>(<span class="hljs-string">&quot;Naive Downsample (INTER_LINEAR)&quot;</span>, cv::WINDOW_NORMAL);<br>	cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">&quot;Naive Downsample (INTER_LINEAR)&quot;</span>, naiveDown);<br>	cv::<span class="hljs-built_in">namedWindow</span>(<span class="hljs-string">&quot;Antialiased Downsample&quot;</span>, cv::WINDOW_NORMAL);<br>	cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">&quot;Antialiased Downsample&quot;</span>, antialiasedDown);<br><br>	<span class="hljs-comment">// 保存对比图</span><br>	cv::<span class="hljs-built_in">imwrite</span>(<span class="hljs-string">&quot;original.png&quot;</span>, testColor);<br>	cv::<span class="hljs-built_in">imwrite</span>(<span class="hljs-string">&quot;naive_down.png&quot;</span>, naiveDown);<br>	cv::<span class="hljs-built_in">imwrite</span>(<span class="hljs-string">&quot;antialiased_down.png&quot;</span>, antialiasedDown);<br><br>	<span class="hljs-comment">// ========== 真实照片 ==========</span><br>	cv::Mat photo = cv::<span class="hljs-built_in">imread</span>(<span class="hljs-string">&quot;test.png&quot;</span>);<br>	<span class="hljs-keyword">if</span> (!photo.<span class="hljs-built_in">empty</span>())<br>    &#123;<br>		cv::Mat photoNaive, photoAA;<br>		cv::<span class="hljs-built_in">resize</span>(photo, photoNaive, cv::<span class="hljs-built_in">Size</span>(), <span class="hljs-number">0.15</span>, <span class="hljs-number">0.15</span>, cv::INTER_LINEAR);<br>		<span class="hljs-comment">//photoAA = downsampleAntialiased(photo, 0.15);</span><br>		photoAA = downsampleAntialiasedOptimized(photo, <span class="hljs-number">0.15</span>);<br><br>		cv::<span class="hljs-built_in">namedWindow</span>(<span class="hljs-string">&quot;Photo Naive 0.15&quot;</span>, cv::WINDOW_NORMAL);<br>		cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">&quot;Photo Naive 0.15&quot;</span>, photoNaive);<br>		cv::<span class="hljs-built_in">namedWindow</span>(<span class="hljs-string">&quot;Photo AA 0.15&quot;</span>, cv::WINDOW_NORMAL);<br>		cv::<span class="hljs-built_in">imshow</span>(<span class="hljs-string">&quot;Photo AA 0.15&quot;</span>, photoAA);<br>		cv::<span class="hljs-built_in">imwrite</span>(<span class="hljs-string">&quot;photo_naive.png&quot;</span>, photoNaive);<br>		cv::<span class="hljs-built_in">imwrite</span>(<span class="hljs-string">&quot;photo_aa.png&quot;</span>, photoAA);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>    &#123;<br>		std::cout &lt;&lt; <span class="hljs-string">&quot;未找到 input.jpg。\n&quot;</span>;<br>	&#125;<br><br>	cv::<span class="hljs-built_in">waitKey</span>(<span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/post/0018_Image_Resize_Antialiasing/1.webp" srcset="/img/loading.gif" lazyload alt="original.png"></p>
+<p><img src="/img/post/0018_Image_Resize_Antialiasing/2.webp" srcset="/img/loading.gif" lazyload alt="naive_down.png"></p>
+<p><img src="/img/post/0018_Image_Resize_Antialiasing/3.webp" srcset="/img/loading.gif" lazyload alt="antialiased_down.png"></p>
+<p><img src="/img/post/0018_Image_Resize_Antialiasing/4.webp" srcset="/img/loading.gif" lazyload alt="test.png"></p>
+<p><img src="/img/post/0018_Image_Resize_Antialiasing/5.webp" srcset="/img/loading.gif" lazyload alt="photo_naive.png"></p>
+<p><img src="/img/post/0018_Image_Resize_Antialiasing/6.webp" srcset="/img/loading.gif" lazyload alt="photo_aa.png"></p>
+<ul>
+<li><code>σ = 0.5/scale</code> 是通用且有效的默认值。若滤波后图像过模糊，可适当减小（如 <code>0.4/scale</code>）；若仍有混叠，可增大（如 <code>0.6/scale</code>）。</li>
+<li>对于极端缩小（<code>scale &lt; 0.1</code>），核尺寸可能极大，此时可考虑对图像进行多次 2 倍下采样（即金字塔），以减少计算量。本实现保持原理清晰，未做该优化。</li>
+</ul>
+<h2 id="五、参考内容"><a href="#五、参考内容" class="headerlink" title="五、参考内容"></a>五、参考内容</h2><p><a target="_blank" rel="noopener" href="https://zhuoqing.blog.csdn.net/article/details/162222113">图像下采样混叠现象与抗混叠滤波实验研究</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" class="category-chain-item">计算机视觉</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" class="category-chain-item">图像处理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/OpenCV/" class="print-no-link">#OpenCV</a>
+      
+        <a href="/tags/%E5%9B%BE%E5%83%8F%E4%B8%8B%E9%87%87%E6%A0%B7/" class="print-no-link">#图像下采样</a>
+      
+        <a href="/tags/%E6%8A%97%E6%B7%B7%E5%8F%A0/" class="print-no-link">#抗混叠</a>
+      
+        <a href="/tags/%E9%AB%98%E6%96%AF%E6%BB%A4%E6%B3%A2/" class="print-no-link">#高斯滤波</a>
+      
+        <a href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" class="print-no-link">#图像处理</a>
+      
+    </div>
+  
+</div>
+<div class='post-share' data-post-share aria-label='分享这篇文章'><span class='post-share-label'>分享</span><button type='button' class='post-share-btn' data-share='copy' aria-label='复制文章链接' title='复制链接'><i class='iconfont icon-link-fill' aria-hidden='true'></i><span>复制</span></button><button type='button' class='post-share-btn' data-share='wechat' aria-label='分享到微信' title='分享到微信'><i class='iconfont icon-wechat-fill' aria-hidden='true'></i><span>微信</span></button><button type='button' class='post-share-btn' data-share='moments' aria-label='分享到微信朋友圈' title='分享到微信朋友圈'><svg class='post-share-moments-icon' viewBox='0 0 24 24' width='1rem' height='1rem' aria-hidden='true'><circle cx='12' cy='12' r='8' fill='none' stroke='#07c160' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='12.57 37.7'></circle><circle cx='12' cy='12' r='8' fill='none' stroke='#f6c344' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='12.57 37.7' stroke-dashoffset='-12.57'></circle><circle cx='12' cy='12' r='8' fill='none' stroke='#ff6b6b' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='12.57 37.7' stroke-dashoffset='-25.14'></circle><circle cx='12' cy='12' r='8' fill='none' stroke='#4f8cff' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='12.57 37.7' stroke-dashoffset='-37.71'></circle><circle cx='12' cy='12' r='2.2' fill='currentColor'></circle></svg><span>朋友圈</span></button><button type='button' class='post-share-btn' data-share='weibo' aria-label='分享到微博' title='分享到微博'><i class='iconfont icon-weibo-fill' aria-hidden='true'></i><span>微博</span></button><button type='button' class='post-share-btn' data-share='qq' aria-label='分享到QQ' title='分享到QQ'><i class='iconfont icon-qq-fill' aria-hidden='true'></i><span>QQ</span></button><button type='button' class='post-share-btn' data-share='twitter' aria-label='分享到X' title='分享到X'><i class='iconfont icon-twitter-fill' aria-hidden='true'></i><span>X</span></button></div><script src='/js/post-share.js'></script>
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>图像下采样的混叠效应与抗混叠</div>
+      <div>https://ywxk2016.github.io/2026/09/29/Image_Resize_Antialiasing/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>仰望星空</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年9月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/09/29/Image_Resize/" title="常用图像插值算法总结">
+                        <span class="hidden-mobile">常用图像插值算法总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      ©2026 仰望星空<br>由&nbsp;<a href="https://hexo.io" target="_blank" rel="nofollow noopener" style="font-weight:700"><span>Hexo</span></a>&nbsp;驱动&nbsp;&amp;&nbsp;主题&nbsp;<a target="_blank" rel="nofollow noopener" href="https://github.com/fluid-dev/hexo-theme-fluid" style="font-weight:700">fluid v1.9.9</a><br>本站由&nbsp;<a href="https://pages.github.com/" target="_blank" rel="nofollow noopener" style="font-weight:700"><i class="iconfont icon-github-fill" aria-hidden="true" style="margin-right:4px"></i><span>GitHub</span></a>&nbsp;免费提供部署服务
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总阅读量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访问人数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start -->
+<script>
+  (function () {
+    function movePostMeta() {
+      var markdownBody = document.querySelector('.post-content .markdown-body');
+      var postMetas = document.querySelector('.post-content .post-metas');
+
+      if (!markdownBody || !postMetas || markdownBody.contains(postMetas)) {
+        return;
+      }
+
+      markdownBody.insertBefore(postMetas, markdownBody.firstChild);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', movePostMeta);
+    } else {
+      movePostMeta();
+    }
+  })();
+</script><!-- hexo injector body_end end --></body>
+</html>
