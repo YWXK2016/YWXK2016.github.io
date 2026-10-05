@@ -223,11 +223,11 @@
       
       <tag>SuperPoint</tag>
       
+      <tag>特征点提取</tag>
+      
       <tag>代码复现</tag>
       
       <tag>MagicPoint</tag>
-      
-      <tag>特征点提取</tag>
       
       <tag>HPatches</tag>
       
@@ -264,9 +264,9 @@
       
       <tag>SuperPoint</tag>
       
-      <tag>网络结构</tag>
-      
       <tag>编解码结构</tag>
+      
+      <tag>网络结构</tag>
       
     </tags>
     
@@ -301,11 +301,11 @@
       
       <tag>SuperPoint</tag>
       
-      <tag>编解码结构</tag>
-      
       <tag>特征点提取</tag>
       
       <tag>特征点描述</tag>
+      
+      <tag>编解码结构</tag>
       
       <tag>CVPR2018</tag>
       
@@ -597,9 +597,9 @@
     
     <tags>
       
-      <tag>colmap</tag>
-      
       <tag>三维重建</tag>
+      
+      <tag>colmap</tag>
       
       <tag>命令行</tag>
       
@@ -630,9 +630,9 @@
     
     <tags>
       
-      <tag>colmap</tag>
-      
       <tag>三维重建</tag>
+      
+      <tag>colmap</tag>
       
       <tag>源码编译</tag>
       
