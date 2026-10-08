@@ -2,6 +2,74 @@
   margin: 2.25rem 0 1rem;
 }
 
+.about-outdoor-section {
+  margin: 0 0 2.25rem;
+}
+
+.about-outdoor-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  background: var(--board-bg-color);
+  color: var(--text-color);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.about-outdoor-entry:hover {
+  border-color: #177e89;
+  color: var(--text-color);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.11);
+  text-decoration: none;
+  transform: translateY(-3px);
+}
+
+.about-outdoor-entry-media {
+  min-height: 15rem;
+  background: var(--board-bg-color);
+}
+
+.about-outdoor-entry-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-outdoor-entry-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.about-outdoor-entry-body h2 {
+  margin: 0;
+  color: var(--post-heading-color);
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+.about-outdoor-entry-body p {
+  margin: 0.65rem 0 0;
+  color: var(--text-color);
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+
+.about-outdoor-entry-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  color: #177e89;
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
 .about-skills-heading {
   display: flex;
   align-items: center;
@@ -282,6 +350,15 @@
 }
 
 @media (max-width: 767px) {
+  .about-outdoor-entry {
+    grid-template-columns: 1fr;
+  }
+
+  .about-outdoor-entry-media {
+    min-height: 11rem;
+    aspect-ratio: 16 / 9;
+  }
+
   .skill-category-grid {
     grid-template-columns: 1fr;
   }

@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>山海连城 · 户外运动</title>
+    <link href="/2026/09/30/Shenzhen_sanhailiancheng/"/>
+    <url>/2026/09/30/Shenzhen_sanhailiancheng/</url>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" href="/css/outdoor-checkins.css"><div class="outdoor-hub"><p class="outdoor-hub__intro">山海连城，是广东省深圳市自2020年起实施的城市自然生态建设计划，通过挖掘自然生态基底，以通山、达海、贯城、串趣为原则，构建“一脊、一带、二十廊”的生态骨架，实现“连生态、连生活、连生产、连生趣”的山海连城格局，打造人与自然和谐共生的美丽城市典范。该计划以“一脊一带二十廊”为生态魅力骨架，其中“一脊”为横贯深圳中部连绵百公里的山脊翠脉，“一带”为东西海岸的滨海蓝带。</p><div class="outdoor-progress-strip">  <div class="outdoor-progress-strip__item">    <div class="outdoor-progress-head">      <span class="outdoor-progress-strip__label">深圳十峰已打卡</span>      <span class="outdoor-progress-strip__value" data-outdoor-progress="peaks">--</span>    </div>    <div class="outdoor-progress-bar" data-outdoor-progress-bar="peaks" role="progressbar" aria-label="深圳十峰打卡进度">      <span data-outdoor-progress-fill="peaks"></span>    </div>  </div>  <div class="outdoor-progress-strip__item">    <div class="outdoor-progress-head">      <span class="outdoor-progress-strip__label">鲲鹏径完成分段</span>      <span class="outdoor-progress-strip__value" data-outdoor-progress="kunpeng">--</span>    </div>    <div class="outdoor-progress-bar" data-outdoor-progress-bar="kunpeng" role="progressbar" aria-label="鲲鹏径打卡进度">      <span data-outdoor-progress-fill="kunpeng"></span>    </div>  </div>  <div class="outdoor-progress-strip__item">    <span class="outdoor-progress-strip__value" data-outdoor-progress="records">--</span>    <span class="outdoor-progress-strip__label">有效打卡记录</span>  </div></div><h2 class="outdoor-section-title">三径三线</h2><div class="outdoor-card-grid outdoor-card-grid--routes">  <a class="outdoor-card" href="/outdoors/shenzhen-trails/kunpeng/" data-checkin-id="kunpeng" data-checkin-type="route">    <div class="outdoor-card__media">      <img src="/img/outdoor/covers/三径三线.webp" alt="鲲鹏径打卡记录" loading="lazy">    </div>    <div class="outdoor-card__body">      <div class="outdoor-card__head">        <h3 class="outdoor-card__title">鲲鹏径</h3>        <span class="outdoor-card__subtitle">20 段 · 约 200 km</span>      </div>      <div class="outdoor-card__facts">        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">起止</span>          <span class="outdoor-card__fact-value">凤凰山飞云顶 → 七娘山大雁顶</span>        </div>        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">最高海拔</span>          <span class="outdoor-card__fact-value">943.7 米</span>        </div>      </div>      <div class="outdoor-card__checkin"></div>      <div class="outdoor-card__foot">        <span>查看分段打卡</span>        <span aria-hidden="true">→</span>      </div>    </div>  </a>  <a class="outdoor-card" href="/outdoors/shenzhen-trails/fenghuang/" data-checkin-id="fenghuang" data-checkin-type="route">    <div class="outdoor-card__media">      <img src="/img/outdoor/covers/三径三线.webp" alt="凤凰径打卡记录" loading="lazy">    </div>    <div class="outdoor-card__body">      <div class="outdoor-card__head">        <h3 class="outdoor-card__title">凤凰径</h3>        <span class="outdoor-card__subtitle">6 段 · 约 80 km</span>      </div>      <div class="outdoor-card__facts">        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">起止</span>          <span class="outdoor-card__fact-value">凤凰山飞云顶 → 马鞍山</span>        </div>        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">最高海拔</span>          <span class="outdoor-card__fact-value">约 376 米</span>        </div>      </div>      <div class="outdoor-card__checkin"></div>      <div class="outdoor-card__foot">        <span>查看分段打卡</span>        <span aria-hidden="true">→</span>      </div>    </div>  </a>  <a class="outdoor-card" href="/outdoors/shenzhen-trails/cuiwei/" data-checkin-id="cuiwei" data-checkin-type="route">    <div class="outdoor-card__media">      <img src="/img/outdoor/covers/三径三线.webp" alt="翠微径记录" loading="lazy">    </div>    <div class="outdoor-card__body">      <div class="outdoor-card__head">        <h3 class="outdoor-card__title">翠微径</h3>        <span class="outdoor-card__subtitle">4 段 · 约 46 km</span>      </div>      <div class="outdoor-card__facts">        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">起止</span>          <span class="outdoor-card__fact-value">罗氏大屋 → 红花岭低碳生态公园</span>        </div>        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">最高海拔</span>          <span class="outdoor-card__fact-value">约 460 米</span>        </div>      </div>      <div class="outdoor-card__checkin"></div>      <div class="outdoor-card__foot">        <span>查看分段打卡</span>        <span aria-hidden="true">→</span>      </div>    </div>  </a>  <a class="outdoor-card" href="/outdoors/shenzhen-trails/yangtai-loop/" data-checkin-id="yangtai" data-checkin-type="route">    <div class="outdoor-card__media">      <img src="/img/outdoor/covers/三径三线.webp" alt="阳台山环线记录" loading="lazy">    </div>    <div class="outdoor-card__body">      <div class="outdoor-card__head">        <h3 class="outdoor-card__title">阳台山环线</h3>        <span class="outdoor-card__subtitle">约 38.5 km</span>      </div>      <div class="outdoor-card__facts">        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">起止</span>          <span class="outdoor-card__fact-value">胜利大营救广场环回</span>        </div>        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">最高海拔</span>          <span class="outdoor-card__fact-value">约 587 米</span>        </div>      </div>      <div class="outdoor-card__checkin"></div>      <div class="outdoor-card__foot">        <span>查看线路打卡</span>        <span aria-hidden="true">→</span>      </div>    </div>  </a>  <a class="outdoor-card" href="/outdoors/shenzhen-trails/maluan-loop/" data-checkin-id="maluan" data-checkin-type="route">    <div class="outdoor-card__media">      <img src="/img/outdoor/covers/三径三线.webp" alt="马峦山环线记录" loading="lazy">    </div>    <div class="outdoor-card__body">      <div class="outdoor-card__head">        <h3 class="outdoor-card__title">马峦山环线</h3>        <span class="outdoor-card__subtitle">约 38.5 km</span>      </div>      <div class="outdoor-card__facts">        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">起止</span>          <span class="outdoor-card__fact-value">梅沙湾公园 / 华大基因环回</span>        </div>        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">最高海拔</span>          <span class="outdoor-card__fact-value">约 590 米</span>        </div>      </div>      <div class="outdoor-card__checkin"></div>      <div class="outdoor-card__foot">        <span>查看线路打卡</span>        <span aria-hidden="true">→</span>      </div>    </div>  </a>  <a class="outdoor-card" href="/outdoors/shenzhen-trails/sanshui-line/" data-checkin-id="sanshui" data-checkin-type="route">    <div class="outdoor-card__media">      <img src="/img/outdoor/covers/三径三线.webp" alt="三水线记录" loading="lazy">    </div>    <div class="outdoor-card__body">      <div class="outdoor-card__head">        <h3 class="outdoor-card__title">三水线</h3>        <span class="outdoor-card__subtitle">约 18 km · 毕业线</span>      </div>      <div class="outdoor-card__facts">        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">起止</span>          <span class="outdoor-card__fact-value">坝光白沙湾 / 三杆笔 → 水祖坑</span>        </div>        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">最高海拔</span>          <span class="outdoor-card__fact-value">约 717 米</span>        </div>      </div>      <div class="outdoor-card__checkin"></div>      <div class="outdoor-card__foot">        <span>查看线路打卡</span>        <span aria-hidden="true">→</span>      </div>    </div>  </a></div><h2 class="outdoor-section-title">深圳十峰</h2><div class="outdoor-card-grid outdoor-card-grid--summary">  <a class="outdoor-card" href="/outdoors/peaks/" data-checkin-id="tenpeaks" data-checkin-type="peak-collection">    <div class="outdoor-card__media">      <img src="/img/outdoor/covers/深圳十峰.webp" alt="深圳十峰打卡记录" loading="lazy">    </div>    <div class="outdoor-card__body">      <div class="outdoor-card__head">        <h3 class="outdoor-card__title">深圳十峰</h3>        <span class="outdoor-card__subtitle">10 座 · 最高 943.7 m</span>      </div>      <p class="outdoor-card__description">从梧桐山、七娘山到大雁顶、梅沙尖，串联深圳最具代表性的十座山峰。进入详情页可查看每座山峰的海拔、区域、代表路线和个人打卡记录。</p>      <div class="outdoor-card__facts">        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">覆盖区域</span>          <span class="outdoor-card__fact-value">福田 / 南山 / 宝安 / 盐田 / 大鹏等</span>        </div>        <div class="outdoor-card__fact">          <span class="outdoor-card__fact-label">代表山峰</span>          <span class="outdoor-card__fact-value">梧桐山 · 七娘山 · 大雁顶 · 梅沙尖</span>        </div>      </div>      <div class="outdoor-card__checkin"></div>      <div class="outdoor-card__foot">        <span>查看十峰详情</span>        <span aria-hidden="true">→</span>      </div>    </div>  </a></div><div class="outdoor-disclaimer">  <a class="outdoor-disclaimer__mail" href="mailto:2249558536@qq.com" aria-label="联系删除" title="2249558536@qq.com" data-email="2249558536@qq.com">    <i class="iconfont icon-mail" aria-hidden="true"></i>  </a>  <p>声明：部分图片来源网络，版权归原作者所有。本博客仅作非商业分享，如有侵权请联系删除。</p></div><script src="/js/outdoor-checkins.js?v=20261008-20"></script>]]></content>
+    
+    
+    <categories>
+      
+      <category>其他分类</category>
+      
+      <category>户外运动</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深圳徒步</tag>
+      
+      <tag>户外路线</tag>
+      
+      <tag>远足径</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>图像下采样的混叠效应与抗混叠</title>
     <link href="/2026/09/29/Image_Resize_Antialiasing/"/>
     <url>/2026/09/29/Image_Resize_Antialiasing/</url>
@@ -87,9 +118,9 @@
       
       <category>三维重建</category>
       
-      <category>特征匹配</category>
-      
       <category>论文阅读和复现</category>
+      
+      <category>特征匹配</category>
       
     </categories>
     
@@ -128,9 +159,9 @@
       
       <category>三维重建</category>
       
-      <category>特征匹配</category>
-      
       <category>论文阅读和复现</category>
+      
+      <category>特征匹配</category>
       
     </categories>
     
@@ -169,9 +200,9 @@
       
       <category>三维重建</category>
       
-      <category>特征匹配</category>
-      
       <category>论文阅读和复现</category>
+      
+      <category>特征匹配</category>
       
     </categories>
     
