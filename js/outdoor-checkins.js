@@ -12,6 +12,43 @@
     return assetRoot + String(name).split('/').map(encodeURIComponent).join('/');
   }
 
+  // Fluid 主题的图片放大插件会给 .markdown-body 里「父元素不是链接」的图片套一层
+  // a.fancybox，卡片封面因此会嵌套在卡片链接内部，点击后变成弹窗预览。
+  // 这里把卡片内的这层包装拆掉，让点击图片仍然走卡片本身的跳转。
+  function unwrapCardZoomLinks() {
+    document.querySelectorAll('a.fancybox').forEach(function (zoomLink) {
+      var card = zoomLink.closest('a.outdoor-card, a.szt-route-card');
+      if (!card || card === zoomLink || !zoomLink.parentNode) return;
+
+      var parent = zoomLink.parentNode;
+      while (zoomLink.firstChild) {
+        parent.insertBefore(zoomLink.firstChild, zoomLink);
+      }
+      parent.removeChild(zoomLink);
+    });
+  }
+
+  function keepCardImagesClickable() {
+    unwrapCardZoomLinks();
+
+    if (typeof MutationObserver !== 'function') {
+      window.addEventListener('load', unwrapCardZoomLinks);
+      return;
+    }
+
+    // 主题的 fancybox 脚本是异步加载的，包装动作可能发生在任意时刻。
+    var observer = new MutationObserver(function (mutations) {
+      var wrapped = mutations.some(function (mutation) {
+        return Array.prototype.some.call(mutation.addedNodes, function (node) {
+          return node.nodeType === 1 && node.classList && node.classList.contains('fancybox');
+        });
+      });
+      if (wrapped) unwrapCardZoomLinks();
+    });
+
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  }
+
   function formatDate(value) {
     if (!value) return '';
     var parts = String(value).split('-');
@@ -893,4 +930,6 @@
     .catch(function (error) {
       console.error('[outdoor] Unable to render check-in data:', error);
     });
+
+  keepCardImagesClickable();
 })();

@@ -431,6 +431,11 @@
     flex-direction: column;
   }
 
+  .szt-segment-card__difficulty {
+    padding-top: 0;
+    text-align: left;
+  }
+
   .szt-route-card__tag {
     max-width: 100%;
     white-space: normal;
