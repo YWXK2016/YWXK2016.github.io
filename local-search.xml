@@ -170,6 +170,8 @@
       
       <tag>深度学习</tag>
       
+      <tag>网络结构</tag>
+      
       <tag>SuperGlue</tag>
       
       <tag>特征匹配</tag>
@@ -177,8 +179,6 @@
       <tag>图神经网络</tag>
       
       <tag>注意力机制</tag>
-      
-      <tag>网络结构</tag>
       
     </tags>
     
@@ -332,11 +332,11 @@
       
       <tag>SuperPoint</tag>
       
+      <tag>编解码结构</tag>
+      
       <tag>特征点提取</tag>
       
       <tag>特征点描述</tag>
-      
-      <tag>编解码结构</tag>
       
       <tag>CVPR2018</tag>
       
@@ -554,8 +554,6 @@
     
     <tags>
       
-      <tag>源码编译</tag>
-      
       <tag>OpenCV</tag>
       
       <tag>opencv contrib</tag>
@@ -563,6 +561,8 @@
       <tag>CMake</tag>
       
       <tag>Visual Studio</tag>
+      
+      <tag>源码编译</tag>
       
     </tags>
     
@@ -628,9 +628,9 @@
     
     <tags>
       
-      <tag>colmap</tag>
-      
       <tag>三维重建</tag>
+      
+      <tag>colmap</tag>
       
       <tag>命令行</tag>
       
@@ -661,9 +661,9 @@
     
     <tags>
       
-      <tag>colmap</tag>
-      
       <tag>三维重建</tag>
+      
+      <tag>colmap</tag>
       
       <tag>源码编译</tag>
       
