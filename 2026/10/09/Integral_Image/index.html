@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ywxk2016.github.io/img/covers/imageProcess.webp">
 <meta property="article:published_time" content="2026-10-09T12:00:00.000Z">
-<meta property="article:modified_time" content="2026-10-10T08:32:07.796Z">
+<meta property="article:modified_time" content="2026-10-10T08:58:26.328Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="OpenCV">
 <meta property="article:tag" content="图像处理">
@@ -241,7 +241,7 @@
     height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=mv24ylpy4t") center / cover no-repeat;
+    background: #fff url("/img/avatar.jpg?v=mv25wfq29w") center / cover no-repeat;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -770,10 +770,10 @@ $$</div>
 </tr>
 </tbody></table>
 <blockquote>
-<p>从测试情况来看，使用OpenCV的接口普遍会比自己手动实现的耗时更短，方法3会比前两种方法耗时稍短一些，后续从优化数据访问方式角度考虑或者使用AVX指令集和CUDA来进一步加速，看看能不能比OpenCV更快一些。</p>
+<p>从测试情况来看，使用OpenCV的接口普遍会比自己手动实现的耗时更短，方法3会比前两种方法耗时稍短一些，后续从优化数据访问方式角度考虑或者使用SIMD指令集和CUDA来进一步加速，看看能不能比OpenCV更快一些。</p>
 </blockquote>
 <blockquote>
-<p>输入图像为全1的单通道图像，将输出的积分图归一化后乘以255，如下图所示</p>
+<p>输入图像为全1的单通道图像，将输出的积分图归一化后乘以255，如下图所示:</p>
 </blockquote>
 <p><img src="/img/post/0020_Integral_Image/1.webp" srcset="/img/loading.gif" lazyload></p>
 
