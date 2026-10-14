@@ -22,7 +22,11 @@
     
     <tags>
       
-      <tag>积分图 - 并行计算 - SIMD</tag>
+      <tag>积分图</tag>
+      
+      <tag>并行计算</tag>
+      
+      <tag>SIMD</tag>
       
       <tag>SSE</tag>
       
@@ -232,6 +236,8 @@
       
       <tag>深度学习</tag>
       
+      <tag>网络结构</tag>
+      
       <tag>SuperGlue</tag>
       
       <tag>特征匹配</tag>
@@ -239,8 +245,6 @@
       <tag>图神经网络</tag>
       
       <tag>注意力机制</tag>
-      
-      <tag>网络结构</tag>
       
     </tags>
     
