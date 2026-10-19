@@ -620,6 +620,8 @@
     
     <tags>
       
+      <tag>源码编译</tag>
+      
       <tag>OpenCV</tag>
       
       <tag>opencv contrib</tag>
@@ -627,8 +629,6 @@
       <tag>CMake</tag>
       
       <tag>Visual Studio</tag>
-      
-      <tag>源码编译</tag>
       
     </tags>
     
@@ -694,9 +694,9 @@
     
     <tags>
       
-      <tag>三维重建</tag>
-      
       <tag>colmap</tag>
+      
+      <tag>三维重建</tag>
       
       <tag>命令行</tag>
       
@@ -727,9 +727,9 @@
     
     <tags>
       
-      <tag>三维重建</tag>
-      
       <tag>colmap</tag>
+      
+      <tag>三维重建</tag>
       
       <tag>源码编译</tag>
       
