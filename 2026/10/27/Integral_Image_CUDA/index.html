@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ywxk2016.github.io/img/covers/imageProcess.webp">
 <meta property="article:published_time" content="2026-10-27T18:37:43.000Z">
-<meta property="article:modified_time" content="2026-10-27T10:44:41.594Z">
+<meta property="article:modified_time" content="2026-10-27T11:35:06.796Z">
 <meta property="article:author" content="仰望星空">
 <meta property="article:tag" content="CUDA">
 <meta property="article:tag" content="并行计算">
@@ -241,7 +241,7 @@
     height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: #fff url("/img/avatar.jpg?v=mvqk6k8qzm") center / cover no-repeat;
+    background: #fff url("/img/avatar.jpg?v=mvqlzei4wx9") center / cover no-repeat;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -585,7 +585,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.6k 字
+          10k 字
         
       </span>
     
@@ -596,7 +596,7 @@
         
         
         
-          81 分钟
+          84 分钟
         
       </span>
     
@@ -687,6 +687,30 @@
 <p><img src="/img/post/0022_Integral_Image_CUDA/4.webp" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>多次测试发现统计的平均耗时存在一定的波动，可能和设备实时状态有关。但整体来看，CUDA的内核执行时间与OpenCV和AVX的耗时基本接近，但包含数据拷贝的总耗时比OpenCV和AVX都明显更长，可见在主机端和设备端做数据拷贝是比较耗时的操作，所以在写CUDA代码时，需要避免频繁做数据拷贝。</p>
+</blockquote>
+<h2 id="四、为什么CUDA对积分图计算加速不明显？"><a href="#四、为什么CUDA对积分图计算加速不明显？" class="headerlink" title="四、为什么CUDA对积分图计算加速不明显？"></a>四、为什么CUDA对积分图计算加速不明显？</h2><ol>
+<li><strong>算术强度太低，GPU 喂不饱</strong></li>
+</ol>
+<blockquote>
+<p>积分图先按行前缀和、再按列前缀和。平均每个像素只有 2–3 次整数加法，却至少要读一次、写一次，很多实现还要读上一行&#x2F;上一列。GPU 的强项是 高 FLOPs &#x2F; 高带宽，但这类算子每字节数据只产生极少计算，属于典型的 memory-bound。</p>
+</blockquote>
+<ol start="2">
+<li><strong>前缀和依赖限制了并行度</strong></li>
+</ol>
+<blockquote>
+<p>积分图不是“每个像素独立计算”的算子。行内前缀和必须按顺序累加，列方向同样如此。</p>
+</blockquote>
+<ol start="3">
+<li><strong>访存模式不够友好</strong></li>
+</ol>
+<blockquote>
+<p>积分图经常需要访问：当前像素；左侧像素；上方像素；左上像素；或者上一行&#x2F;上一列的累加结果。这类访问在 GPU 全局内存上很难做到完全合并，尤其列方向扫描时容易出现 stride 访问。再加上输出也要写回全局内存，带宽压力会进一步放大。</p>
+</blockquote>
+<ol start="4">
+<li><strong>启动开销和 PCIe 传输会吃掉收益</strong></li>
+</ol>
+<blockquote>
+<p>CUDA kernel 启动、同步、cudaMemcpy、pinned memory 管理这些固定开销，可能已经接近甚至超过 kernel 计算时间。</p>
 </blockquote>
 
                 
