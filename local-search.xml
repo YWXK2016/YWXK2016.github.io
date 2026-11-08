@@ -90,9 +90,9 @@
       
       <tag>OpenCV</tag>
       
-      <tag>图像处理</tag>
-      
       <tag>积分图</tag>
+      
+      <tag>图像处理</tag>
       
     </tags>
     
@@ -152,13 +152,13 @@
       
       <tag>OpenCV</tag>
       
+      <tag>图像处理</tag>
+      
       <tag>图像下采样</tag>
       
       <tag>抗混叠</tag>
       
       <tag>高斯滤波</tag>
-      
-      <tag>图像处理</tag>
       
     </tags>
     
